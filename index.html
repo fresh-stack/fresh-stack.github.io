@@ -76,7 +76,7 @@
               </div>
 
               <span class="link-block">
-                <a href="https://arxiv.org/abs/xxxx.xxxx" target="_blank"
+                <a href="https://arxiv.org/abs/2504.13128" target="_blank"
                 class="external-link button is-normal is-rounded is-dark">
                 <span class="icon">
                   <i class="ai ai-arxiv"></i>
@@ -138,7 +138,7 @@
     <div class="hero-body">
       <div style="background-color: #fff3e0; border: 1px solid #ffcc80; border-radius: 4px; padding: 20px; margin-bottom: 20px;">
         <p style="margin: 0; font-size: 1.1em;">
-          <strong style="color: #f57c00;">tldr:</strong> FreshStack is a holistic framework for building realistic & challenging RAG benchmarks from community-asked questions and answers. We evaluate retrieval systems on technical documentation from GitHub repositories on five niche domains.
+          <strong style="color: #f57c00;">tldr:</strong> <strong>FreshStack is a holistic framework for building realistic & challenging RAG benchmarks from community-asked questions and answers on niche and fast-growing domains.</strong>
         </p>
       </div>
     </div>
@@ -157,7 +157,7 @@
             We introduce FreshStack, a reusable framework for automatically building information retrieval (IR) evaluation benchmarks from community-asked questions and answers. 
             FreshStack conducts the following steps: (1) automatic corpus collection from code and technical documentation, (2) nugget generation from community-asked questions and answers, and (3) nugget-level support, retrieving documents using a fusion of retrieval techniques and hybrid architectures. 
             We use FreshStack to build five datasets on fast-growing, recent, and niche topics to ensure the tasks are sufficiently challenging. 
-            On FreshStack, existing retrieval models, when applied out-of-the-box, significantly underperform oracle approaches on all five topics, denoting plenty of headroom to improve IR quality.
+            Existing retrieval models, when applied out-of-the-box, significantly underperform oracle approaches on all five topics, denoting plenty of headroom to improve IR quality.
           </p>
         </div>
       </div>
@@ -166,23 +166,23 @@
 </section>
 <!-- End paper abstract -->
 
-<!-- Paper Introduction -->
-<section class="section hero is-dark">
+<!-- Teaser image-->
+<section class="hero teaser">
   <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Introduction</h2>
-        <div class="content has-text-justified">
-          <p>
-            Retrieval-augmented generation (RAG) is a popular technique to enhance traditional information retrieval (IR) capabilities with language model generation. RAG systems use large language models (LLMs) to generate long-form responses, grounded in the information available from retrieved documents. Despite its wide usage, evaluating RAG remains incredibly challenging. Existing IR and RAG benchmarks are not well-suited for evaluation, as these are outdated and highly limited.
-          </p>
-        </div>
-      </div>
+    <div class="hero-body">
+      <video poster="" id="video1" autoplay controls muted loop height="100%">
+        <!-- Your video file here -->
+        <source src="static/videos/teaser.mp4"
+        type="video/mp4">
+      </video>
+      <h2 class="subtitle has-text-centered">
+      Video shows a step-by-step procedure followed in FreshStack for constructing evaluation datasets.
+      </h2>
     </div>
   </div>
 </section>
 
-<section class="section hero is-light">
+<!-- <section class="section hero is-light">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
@@ -195,7 +195,7 @@
       </div>
     </div>
   </div>
-</section>
+</section> -->
 
 <!-- Teaser image and video -->
 <!-- <section class="hero teaser">
@@ -241,9 +241,15 @@
 <!--BibTex citation -->
 <section class="section" id="BibTeX">
   <div class="container is-max-desktop content">
-    <h2 class="title">BibTeX</h2><pre><code>@article{thakur:2025,
-
-    }</code></pre>
+    <h2 class="title">BibTeX</h2><pre><code>@misc{thakur2025freshstack,
+      title={FreshStack: Building Realistic Benchmarks for Evaluating Retrieval on Technical Documents}, 
+      author={Nandan Thakur and Jimmy Lin and Sam Havens and Michael Carbin and Omar Khattab and Andrew Drozdov},
+      year={2025},
+      eprint={2504.13128},
+      archivePrefix={arXiv},
+      primaryClass={cs.IR},
+      url={https://arxiv.org/abs/2504.13128}, 
+}</code></pre>
   </div>
 </section>
 <!--End BibTex citation -->
