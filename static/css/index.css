@@ -291,18 +291,21 @@ td:hover {
   }
 }
 
-#freshstack-table {
-  table-layout: auto;
-  width: 150%;
+/* Make all table columns tighter */
+#freshstack-table th,
+#freshstack-table td {
+  padding: 6px 8px; /* reduce padding */
+  white-space: nowrap; /* prevents line breaks */
+  font-size: 0.85rem; /* slightly smaller text */
 }
 
-#freshstack-table th:not(:first-child),
-#freshstack-table td:not(:first-child) {
-  width: auto;
-}
-
-#freshstack-table tbody td:first-child {
-  text-align: left !important;
+/* Optional: Limit max width of metric columns */
+#freshstack-table th:nth-child(n+4),
+#freshstack-table td:nth-child(n+4) {
+  max-width: 80px;
+  width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 #toggleButton {
