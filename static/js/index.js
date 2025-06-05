@@ -47,7 +47,17 @@ document.addEventListener('DOMContentLoaded', function() {
 		  { key: 'recall_50', label: 'Recall@50' }
 		];
   
-		data.leaderboardData.forEach((row) => {
+		// 🧠 Prepare rank-based styling info
+		const scoresByDataset = {};
+		datasets.forEach(dataset => {
+		  scoresByDataset[dataset] = prepareScoresForStyling(
+			data.leaderboardData.map(row => row.datasets[dataset] || {}),
+			dataset
+		  );
+		});
+  
+		// 🧱 Build table rows
+		data.leaderboardData.forEach((row, rowIndex) => {
 		  const tr = document.createElement('tr');
 		  tr.classList.add(row.info.type || 'default');
   
@@ -63,7 +73,13 @@ document.addEventListener('DOMContentLoaded', function() {
 		  datasets.forEach(dataset => {
 			metrics.forEach(metric => {
 			  const val = safeGet(row, `datasets.${dataset}.${metric.key}`, '-');
-			  datasetCells += `<td>${val}</td>`;
+			  const rank = scoresByDataset[dataset]?.[metric.key]?.[rowIndex] ?? -1;
+  
+			  let style = '';
+			  if (rank === 0) style = 'font-weight:bold;';
+			  else if (rank === 1) style = 'text-decoration:underline;';
+  
+			  datasetCells += `<td style="${style}">${val}</td>`;
 			});
 		  });
   
@@ -90,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		  </tr>
 		`;
 	  });
-  }
+  }  
   
 	function setupEventListeners() {
 		document.querySelector('.reset-cell').addEventListener('click', function () {
