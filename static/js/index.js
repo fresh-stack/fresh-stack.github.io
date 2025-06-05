@@ -25,7 +25,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	setupEventListeners();
 	window.addEventListener('resize', adjustNameColumnWidth);
   });
-  function loadTableData() {
+
+function loadTableData() {
 	console.log('Starting to load table data...');
 	fetch('./leaderboard_data.json')
 	  .then(response => {
@@ -38,7 +39,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	  .then(data => {
 		console.log('Data loaded successfully:', data);
 		const tbody = document.querySelector('#freshstack-table tbody');
-		tbody.innerHTML = ''; // Clear existing rows if any
   
 		const datasets = ['langchain', 'yolo', 'laravel', 'angular', 'godot'];
 		const metrics = [
@@ -51,31 +51,30 @@ document.addEventListener('DOMContentLoaded', function() {
 		const scoresByDataset = {};
 		datasets.forEach(dataset => {
 		scoresByDataset[dataset] = prepareScoresForStyling(
-			data.leaderboardData.map(row => row.datasets?.[dataset] || {}),
-			dataset
-		);
+			data.leaderboardData, dataset);
 		});
 
 		// 2. Populate rows
-		data.leaderboardData.forEach((row, rowIndex) => {
+		data.leaderboardData.forEach((row, index) => {
 		const tr = document.createElement('tr');
-		tr.classList.add(row.info.type || 'default');
+		tr.classList.add(row.info.type);
 
 		const nameCell = row.info.link && row.info.link.trim() !== ''
 			? `<a href="${row.info.link}" target="_blank"><b>${row.info.name}</b></a>`
 			: `<b>${row.info.name}</b>`;
+		const safeGet = (obj, path, defaultValue = '-') => {
+			return path.split('.').reduce((acc, part) => acc && acc[part], obj) || defaultValue;
+			};
 
 		let datasetCells = '';
 		datasets.forEach(dataset => {
 			metrics.forEach(metric => {
 			const val = row.datasets?.[dataset]?.[metric.key] ?? '-';
-			const rank = scoresByDataset[dataset]?.[metric.key]?.[rowIndex] ?? -1;
+			const rank = scoresByDataset[dataset]?.[metric.key]?.[index] ?? -1;
+			const styledValue = applyStyle(val, rank);
+			const cellClass = `${dataset}-details`;
 
-			let style = '';
-			if (rank === 0) style = 'font-weight:bold;';
-			else if (rank === 1) style = 'text-decoration:underline;';
-
-			datasetCells += `<td style="${style}">${val}</td>`;
+			datasetCells += `<td class="${cellClass}">${styledValue}</td>`;
 			});
 		});
 
@@ -140,7 +139,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		  var headerCell = document.querySelector('.' + sec + '-details-cell');
 		  if (sec === section) {
 			detailCells.forEach(cell => cell.classList.toggle('hidden'));
-			headerCell.setAttribute('colspan', headerCell.getAttribute('colspan') === '1' ? '7' : '1');
+			headerCell.setAttribute(
+				'colspan',
+				headerCell.getAttribute('colspan') === '1' ? '3' : '1'
+			  );
 		  } else {
 			detailCells.forEach(cell => cell.classList.add('hidden'));
 			headerCell.setAttribute('colspan', '1');
@@ -162,7 +164,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		document.querySelector('.godot-details-cell').setAttribute('colspan', '1');
 		document.querySelector('.laravel-details-cell').setAttribute('colspan', '1');
 		document.querySelector('.angular-details-cell').setAttribute('colspan', '1');
-	  
+		
+		var headerToSort = document.querySelector('#freshstack-table thead tr:last-child th[data-sort="number"]:not(.hidden)');
+		sortTable(headerToSort, true, false);  // sort descending by default
+
 		setTimeout(adjustNameColumnWidth, 0);
 	  }
 	  
@@ -231,10 +236,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	  }
 	  
 	  function initializeSorting() {
-		const headerToSort = document.querySelector('th[data-sort="number"]:not(.hidden)');
-		if (headerToSort) {
-		  sortTable(headerToSort, true, false);  // sort descending by default
-		}
+		var headerToSort = document.querySelector('#freshstack-table thead tr:last-child th[data-sort="number"]:not(.hidden)');
+		sortTable(headerToSort, true, false);  // sort descending by default
 	  }
 	  
 	  function adjustNameColumnWidth() {
@@ -295,4 +298,10 @@ document.addEventListener('DOMContentLoaded', function() {
 	  
 		return scores;
 	  }
-	  
+
+	  function applyStyle(value, rank) {
+		if (value === undefined || value === null || value === '-') return '-';
+		if (rank === 0) return `<b>${value}</b>`;
+		if (rank === 1) return `<span style="text-decoration: underline;">${value}</span>`;
+		return value;
+	  }

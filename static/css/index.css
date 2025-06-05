@@ -67,7 +67,6 @@ body {
 }
 
 .publication-header .hero-body {
-  padding: 1rem; /* Example property */
 }
 
 .publication-title,
@@ -291,31 +290,18 @@ td:hover {
   }
 }
 
-th.sortable {
-  cursor: pointer;
-}
-th.asc::after {
-  content: ' ▲';
-}
-th.desc::after {
-  content: ' ▼';
+#freshstack-table {
+  table-layout: auto;
+  width: 100%;
 }
 
-/* Make all table columns tighter */
-#freshstack-table th,
-#freshstack-table td {
-  padding: 6px 8px; /* reduce padding */
-  white-space: nowrap; /* prevents line breaks */
-  font-size: 0.9rem; /* slightly smaller text */
+#freshstack-table th:not(:first-child),
+#freshstack-table td:not(:first-child) {
+  width: auto;
 }
 
-/* Optional: Limit max width of metric columns */
-#freshstack-table th:nth-child(n+4),
-#freshstack-table td:nth-child(n+4) {
-  max-width: 100px;
-  width: 100px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+#freshstack-table tbody td:first-child {
+  text-align: left !important;
 }
 
 #toggleButton {
