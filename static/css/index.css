@@ -232,7 +232,7 @@ table {
   width: 100%;
   margin-top: 5px;
   border: 1px solid #ddd;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 th, td {
@@ -293,7 +293,7 @@ td:hover {
 
 #freshstack-table {
   table-layout: auto;
-  width: 100%;
+  width: 150%;
 }
 
 #freshstack-table th:not(:first-child),
