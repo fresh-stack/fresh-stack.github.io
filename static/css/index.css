@@ -291,6 +291,16 @@ td:hover {
   }
 }
 
+th.sortable {
+  cursor: pointer;
+}
+th.asc::after {
+  content: ' ▲';
+}
+th.desc::after {
+  content: ' ▼';
+}
+
 /* Make all table columns tighter */
 #freshstack-table th,
 #freshstack-table td {

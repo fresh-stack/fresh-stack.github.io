@@ -231,7 +231,10 @@ document.addEventListener('DOMContentLoaded', function() {
 	  }
 	  
 	  function initializeSorting() {
-		// No default sort column without overall — user can manually click a header
+		const headerToSort = document.querySelector('th[data-sort="number"]:not(.hidden)');
+		if (headerToSort) {
+		  sortTable(headerToSort, true, false);  // sort descending by default
+		}
 	  }
 	  
 	  function adjustNameColumnWidth() {
