@@ -296,7 +296,7 @@ td:hover {
 #freshstack-table td {
   padding: 6px 8px; /* reduce padding */
   white-space: nowrap; /* prevents line breaks */
-  font-size: 0.85rem; /* slightly smaller text */
+  font-size: 0.9rem; /* slightly smaller text */
 }
 
 /* Optional: Limit max width of metric columns */
