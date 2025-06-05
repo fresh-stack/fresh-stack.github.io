@@ -42,9 +42,9 @@ document.addEventListener('DOMContentLoaded', function() {
   
 		const datasets = ['langchain', 'yolo', 'laravel', 'angular', 'godot'];
 		const metrics = [
-		  { key: 'alpha_ndcg_10', label: 'α-nDCG@10' },
-		  { key: 'coverage_20', label: 'Coverage@20' },
-		  { key: 'recall_50', label: 'Recall@50' }
+		  { key: 'alpha_ndcg_10', label: 'α-n@10' },
+		  { key: 'coverage_20', label: 'C@20' },
+		  { key: 'recall_50', label: 'R@50' }
 		];
   
 		// 1. Prepare styling data
