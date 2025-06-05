@@ -47,49 +47,45 @@ document.addEventListener('DOMContentLoaded', function() {
 		  { key: 'recall_50', label: 'Recall@50' }
 		];
   
-		// 🧠 Prepare rank-based styling info
+		// 1. Prepare styling data
 		const scoresByDataset = {};
 		datasets.forEach(dataset => {
-		  scoresByDataset[dataset] = prepareScoresForStyling(
-			data.leaderboardData.map(row => row.datasets[dataset] || {}),
+		scoresByDataset[dataset] = prepareScoresForStyling(
+			data.leaderboardData.map(row => row.datasets?.[dataset] || {}),
 			dataset
-		  );
+		);
 		});
-  
-		// 🧱 Build table rows
+
+		// 2. Populate rows
 		data.leaderboardData.forEach((row, rowIndex) => {
-		  const tr = document.createElement('tr');
-		  tr.classList.add(row.info.type || 'default');
-  
-		  const nameCell = row.info.link && row.info.link.trim() !== ''
+		const tr = document.createElement('tr');
+		tr.classList.add(row.info.type || 'default');
+
+		const nameCell = row.info.link && row.info.link.trim() !== ''
 			? `<a href="${row.info.link}" target="_blank"><b>${row.info.name}</b></a>`
 			: `<b>${row.info.name}</b>`;
-  
-		  const safeGet = (obj, path, defaultValue = '-') => {
-			return path.split('.').reduce((acc, part) => acc && acc[part], obj) ?? defaultValue;
-		  };
-  
-		  let datasetCells = '';
-		  datasets.forEach(dataset => {
+
+		let datasetCells = '';
+		datasets.forEach(dataset => {
 			metrics.forEach(metric => {
-			  const val = safeGet(row, `datasets.${dataset}.${metric.key}`, '-');
-			  const rank = scoresByDataset[dataset]?.[metric.key]?.[rowIndex] ?? -1;
-  
-			  let style = '';
-			  if (rank === 0) style = 'font-weight:bold;';
-			  else if (rank === 1) style = 'text-decoration:underline;';
-  
-			  datasetCells += `<td style="${style}">${val}</td>`;
+			const val = row.datasets?.[dataset]?.[metric.key] ?? '-';
+			const rank = scoresByDataset[dataset]?.[metric.key]?.[rowIndex] ?? -1;
+
+			let style = '';
+			if (rank === 0) style = 'font-weight:bold;';
+			else if (rank === 1) style = 'text-decoration:underline;';
+
+			datasetCells += `<td style="${style}">${val}</td>`;
 			});
-		  });
-  
-		  tr.innerHTML = `
+		});
+
+		tr.innerHTML = `
 			<td>${nameCell}</td>
 			<td>${row.info.size}</td>
 			<td>${row.info.date}</td>
 			${datasetCells}
-		  `;
-		  tbody.appendChild(tr);
+		`;
+		tbody.appendChild(tr);
 		});
   
 		setTimeout(adjustNameColumnWidth, 0);
