@@ -302,8 +302,8 @@ td:hover {
 /* Optional: Limit max width of metric columns */
 #freshstack-table th:nth-child(n+4),
 #freshstack-table td:nth-child(n+4) {
-  max-width: 80px;
-  width: 80px;
+  max-width: 100px;
+  width: 100px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
