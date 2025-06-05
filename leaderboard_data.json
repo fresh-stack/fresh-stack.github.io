@@ -35,6 +35,114 @@
                     "recall_50": 0.2
                 }
             }
+        },
+        {
+            "info": {
+                "name": "BGE (Gemma-2)",
+                "size": "9B",
+                "type": "open_source",
+                "date": "2024-11-01",
+                "link": "https://huggingface.co/BAAI/bge-multilingual-gemma2"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.216,
+                    "coverage_20": 0.548,
+                    "recall_50": 0.337
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.258,
+                    "coverage_20": 0.547,
+                    "recall_50": 0.43
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.348,
+                    "coverage_20": 0.699,
+                    "recall_50": 0.574
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.323,
+                    "coverage_20": 0.571,
+                    "recall_50": 0.378
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.2,
+                    "coverage_20": 0.479,
+                    "recall_50": 0.419
+                }
+            }
+        },
+        {
+            "info": {
+                "name": "E5 (Mistral-7B)",
+                "size": "7B",
+                "type": "open_source",
+                "date": "2024-11-01",
+                "link": "https://huggingface.co/intfloat/e5-mistral-7b-instruct"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.304,
+                    "coverage_20": 0.654,
+                    "recall_50": 0.393
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.243,
+                    "coverage_20": 0.552,
+                    "recall_50": 0.394
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.25,
+                    "coverage_20": 0.565,
+                    "recall_50": 0.47
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.262,
+                    "coverage_20": 0.548,
+                    "recall_50": 0.368
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.217,
+                    "coverage_20": 0.444,
+                    "recall_50": 0.359
+                }
+            }
+        },
+        {
+            "info": {
+                "name": "Voyage Large 2",
+                "size": "-",
+                "type": "proprietary",
+                "date": "2024-11-01",
+                "link": "https://docs.voyageai.com/docs/embeddings"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.246,
+                    "coverage_20": 0.528,
+                    "recall_50": 0.308
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.27,
+                    "coverage_20": 0.57,
+                    "recall_50": 0.453
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.345,
+                    "coverage_20": 0.701,
+                    "recall_50": 0.543
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.304,
+                    "coverage_20": 0.625,
+                    "recall_50": 0.427
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.282,
+                    "coverage_20": 0.522,
+                    "recall_50": 0.458
+                }
+            }
         }
     ]
 }
