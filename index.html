@@ -182,6 +182,75 @@
   </div>
 </section>
 
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-------------------------------------------------------------------- LEADERBOARD SECTION -------------------------------------------------------------------->
+    <div class="columns is-centered m-6">
+      <div class="column is-full has-text-centered content">
+        <h2 class="title is-3" id="leaderboard">Leaderboard</h2>
+        <div class="content has-text-justified">
+          <p>
+            We evaluate various retrieval models on Freshstack (October 2024 version). In each type, we consider both closed- and open-source embedding models.
+            Our evaluation is conducted under a zero-shot setting to retrieve the relevant document chunks given a query.
+            We report the results on five datasets: <b>LangChain</b>, <b>Yolo v7 & v8</b>, <b>Laravel 10 & 11</b>, <b>Angular 16, 17 & 18</b>, and <b>Godot4</b>.
+          </p>
+        </div>
+        <br>
+        <div class="model-labels-container">
+          <span class="leaderboard-label upper_baseline">Using Stack Overflow Answer or Nuggets</span>
+          <span class="leaderboard-label open_source">Open-Source</span>
+          <span class="leaderboard-label proprietary">Proprietary</span>
+        </div>
+        <br>
+        <div class="leaderboard-container">
+          <div class="table-wrapper">
+            <table id="freshstack-table">
+              <thead>
+                <tr>
+                  <th rowspan="2" class="sortable clickable" data-sort="string">Retriever</th>
+                  <th rowspan="2" class="clickable" data-sort="string">Size</th>
+                  <th rowspan="2" class="sortable clickable" data-sort="date">Date</th>
+                  <th colspan="3" style="text-align: center;">LangChain</th>
+                  <th colspan="3" style="text-align: center;">Yolo v7 & v8</th>
+                  <th colspan="3" style="text-align: center;">Laravel 10 & 11</th>
+                  <th colspan="3" style="text-align: center;">Angular 16, 17 & 18</th>
+                  <th colspan="3" style="text-align: center;">Godot4</th>
+                </tr>
+                <tr>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th class="sortable clickable" data-sort="number">α-nDCG@10</th>
+                  <th class="sortable clickable" data-sort="number">Coverage@20</th>
+                  <th class="sortable clickable" data-sort="number">Recall@50</th>
+            
+                  <th class="sortable clickable" data-sort="number">α-nDCG@10</th>
+                  <th class="sortable clickable" data-sort="number">Coverage@20</th>
+                  <th class="sortable clickable" data-sort="number">Recall@50</th>
+            
+                  <th class="sortable clickable" data-sort="number">α-nDCG@10</th>
+                  <th class="sortable clickable" data-sort="number">Coverage@20</th>
+                  <th class="sortable clickable" data-sort="number">Recall@50</th>
+            
+                  <th class="sortable clickable" data-sort="number">α-nDCG@10</th>
+                  <th class="sortable clickable" data-sort="number">Coverage@20</th>
+                  <th class="sortable clickable" data-sort="number">Recall@50</th>
+            
+                  <th class="sortable clickable" data-sort="number">α-nDCG@10</th>
+                  <th class="sortable clickable" data-sort="number">Coverage@20</th>
+                  <th class="sortable clickable" data-sort="number">Recall@50</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Table body will be populated dynamically -->
+              </tbody>
+            </table>
+            <p class="test-desc"> Overall results of different retrieval models on Freshstack. The best-performing model in each category is <b>in-bold</b>, and the second best is <u>underlined</u></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
 <!-- <section class="section hero is-light">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
