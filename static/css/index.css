@@ -67,6 +67,7 @@ body {
 }
 
 .publication-header .hero-body {
+  padding: 1rem; /* Example property */
 }
 
 .publication-title,
