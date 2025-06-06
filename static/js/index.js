@@ -324,22 +324,38 @@ function applyStyle(value, rank) {
 // Export table to CSV
 function exportTableToCSV(filename = 'leaderboard.csv') {
 	const table = document.getElementById('freshstack-table');
-	const rows = Array.from(table.querySelectorAll('tr'));
+	const datasets = ['langchain', 'yolo', 'laravel', 'angular', 'godot'];
+	const metrics = ['α-n@10', 'C@20', 'R@50'];
+
 	const csv = [];
 
+	// Row 1: Top-level headers
+	const headerRow1 = ['Model Name', 'Size', 'Date'];
+	datasets.forEach(dataset => {
+		headerRow1.push(dataset.toUpperCase(), '', ''); // 3 columns per dataset
+	});
+	csv.push(headerRow1.join(','));
+
+	// Row 2: Metric names under each dataset
+	const headerRow2 = ['-', '-', '-'];
+	datasets.forEach(() => {
+		headerRow2.push(...metrics);
+	});
+	csv.push(headerRow2.join(','));
+
+	// Data rows
+	const rows = Array.from(table.querySelectorAll('tbody tr'));
 	rows.forEach(row => {
-		const cells = Array.from(row.querySelectorAll('th, td'));
+		const cells = Array.from(row.querySelectorAll('td'));
 		const rowData = cells.map(cell => {
 			let text = cell.textContent.trim();
-
-			// Remove newlines and commas in values
 			text = text.replace(/[\n\r]+/g, ' ').replace(/,/g, ';');
-
 			return `"${text}"`;
 		});
 		csv.push(rowData.join(','));
 	});
 
+	// Export logic
 	const csvContent = csv.join('\n');
 	const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
 	const link = document.createElement('a');
