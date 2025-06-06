@@ -133,6 +133,10 @@ function setupEventListeners() {
 		sortTable(this);
 		});
 	});
+
+	document.getElementById('download-csv').addEventListener('click', function () {
+		exportTableToCSV();
+	});
 	}
 	  
 function toggleDetails(section) {
@@ -311,4 +315,33 @@ function applyStyle(value, rank) {
 	if (rank === 0) return `<b>${value}</b>`;
 	if (rank === 1) return `<span style="text-decoration: underline;">${value}</span>`;
 	return value;
+}
+
+// Export table to CSV
+function exportTableToCSV(filename = 'leaderboard.csv') {
+	const table = document.getElementById('freshstack-table');
+	const rows = Array.from(table.querySelectorAll('tr'));
+	const csv = [];
+
+	rows.forEach(row => {
+		const cells = Array.from(row.querySelectorAll('th, td'));
+		const rowData = cells.map(cell => {
+			let text = cell.textContent.trim();
+
+			// Remove newlines and commas in values
+			text = text.replace(/[\n\r]+/g, ' ').replace(/,/g, ';');
+
+			return `"${text}"`;
+		});
+		csv.push(rowData.join(','));
+	});
+
+	const csvContent = csv.join('\n');
+	const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+	const link = document.createElement('a');
+	link.href = URL.createObjectURL(blob);
+	link.setAttribute('download', filename);
+	document.body.appendChild(link);
+	link.click();
+	document.body.removeChild(link);
 }
