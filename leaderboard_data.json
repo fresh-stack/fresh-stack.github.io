@@ -146,7 +146,7 @@
         },
         {
             "info": {
-                "name": "Fusion (BM25, BGE, E5 + Voyage)",
+                "name": "Fusion (BM25, BGE, E5, Voyage)",
                 "size": "-",
                 "type": "proprietary",
                 "date": "2024-11-01",
@@ -177,6 +177,42 @@
                     "alpha_ndcg_10": 0.265,
                     "coverage_20": 0.55,
                     "recall_50": 0.505
+                }
+            }
+        },
+        {
+            "info": {
+                "name": "GTE (large) v1.5",
+                "size": "434M",
+                "type": "open_source",
+                "date": "2024-01-09",
+                "link": "https://huggingface.co/Alibaba-NLP/gte-large-en-v1.5"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.206,
+                    "coverage_20": 0.47,
+                    "recall_50": 0.252
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.195,
+                    "coverage_20": 0.445,
+                    "recall_50": 0.271
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.318,
+                    "coverage_20": 0.626,
+                    "recall_50": 0.482
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.284,
+                    "coverage_20": 0.578,
+                    "recall_50": 0.343
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.127,
+                    "coverage_20": 0.348,
+                    "recall_50": 0.24
                 }
             }
         }
