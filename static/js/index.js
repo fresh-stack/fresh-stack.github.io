@@ -137,6 +137,10 @@ function setupEventListeners() {
 	document.getElementById('download-csv').addEventListener('click', function () {
 		exportTableToCSV();
 	});
+
+	document.getElementById('download-json').addEventListener('click', function () {
+			exportTableToJSON();
+	});
 	}
 	  
 function toggleDetails(section) {
@@ -344,4 +348,27 @@ function exportTableToCSV(filename = 'leaderboard.csv') {
 	document.body.appendChild(link);
 	link.click();
 	document.body.removeChild(link);
+}
+
+function exportTableToJSON(filename = 'leaderboard.json') {
+	fetch('./leaderboard_data.json')
+		.then(response => {
+			if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+			return response.json();
+		})
+		.then(data => {
+			const blob = new Blob([JSON.stringify(data, null, 2)], {
+				type: 'application/json'
+			});
+			const link = document.createElement('a');
+			link.href = URL.createObjectURL(blob);
+			link.setAttribute('download', filename);
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+		})
+		.catch(error => {
+			console.error('Error exporting JSON:', error);
+			alert('Failed to export JSON. See console for details.');
+		});
 }
