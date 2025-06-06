@@ -236,8 +236,9 @@ table {
 
 th, td {
   text-align: left;
-  padding: 8px;
-  white-space: normal;
+  padding: 4px 6px;
+  vertical-align: middle;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -290,6 +291,7 @@ td:hover {
   }
 }
 
+th.average-details-cell,
 th.langchain-details-cell,
 th.yolo-details-cell,
 th.godot-details-cell,
@@ -298,9 +300,16 @@ th.angular-details-cell {
 	cursor: default;
 }
 
-#freshstack-table {
-  table-layout: auto;
-  width: 100%;
+#freshstack-table th,
+#freshstack-table td {
+  max-width: 70px;      /* or any value that fits your needs */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 3px 6px;     /* Reduce padding to make it more compact */
+  font-size: 11px;      /* Slightly smaller font for compactness */
+  vertical-align: middle;
+  text-align: center;
 }
 
 #freshstack-table th:not(:first-child),
@@ -308,8 +317,20 @@ th.angular-details-cell {
   width: auto;
 }
 
-#freshstack-table tbody td:first-child {
-  text-align: left !important;
+#freshstack-table td:first-child,
+#freshstack-table th:first-child {
+  max-width: 140px;      /* a bit wider for names */
+  white-space: normal;   /* allow wrapping */
+  text-align: left;
+}
+
+/* This targets the Date column (3rd column in the table) */
+#freshstack-table th:nth-child(3),
+#freshstack-table td:nth-child(3) {
+  max-width: 120px;    /* Increase this as needed */
+  min-width: 80px;
+  white-space: nowrap; /* Or set to normal if you want it to wrap */
+  text-align: center;  /* Center or left, as you prefer */
 }
 
 #toggleButton {

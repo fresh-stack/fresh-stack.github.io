@@ -40,9 +40,9 @@ function loadTableData() {
 		console.log('Data loaded successfully:', data);
 		const tbody = document.querySelector('#freshstack-table tbody');
   
-		const datasets = ['langchain', 'yolo', 'laravel', 'angular', 'godot'];
+		const datasets = ['average', 'langchain', 'yolo', 'laravel', 'angular', 'godot'];
 		const metrics = [
-		  { key: 'alpha_ndcg_10', label: 'α-n@10' },
+		  { key: 'alpha_ndcg_10', label: 'α@10' },
 		  { key: 'coverage_20', label: 'C@20' },
 		  { key: 'recall_50', label: 'R@50' }
 		];
@@ -53,9 +53,6 @@ function loadTableData() {
 		scoresByDataset[dataset] = prepareScoresForStyling(
 			data.leaderboardData, dataset);
 		});
-
-		// Apply styles to the metrics
-		console.log('Ranking debug:', scoresByDataset);
 
 		// 2. Populate rows
 		data.leaderboardData.forEach((row, index) => {
@@ -111,22 +108,6 @@ function setupEventListeners() {
 		resetTable();
 	});
 	
-	// document.querySelector('.langchain-details-cell').addEventListener('click', function () {
-	// 	toggleDetails('langchain');
-	// });
-	// document.querySelector('.yolo-details-cell').addEventListener('click', function () {
-	// 	toggleDetails('yolo');
-	// });
-	// document.querySelector('.godot-details-cell').addEventListener('click', function () {
-	// 	toggleDetails('godot');
-	// });
-	// document.querySelector('.laravel-details-cell').addEventListener('click', function () {
-	// 	toggleDetails('laravel');
-	// });
-	// document.querySelector('.angular-details-cell').addEventListener('click', function () {
-	// 	toggleDetails('angular');
-	// });
-	
 	var headers = document.querySelectorAll('#freshstack-table thead tr:last-child th.sortable');
 	headers.forEach(function (header) {
 		header.addEventListener('click', function () {
@@ -144,7 +125,7 @@ function setupEventListeners() {
 	}
 	  
 function toggleDetails(section) {
-	var sections = ['langchain', 'yolo', 'godot', 'laravel', 'angular'];
+	var sections = ['average', 'langchain', 'yolo', 'godot', 'laravel', 'angular'];
 	sections.forEach(function (sec) {
 		var detailCells = document.querySelectorAll('.' + sec + '-details');
 		var headerCell = document.querySelector('.' + sec + '-details-cell');
@@ -166,12 +147,13 @@ function toggleDetails(section) {
 function resetTable() {
 	// 1. Show all detail cells
 	document.querySelectorAll(
-		'.langchain-details, .yolo-details, .godot-details, .laravel-details, .angular-details'
+		'.average-details, .langchain-details, .yolo-details, .godot-details, .laravel-details, .angular-details'
 	).forEach(function (cell) {
 		cell.classList.remove('hidden');
 	});
 
 	// 2. Make sure all detail header cells span 3 columns
+	document.querySelector('.average-details-cell').setAttribute('colspan', '3');
 	document.querySelector('.langchain-details-cell').setAttribute('colspan', '3');
 	document.querySelector('.yolo-details-cell').setAttribute('colspan', '3');
 	document.querySelector('.godot-details-cell').setAttribute('colspan', '3');
@@ -236,7 +218,7 @@ function getCellValue(row, index) {
 	var cells = Array.from(row.children);
 	var cell = cells[index];
 
-	const datasets = ['langchain', 'yolo', 'godot', 'laravel', 'angular'];
+	const datasets = ['average','langchain', 'yolo', 'godot', 'laravel', 'angular'];
 
 	if (cell.classList.contains('hidden')) {
 		for (const dataset of datasets) {
@@ -330,8 +312,8 @@ function applyStyle(value, rank) {
 // Export table to CSV
 function exportTableToCSV(filename = 'leaderboard.csv') {
 	const table = document.getElementById('freshstack-table');
-	const datasets = ['langchain', 'yolo', 'laravel', 'angular', 'godot'];
-	const metrics = ['α-n@10', 'C@20', 'R@50'];
+	const datasets = ['average', 'langchain', 'yolo', 'laravel', 'angular', 'godot'];
+	const metrics = ['α@10', 'C@20', 'R@50'];
 
 	const csv = [];
 

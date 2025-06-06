@@ -33,6 +33,11 @@
                     "alpha_ndcg_10": 0.144,
                     "coverage_20": 0.268,
                     "recall_50": 0.2
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.218,
+                    "coverage_20": 0.448,
+                    "recall_50": 0.316
                 }
             }
         },
@@ -69,6 +74,11 @@
                     "alpha_ndcg_10": 0.2,
                     "coverage_20": 0.479,
                     "recall_50": 0.419
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.269,
+                    "coverage_20": 0.569,
+                    "recall_50": 0.427
                 }
             }
         },
@@ -105,6 +115,11 @@
                     "alpha_ndcg_10": 0.217,
                     "coverage_20": 0.444,
                     "recall_50": 0.359
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.255,
+                    "coverage_20": 0.553,
+                    "recall_50": 0.397
                 }
             }
         },
@@ -141,6 +156,11 @@
                     "alpha_ndcg_10": 0.282,
                     "coverage_20": 0.522,
                     "recall_50": 0.458
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.289,
+                    "coverage_20": 0.589,
+                    "recall_50": 0.438
                 }
             }
         },
@@ -177,6 +197,11 @@
                     "alpha_ndcg_10": 0.265,
                     "coverage_20": 0.55,
                     "recall_50": 0.505
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.343,
+                    "coverage_20": 0.669,
+                    "recall_50": 0.539
                 }
             }
         },
@@ -213,6 +238,11 @@
                     "alpha_ndcg_10": 0.127,
                     "coverage_20": 0.348,
                     "recall_50": 0.24
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.226,
+                    "coverage_20": 0.494,
+                    "recall_50": 0.318
                 }
             }
         },
@@ -249,6 +279,11 @@
                     "alpha_ndcg_10": 0.428,
                     "coverage_20": 0.68,
                     "recall_50": 0.489
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.488,
+                    "coverage_20": 0.768,
+                    "recall_50": 0.556
                 }
             }
         },
@@ -285,6 +320,11 @@
                     "alpha_ndcg_10": 0.335,
                     "coverage_20": 0.664,
                     "recall_50": 0.555
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.389,
+                    "coverage_20": 0.735,
+                    "recall_50": 0.547
                 }
             }
         },
@@ -321,6 +361,11 @@
                     "alpha_ndcg_10": 0.292,
                     "coverage_20": 0.596,
                     "recall_50": 0.494
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.337,
+                    "coverage_20": 0.664,
+                    "recall_50": 0.496
                 }
             }
         },
@@ -357,6 +402,11 @@
                     "alpha_ndcg_10": 0.353,
                     "coverage_20": 0.715,
                     "recall_50": 0.59
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.404,
+                    "coverage_20": 0.769,
+                    "recall_50": 0.586
                 }
             }
         },
@@ -393,6 +443,11 @@
                     "alpha_ndcg_10": 0.476,
                     "coverage_20": 0.815,
                     "recall_50": 0.719
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.541,
+                    "coverage_20": 0.868,
+                    "recall_50": 0.755
                 }
             }
         },
@@ -429,6 +484,11 @@
                     "alpha_ndcg_10": 0.237,
                     "coverage_20": 0.481,
                     "recall_50": 0.443
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.317,
+                    "coverage_20": 0.615,
+                    "recall_50": 0.479
                 }
             }
         },
@@ -465,6 +525,11 @@
                     "alpha_ndcg_10": 0.249,
                     "coverage_20": 0.495,
                     "recall_50": 0.4
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.262,
+                    "coverage_20": 0.543,
+                    "recall_50": 0.394
                 }
             }
         },
@@ -501,6 +566,11 @@
                     "alpha_ndcg_10": 0.091,
                     "coverage_20": 0.224,
                     "recall_50": 0.16
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.104,
+                    "coverage_20": 0.279,
+                    "recall_50": 0.162
                 }
             }
         }
