@@ -268,36 +268,37 @@ function loadTableData() {
 		  cell.style.maxWidth = `${maxWidth}px`;
 		});
 	  }
-	  
+
 	  function prepareScoresForStyling(data, section) {
 		const scores = {};
-		const fields = [
-		  'alpha_ndcg_10',
-		  'coverage_20',
-		  'recall_50'
-		];
-	  
+		const fields = ['alpha_ndcg_10', 'coverage_20', 'recall_50'];
+	
 		fields.forEach(field => {
-		  const values = data.map(row => row[section] && row[section][field])
-			.filter(value => value !== '-' && value !== undefined && value !== null)
-			.map(parseFloat);
-	  
-		  if (values.length > 0) {
-			const sortedValues = [...new Set(values)].sort((a, b) => b - a);
-			scores[field] = data.map(row => {
-			  const value = row[section] && row[section][field];
-			  if (value === '-' || value === undefined || value === null) {
-				return -1;
-			  }
-			  return sortedValues.indexOf(parseFloat(value));
-			});
-		  } else {
-			scores[field] = data.map(() => -1);
-		  }
+			// Extract values along with original index
+			const indexedValues = data.map((row, index) => {
+				const val = row[section]?.[field];
+				if (val === '-' || val === undefined || val === null) return null;
+				return { index, value: parseFloat(val) };
+			}).filter(v => v !== null);
+	
+			// Sort in descending order
+			indexedValues.sort((a, b) => b.value - a.value);
+	
+			// Assign ranks
+			const ranks = Array(data.length).fill(-1);
+			let currentRank = 0;
+			for (let i = 0; i < indexedValues.length; i++) {
+				if (i > 0 && indexedValues[i].value !== indexedValues[i - 1].value) {
+					currentRank = i;
+				}
+				ranks[indexedValues[i].index] = currentRank;
+			}
+	
+			scores[field] = ranks;
 		});
-	  
+	
 		return scores;
-	  }
+	}
 
 	  function applyStyle(value, rank) {
 		if (value === undefined || value === null || value === '-') return '-';
