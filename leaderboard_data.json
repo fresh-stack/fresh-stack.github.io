@@ -453,7 +453,7 @@
         },
         {
             "info": {
-                "name": "Stella 1.5B v5",
+                "name": "Stella-1.5B v5",
                 "size": "1.5B",
                 "type": "open_source",
                 "date": "2025-01-01",
@@ -494,8 +494,8 @@
         },
         {
             "info": {
-                "name": "Qwen3 0.6B (Emb)",
-                "size": "0.6B",
+                "name": "Qwen3-0.6B (Emb)",
+                "size": "596M",
                 "type": "open_source",
                 "date": "2025-06-05",
                 "link": "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B"
