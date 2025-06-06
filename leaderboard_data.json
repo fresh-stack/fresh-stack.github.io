@@ -215,6 +215,150 @@
                     "recall_50": 0.24
                 }
             }
+        },
+        {
+            "info": {
+                "name": "Oracle: BM25 (Nuggets)",
+                "size": "-",
+                "type": "upper_baseline",
+                "date": "2024-11-01",
+                "link": "https://github.com/castorini/pyserini"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.467,
+                    "coverage_20": 0.739,
+                    "recall_50": 0.446
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.519,
+                    "coverage_20": 0.796,
+                    "recall_50": 0.657
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.54,
+                    "coverage_20": 0.84,
+                    "recall_50": 0.654
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.485,
+                    "coverage_20": 0.787,
+                    "recall_50": 0.536
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.428,
+                    "coverage_20": 0.68,
+                    "recall_50": 0.489
+                }
+            }
+        },
+        {
+            "info": {
+                "name": "Oracle: BGE (Gemma-2) (Nuggets)",
+                "size": "9B",
+                "type": "upper_baseline",
+                "date": "2024-11-01",
+                "link": "https://huggingface.co/BAAI/bge-multilingual-gemma2"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.308,
+                    "coverage_20": 0.667,
+                    "recall_50": 0.405
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.461,
+                    "coverage_20": 0.784,
+                    "recall_50": 0.572
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.448,
+                    "coverage_20": 0.806,
+                    "recall_50": 0.666
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.393,
+                    "coverage_20": 0.755,
+                    "recall_50": 0.536
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.335,
+                    "coverage_20": 0.664,
+                    "recall_50": 0.555
+                }
+            }
+        },
+        {
+            "info": {
+                "name": "Oracle: E5 (Mistral-7B) (Nuggets)",
+                "size": "7B",
+                "type": "upper_baseline",
+                "date": "2024-11-01",
+                "link": "https://huggingface.co/intfloat/e5-mistral-7b-instruct"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.323,
+                    "coverage_20": 0.684,
+                    "recall_50": 0.432
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.437,
+                    "coverage_20": 0.737,
+                    "recall_50": 0.554
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.287,
+                    "coverage_20": 0.631,
+                    "recall_50": 0.532
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.346,
+                    "coverage_20": 0.67,
+                    "recall_50": 0.47
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.292,
+                    "coverage_20": 0.596,
+                    "recall_50": 0.494
+                }
+            }
+        },
+        {
+            "info": {
+                "name": "Oracle: Voyage Large 2 (Nuggets)",
+                "size": "-",
+                "type": "upper_baseline",
+                "date": "2024-11-01",
+                "link": "https://docs.voyageai.com/docs/embeddings"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.419,
+                    "coverage_20": 0.763,
+                    "recall_50": 0.508
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.43,
+                    "coverage_20": 0.845,
+                    "recall_50": 0.675
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.409,
+                    "coverage_20": 0.791,
+                    "recall_50": 0.624
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.406,
+                    "coverage_20": 0.733,
+                    "recall_50": 0.533
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.353,
+                    "coverage_20": 0.715,
+                    "recall_50": 0.59
+                }
+            }
         }
     ]
 }
