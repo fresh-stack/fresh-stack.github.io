@@ -11,7 +11,6 @@ $(document).ready(function () {
 		autoplay: true,
 		autoplaySpeed: 5000,
 	};
-
 	bulmaCarousel.attach('.carousel', options);
 	bulmaSlider.attach();
 });
@@ -68,7 +67,7 @@ function renderTableData(dataToRender) {
 
 	dataToRender.forEach((row, index) => {
 		const tr = document.createElement('tr');
-		tr.classList.add(row.info.type);
+		tr.classList.add(row.info.type); // e.g. 'upper_baseline', 'open_source'
 
 		const nameCell = row.info.link?.trim()
 			? `<a href="${row.info.link}" target="_blank"><b>${row.info.name}</b></a>`
@@ -98,31 +97,31 @@ function renderTableData(dataToRender) {
 }
 
 function setupEventListeners() {
-	document.querySelector('.reset-cell').addEventListener('click', function () {
-		resetTable();
-	});
+	document.querySelector('.reset-cell').addEventListener('click', resetTable);
 
 	document.querySelectorAll('.type-filter').forEach(cb => {
 		cb.addEventListener('change', applyTypeFilter);
 	});
 
 	const headers = document.querySelectorAll('#freshstack-table thead tr:last-child th.sortable');
-	headers.forEach(function (header) {
+	headers.forEach(header => {
 		header.addEventListener('click', function () {
 			sortTable(this);
 		});
 	});
 
-	document.getElementById('download-csv').addEventListener('click', function () {
+	document.getElementById('download-csv').addEventListener('click', () => {
 		exportTableToCSV();
 	});
 
-	document.getElementById('download-json').addEventListener('click', function () {
+	document.getElementById('download-json').addEventListener('click', () => {
 		exportTableToJSON();
 	});
 }
 
 function applyTypeFilter() {
+	if (!fullLeaderboardData) return;
+
 	const checkedTypes = Array.from(document.querySelectorAll('.type-filter:checked')).map(cb => cb.value);
 	const filteredData = fullLeaderboardData.filter(row => checkedTypes.includes(row.info.type));
 	renderTableData(filteredData);
@@ -130,7 +129,7 @@ function applyTypeFilter() {
 
 function toggleDetails(section) {
 	const sections = ['average', 'langchain', 'yolo', 'godot', 'laravel', 'angular'];
-	sections.forEach(function (sec) {
+	sections.forEach(sec => {
 		const detailCells = document.querySelectorAll('.' + sec + '-details');
 		const headerCell = document.querySelector('.' + sec + '-details-cell');
 		if (sec === section) {
@@ -159,6 +158,12 @@ function resetTable() {
 		sortTable(headerToSort, true, false);
 	}
 
+	// Reset all checkboxes
+	document.querySelectorAll('.type-filter').forEach(cb => cb.checked = true);
+
+	// Reload full data
+	renderTableData(fullLeaderboardData);
+
 	setTimeout(adjustNameColumnWidth, 0);
 }
 
@@ -176,7 +181,7 @@ function sortTable(header, forceDescending = false, maintainOrder = false) {
 		header.classList.contains('asc');
 
 	if (!maintainOrder) {
-		rows.sort(function (a, b) {
+		rows.sort((a, b) => {
 			const aValue = getCellValue(a, columnIndex);
 			const bValue = getCellValue(b, columnIndex);
 
