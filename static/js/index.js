@@ -54,6 +54,9 @@ function loadTableData() {
 			data.leaderboardData, dataset);
 		});
 
+		// Apply styles to the metrics
+		console.log('Ranking debug:', scoresByDataset);
+
 		// 2. Populate rows
 		data.leaderboardData.forEach((row, index) => {
 		const tr = document.createElement('tr');
@@ -101,208 +104,211 @@ function loadTableData() {
 		  </tr>
 		`;
 	  });
-  }  
+}  
   
-	function setupEventListeners() {
-		document.querySelector('.reset-cell').addEventListener('click', function () {
-		  resetTable();
+function setupEventListeners() {
+	document.querySelector('.reset-cell').addEventListener('click', function () {
+		resetTable();
+	});
+	
+	document.querySelector('.langchain-details-cell').addEventListener('click', function () {
+		toggleDetails('langchain');
+	});
+	document.querySelector('.yolo-details-cell').addEventListener('click', function () {
+		toggleDetails('yolo');
+	});
+	document.querySelector('.godot-details-cell').addEventListener('click', function () {
+		toggleDetails('godot');
+	});
+	document.querySelector('.laravel-details-cell').addEventListener('click', function () {
+		toggleDetails('laravel');
+	});
+	document.querySelector('.angular-details-cell').addEventListener('click', function () {
+		toggleDetails('angular');
+	});
+	
+	var headers = document.querySelectorAll('#freshstack-table thead tr:last-child th.sortable');
+	headers.forEach(function (header) {
+		header.addEventListener('click', function () {
+		sortTable(this);
 		});
+	});
+	}
 	  
-		document.querySelector('.langchain-details-cell').addEventListener('click', function () {
-		  toggleDetails('langchain');
-		});
-		document.querySelector('.yolo-details-cell').addEventListener('click', function () {
-		  toggleDetails('yolo');
-		});
-		document.querySelector('.godot-details-cell').addEventListener('click', function () {
-		  toggleDetails('godot');
-		});
-		document.querySelector('.laravel-details-cell').addEventListener('click', function () {
-		  toggleDetails('laravel');
-		});
-		document.querySelector('.angular-details-cell').addEventListener('click', function () {
-		  toggleDetails('angular');
-		});
-	  
-		var headers = document.querySelectorAll('#freshstack-table thead tr:last-child th.sortable');
-		headers.forEach(function (header) {
-		  header.addEventListener('click', function () {
-			sortTable(this);
-		  });
-		});
-	  }
-	  
-	  function toggleDetails(section) {
-		var sections = ['langchain', 'yolo', 'godot', 'laravel', 'angular'];
-		sections.forEach(function (sec) {
-		  var detailCells = document.querySelectorAll('.' + sec + '-details');
-		  var headerCell = document.querySelector('.' + sec + '-details-cell');
-		  if (sec === section) {
-			detailCells.forEach(cell => cell.classList.toggle('hidden'));
-			headerCell.setAttribute(
-				'colspan',
-				headerCell.getAttribute('colspan') === '1' ? '3' : '1'
-			  );
-		  } else {
-			detailCells.forEach(cell => cell.classList.add('hidden'));
-			headerCell.setAttribute('colspan', '1');
-		  }
-		});
-	  
-		setTimeout(adjustNameColumnWidth, 0);
-	  }
-	  
-	  function resetTable() {
-		document.querySelectorAll(
-		  '.langchain-details, .yolo-details, .godot-details, .laravel-details, .angular-details'
-		).forEach(function (cell) {
-		  cell.classList.add('hidden');
-		});
-	  
-		document.querySelector('.langchain-details-cell').setAttribute('colspan', '1');
-		document.querySelector('.yolo-details-cell').setAttribute('colspan', '1');
-		document.querySelector('.godot-details-cell').setAttribute('colspan', '1');
-		document.querySelector('.laravel-details-cell').setAttribute('colspan', '1');
-		document.querySelector('.angular-details-cell').setAttribute('colspan', '1');
-		
-		var headerToSort = document.querySelector('#freshstack-table thead tr:last-child th[data-sort="number"]:not(.hidden)');
-		sortTable(headerToSort, true, false);  // sort descending by default
-
-		setTimeout(adjustNameColumnWidth, 0);
-	  }
-	  
-	  function sortTable(header, forceDescending = false, maintainOrder = false) {
-		var table = document.getElementById('freshstack-table');
-		var tbody = table.querySelector('tbody');
-		var rows = Array.from(tbody.querySelectorAll('tr'));
-		var headers = Array.from(header.parentNode.children);
-		var columnIndex = headers.indexOf(header);
-		var sortType = header.dataset.sort;
-	  
-		var isDescending =
-		  forceDescending ||
-		  (!header.classList.contains('asc') && !header.classList.contains('desc')) ||
-		  header.classList.contains('asc');
-	  
-		if (!maintainOrder) {
-		  rows.sort(function (a, b) {
-			var aValue = getCellValue(a, columnIndex);
-			var bValue = getCellValue(b, columnIndex);
-	  
-			if (aValue === '-' && bValue !== '-') return isDescending ? 1 : -1;
-			if (bValue === '-' && aValue !== '-') return isDescending ? -1 : 1;
-	  
-			if (sortType === 'number') {
-			  return isDescending ? parseFloat(bValue) - parseFloat(aValue) : parseFloat(aValue) - parseFloat(bValue);
-			} else if (sortType === 'date') {
-			  return isDescending ? new Date(bValue) - new Date(aValue) : new Date(aValue) - new Date(bValue);
-			} else {
-			  return isDescending ? bValue.localeCompare(aValue) : aValue.localeCompare(bValue);
-			}
-		  });
+function toggleDetails(section) {
+	var sections = ['langchain', 'yolo', 'godot', 'laravel', 'angular'];
+	sections.forEach(function (sec) {
+		var detailCells = document.querySelectorAll('.' + sec + '-details');
+		var headerCell = document.querySelector('.' + sec + '-details-cell');
+		if (sec === section) {
+		detailCells.forEach(cell => cell.classList.toggle('hidden'));
+		headerCell.setAttribute(
+			'colspan',
+			headerCell.getAttribute('colspan') === '1' ? '3' : '1'
+			);
+		} else {
+		detailCells.forEach(cell => cell.classList.add('hidden'));
+		headerCell.setAttribute('colspan', '1');
 		}
+	});
+	
+	setTimeout(adjustNameColumnWidth, 0);
+}
 	  
-		headers.forEach(function (th) {
-		  th.classList.remove('asc', 'desc');
-		});
-	  
-		header.classList.add(isDescending ? 'desc' : 'asc');
-	  
-		rows.forEach(function (row) {
-		  tbody.appendChild(row);
-		});
-	  
-		setTimeout(adjustNameColumnWidth, 0);
-	  }
-	  
-	  function getCellValue(row, index) {
-		var cells = Array.from(row.children);
-		var cell = cells[index];
-	  
-		const datasets = ['langchain', 'yolo', 'godot', 'laravel', 'angular'];
-	  
-		if (cell.classList.contains('hidden')) {
-		  for (const dataset of datasets) {
-			if (cell.classList.contains(`${dataset}-details`)) {
-			  cell = cells.find(
-				c => c.classList.contains(`${dataset}-details`) && !c.classList.contains('hidden')
-			  );
-			  break;
-			}
-		  }
-		}
-	  
-		return cell ? cell.textContent.trim() : '';
-	  }
-	  
-	  function initializeSorting() {
-		var headerToSort = document.querySelector('#freshstack-table thead tr:last-child th[data-sort="number"]:not(.hidden)');
-		sortTable(headerToSort, true, false);  // sort descending by default
-	  }
-	  
-	  function adjustNameColumnWidth() {
-		const nameColumn = document.querySelectorAll('#freshstack-table td:first-child, #freshstack-table th:first-child');
-		let maxWidth = 0;
-	  
-		const span = document.createElement('span');
-		span.style.visibility = 'hidden';
-		span.style.position = 'absolute';
-		span.style.whiteSpace = 'nowrap';
-		document.body.appendChild(span);
-	  
-		nameColumn.forEach(cell => {
-		  span.textContent = cell.textContent;
-		  const width = span.offsetWidth;
-		  if (width > maxWidth) {
-			maxWidth = width;
-		  }
-		});
-	  
-		document.body.removeChild(span);
-	  
-		maxWidth += 20;
-	  
-		nameColumn.forEach(cell => {
-		  cell.style.width = `${maxWidth}px`;
-		  cell.style.minWidth = `${maxWidth}px`;
-		  cell.style.maxWidth = `${maxWidth}px`;
-		});
-	  }
+function resetTable() {
+	document.querySelectorAll(
+		'.langchain-details, .yolo-details, .godot-details, .laravel-details, .angular-details'
+	).forEach(function (cell) {
+		cell.classList.add('hidden');
+	});
 
-	  function prepareScoresForStyling(data, section) {
-		const scores = {};
-		const fields = ['alpha_ndcg_10', 'coverage_20', 'recall_50'];
+	document.querySelector('.langchain-details-cell').setAttribute('colspan', '1');
+	document.querySelector('.yolo-details-cell').setAttribute('colspan', '1');
+	document.querySelector('.godot-details-cell').setAttribute('colspan', '1');
+	document.querySelector('.laravel-details-cell').setAttribute('colspan', '1');
+	document.querySelector('.angular-details-cell').setAttribute('colspan', '1');
+
+	var headerToSort = document.querySelector('#freshstack-table thead tr:last-child th[data-sort="number"]:not(.hidden)');
+	sortTable(headerToSort, true, false);  // sort descending by default
+
+	setTimeout(adjustNameColumnWidth, 0);
+}
+	  
+function sortTable(header, forceDescending = false, maintainOrder = false) {
+	var table = document.getElementById('freshstack-table');
+	var tbody = table.querySelector('tbody');
+	var rows = Array.from(tbody.querySelectorAll('tr'));
+	var headers = Array.from(header.parentNode.children);
+	var columnIndex = headers.indexOf(header);
+	var sortType = header.dataset.sort;
 	
-		fields.forEach(field => {
-			// Extract values along with original index
-			const indexedValues = data.map((row, index) => {
-				const val = row[section]?.[field];
-				if (val === '-' || val === undefined || val === null) return null;
-				return { index, value: parseFloat(val) };
-			}).filter(v => v !== null);
+	var isDescending =
+		forceDescending ||
+		(!header.classList.contains('asc') && !header.classList.contains('desc')) ||
+		header.classList.contains('asc');
 	
-			// Sort in descending order
-			indexedValues.sort((a, b) => b.value - a.value);
+	if (!maintainOrder) {
+		rows.sort(function (a, b) {
+		var aValue = getCellValue(a, columnIndex);
+		var bValue = getCellValue(b, columnIndex);
 	
-			// Assign ranks
-			const ranks = Array(data.length).fill(-1);
-			let currentRank = 0;
-			for (let i = 0; i < indexedValues.length; i++) {
-				if (i > 0 && indexedValues[i].value !== indexedValues[i - 1].value) {
-					currentRank = i;
-				}
-				ranks[indexedValues[i].index] = currentRank;
-			}
+		if (aValue === '-' && bValue !== '-') return isDescending ? 1 : -1;
+		if (bValue === '-' && aValue !== '-') return isDescending ? -1 : 1;
 	
-			scores[field] = ranks;
+		if (sortType === 'number') {
+			return isDescending ? parseFloat(bValue) - parseFloat(aValue) : parseFloat(aValue) - parseFloat(bValue);
+		} else if (sortType === 'date') {
+			return isDescending ? new Date(bValue) - new Date(aValue) : new Date(aValue) - new Date(bValue);
+		} else {
+			return isDescending ? bValue.localeCompare(aValue) : aValue.localeCompare(bValue);
+		}
 		});
+	}
 	
-		return scores;
+	headers.forEach(function (th) {
+		th.classList.remove('asc', 'desc');
+	});
+	
+	header.classList.add(isDescending ? 'desc' : 'asc');
+	
+	rows.forEach(function (row) {
+		tbody.appendChild(row);
+	});
+	
+	setTimeout(adjustNameColumnWidth, 0);
+}
+	  
+function getCellValue(row, index) {
+	var cells = Array.from(row.children);
+	var cell = cells[index];
+
+	const datasets = ['langchain', 'yolo', 'godot', 'laravel', 'angular'];
+
+	if (cell.classList.contains('hidden')) {
+		for (const dataset of datasets) {
+		if (cell.classList.contains(`${dataset}-details`)) {
+			cell = cells.find(
+			c => c.classList.contains(`${dataset}-details`) && !c.classList.contains('hidden')
+			);
+			break;
+		}
+		}
 	}
 
-	  function applyStyle(value, rank) {
-		if (value === undefined || value === null || value === '-') return '-';
-		if (rank === 0) return `<b>${value}</b>`;
-		if (rank === 1) return `<span style="text-decoration: underline;">${value}</span>`;
-		return value;
-	  }
+	return cell ? cell.textContent.trim() : '';
+}
+	  
+function initializeSorting() {
+	var headerToSort = document.querySelector('#freshstack-table thead tr:last-child th[data-sort="number"]:not(.hidden)');
+	sortTable(headerToSort, true, false);  // sort descending by default
+}
+	  
+function adjustNameColumnWidth() {
+	const nameColumn = document.querySelectorAll('#freshstack-table td:first-child, #freshstack-table th:first-child');
+	let maxWidth = 0;
+	
+	const span = document.createElement('span');
+	span.style.visibility = 'hidden';
+	span.style.position = 'absolute';
+	span.style.whiteSpace = 'nowrap';
+	document.body.appendChild(span);
+	
+	nameColumn.forEach(cell => {
+		span.textContent = cell.textContent;
+		const width = span.offsetWidth;
+		if (width > maxWidth) {
+		maxWidth = width;
+		}
+	});
+	
+	document.body.removeChild(span);
+	
+	maxWidth += 20;
+	
+	nameColumn.forEach(cell => {
+		cell.style.width = `${maxWidth}px`;
+		cell.style.minWidth = `${maxWidth}px`;
+		cell.style.maxWidth = `${maxWidth}px`;
+	});
+}
+
+function prepareScoresForStyling(data, section) {
+	const scores = {};
+	const fields = ['alpha_ndcg_10', 'coverage_20', 'recall_50'];
+
+	fields.forEach(field => {
+		const valuesWithIndex = [];
+
+		data.forEach((row, idx) => {
+			const val = row.datasets?.[section]?.[field];
+			if (val !== undefined && val !== null && val !== '-') {
+				valuesWithIndex.push({ index: idx, value: parseFloat(val) });
+			}
+		});
+
+		// Sort by value descending
+		valuesWithIndex.sort((a, b) => b.value - a.value);
+
+		// Assign dense ranks (ties get same rank)
+		const ranks = Array(data.length).fill(-1);
+		let currentRank = 0;
+		for (let i = 0; i < valuesWithIndex.length; i++) {
+			if (i > 0 && valuesWithIndex[i].value !== valuesWithIndex[i - 1].value) {
+				currentRank = i;
+			}
+			ranks[valuesWithIndex[i].index] = currentRank;
+		}
+
+		scores[field] = ranks;
+	});
+
+	return scores;
+}
+
+function applyStyle(value, rank) {
+	if (value === undefined || value === null || value === '-') return '-';
+	console.log('Applying style to', value, 'with rank', rank);
+	if (rank === 0) return `<b>${value}</b>`;
+	if (rank === 1) return `<span style="text-decoration: underline;">${value}</span>`;
+	return value;
+}
