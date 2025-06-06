@@ -164,21 +164,27 @@ function toggleDetails(section) {
 }
 	  
 function resetTable() {
+	// 1. Show all detail cells
 	document.querySelectorAll(
 		'.langchain-details, .yolo-details, .godot-details, .laravel-details, .angular-details'
 	).forEach(function (cell) {
-		cell.classList.add('hidden');
+		cell.classList.remove('hidden');
 	});
 
+	// 2. Make sure all detail header cells span 3 columns
 	document.querySelector('.langchain-details-cell').setAttribute('colspan', '3');
 	document.querySelector('.yolo-details-cell').setAttribute('colspan', '3');
 	document.querySelector('.godot-details-cell').setAttribute('colspan', '3');
 	document.querySelector('.laravel-details-cell').setAttribute('colspan', '3');
 	document.querySelector('.angular-details-cell').setAttribute('colspan', '3');
 
-	var headerToSort = document.querySelector('#freshstack-table thead tr:last-child th[data-sort="number"]:not(.hidden)');
-	sortTable(headerToSort, true, false);  // sort descending by default
+	// 3. Find any sortable numeric column to trigger default sort (you can customize this)
+	const headerToSort = document.querySelector('#freshstack-table thead tr:last-child th[data-sort="number"]');
+	if (headerToSort) {
+		sortTable(headerToSort, true, false);  // sort descending by default
+	}
 
+	// 4. Adjust column widths again
 	setTimeout(adjustNameColumnWidth, 0);
 }
 	  

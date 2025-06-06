@@ -193,8 +193,8 @@
             We evaluate various retrieval models on Freshstack (October 2024 version). In each type, we consider both closed- and open-source embedding models.
             Our evaluation is conducted under a zero-shot setting to retrieve the relevant document chunks given a query.
             We report the results on five datasets: <b>LangChain</b>, <b>Yolo v7 & v8</b>, <b>Laravel 10 & 11</b>, <b>Angular 16, 17 & 18</b>, and <b>Godot4</b>. 
-            If you wish to add your model results in the leaderboard: please submit a PR including the your model results here: (leaderboard_data.json)[https://github.com/fresh-stack/fresh-stack.github.io/blob/master/leaderboard_data.json].
-            For all models, we choose a maximum sequence length of <b>2048</b> tokens. Queries in Freshstack can be <b>pretty long</b> so make sure to use an embedding model that can handle long queries.
+            If you wish to add your model results in the leaderboard: please submit a PR by adding your model results here: <a href="https://github.com/fresh-stack/fresh-stack.github.io/blob/master/leaderboard_data.json">leaderboard_data.json</a>.
+            For all models, we choose a maximum sequence length of <b>2048</b> tokens. Queries in Freshstack can be <b>pretty long</b> so make sure to use an embedding model that can handle code and long queries.
           </p>
         </div>
         <br>
@@ -246,7 +246,8 @@
               </tbody>
             </table>
             <p class="test-desc">
-              Results of different retrieval models across datasets on Freshstack. The best-performing model in each category is <b>in bold</b>, and the second best is <u>underlined</u>.
+              Results of different retrieval models across datasets on Freshstack. The best-performing model in each category is <b>in bold</b>, and the second best is <u>underlined</u>.<br>
+              α-n@10 (alpha-nDCG@10) measures retrieval diversity & relevance, C@20 (Coverage@20) measures fraction of nuggets supported by retrieved documents, R@50 (Recall@50) measuring % of relevant documents present in retrieved documents. 
             </p>
           </div>
           <div class="mb-4 has-text-centered">
