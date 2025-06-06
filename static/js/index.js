@@ -111,21 +111,21 @@ function setupEventListeners() {
 		resetTable();
 	});
 	
-	document.querySelector('.langchain-details-cell').addEventListener('click', function () {
-		toggleDetails('langchain');
-	});
-	document.querySelector('.yolo-details-cell').addEventListener('click', function () {
-		toggleDetails('yolo');
-	});
-	document.querySelector('.godot-details-cell').addEventListener('click', function () {
-		toggleDetails('godot');
-	});
-	document.querySelector('.laravel-details-cell').addEventListener('click', function () {
-		toggleDetails('laravel');
-	});
-	document.querySelector('.angular-details-cell').addEventListener('click', function () {
-		toggleDetails('angular');
-	});
+	// document.querySelector('.langchain-details-cell').addEventListener('click', function () {
+	// 	toggleDetails('langchain');
+	// });
+	// document.querySelector('.yolo-details-cell').addEventListener('click', function () {
+	// 	toggleDetails('yolo');
+	// });
+	// document.querySelector('.godot-details-cell').addEventListener('click', function () {
+	// 	toggleDetails('godot');
+	// });
+	// document.querySelector('.laravel-details-cell').addEventListener('click', function () {
+	// 	toggleDetails('laravel');
+	// });
+	// document.querySelector('.angular-details-cell').addEventListener('click', function () {
+	// 	toggleDetails('angular');
+	// });
 	
 	var headers = document.querySelectorAll('#freshstack-table thead tr:last-child th.sortable');
 	headers.forEach(function (header) {

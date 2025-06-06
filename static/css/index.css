@@ -290,6 +290,14 @@ td:hover {
   }
 }
 
+th.langchain-details-cell,
+th.yolo-details-cell,
+th.godot-details-cell,
+th.laravel-details-cell,
+th.angular-details-cell {
+	cursor: default;
+}
+
 #freshstack-table {
   table-layout: auto;
   width: 100%;
