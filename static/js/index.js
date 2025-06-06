@@ -1,117 +1,115 @@
 window.HELP_IMPROVE_VIDEOJS = false;
 
+let fullLeaderboardData = null;
 
-$(document).ready(function() {
-    // Check for click events on the navbar burger icon
+$(document).ready(function () {
+	var options = {
+		slidesToScroll: 1,
+		slidesToShow: 1,
+		loop: true,
+		infinite: true,
+		autoplay: true,
+		autoplaySpeed: 5000,
+	};
 
-    var options = {
-			slidesToScroll: 1,
-			slidesToShow: 1,
-			loop: true,
-			infinite: true,
-			autoplay: true,
-			autoplaySpeed: 5000,
-    }
+	bulmaCarousel.attach('.carousel', options);
+	bulmaSlider.attach();
+});
 
-		// Initialize all div with carousel class
-    var carousels = bulmaCarousel.attach('.carousel', options);
-	
-    bulmaSlider.attach();
-
-})
-
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
 	loadTableData();
 	setupEventListeners();
 	window.addEventListener('resize', adjustNameColumnWidth);
-  });
+});
 
 function loadTableData() {
 	console.log('Starting to load table data...');
 	fetch('./leaderboard_data.json')
-	  .then(response => {
-		console.log('Response status:', response.status);
-		if (!response.ok) {
-		  throw new Error(`HTTP error! status: ${response.status}`);
-		}
-		return response.json();
-	  })
-	  .then(data => {
-		console.log('Data loaded successfully:', data);
-		const tbody = document.querySelector('#freshstack-table tbody');
-  
-		const datasets = ['average', 'langchain', 'yolo', 'laravel', 'angular', 'godot'];
-		const metrics = [
-		  { key: 'alpha_ndcg_10', label: 'α@10' },
-		  { key: 'coverage_20', label: 'C@20' },
-		  { key: 'recall_50', label: 'R@50' }
-		];
-  
-		// 1. Prepare styling data
-		const scoresByDataset = {};
-		datasets.forEach(dataset => {
-		scoresByDataset[dataset] = prepareScoresForStyling(
-			data.leaderboardData, dataset);
+		.then(response => {
+			console.log('Response status:', response.status);
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
+			return response.json();
+		})
+		.then(data => {
+			console.log('Data loaded successfully:', data);
+			fullLeaderboardData = data.leaderboardData;
+			renderTableData(fullLeaderboardData);
+		})
+		.catch(error => {
+			console.error('Error loading table data:', error);
+			document.querySelector('#freshstack-table tbody').innerHTML = `
+        <tr>
+          <td colspan="100%">
+            Error loading data: ${error.message}<br>
+            Please ensure you're accessing this page through a web server (http://localhost:8000) and not directly from the file system.
+          </td>
+        </tr>
+      `;
 		});
+}
 
-		// 2. Populate rows
-		data.leaderboardData.forEach((row, index) => {
+function renderTableData(dataToRender) {
+	const tbody = document.querySelector('#freshstack-table tbody');
+	tbody.innerHTML = '';
+
+	const datasets = ['average', 'langchain', 'yolo', 'laravel', 'angular', 'godot'];
+	const metrics = [
+		{ key: 'alpha_ndcg_10', label: 'α@10' },
+		{ key: 'coverage_20', label: 'C@20' },
+		{ key: 'recall_50', label: 'R@50' }
+	];
+
+	const scoresByDataset = {};
+	datasets.forEach(dataset => {
+		scoresByDataset[dataset] = prepareScoresForStyling(dataToRender, dataset);
+	});
+
+	dataToRender.forEach((row, index) => {
 		const tr = document.createElement('tr');
 		tr.classList.add(row.info.type);
 
-		const nameCell = row.info.link && row.info.link.trim() !== ''
+		const nameCell = row.info.link?.trim()
 			? `<a href="${row.info.link}" target="_blank"><b>${row.info.name}</b></a>`
 			: `<b>${row.info.name}</b>`;
-		const safeGet = (obj, path, defaultValue = '-') => {
-			return path.split('.').reduce((acc, part) => acc && acc[part], obj) || defaultValue;
-			};
 
 		let datasetCells = '';
 		datasets.forEach(dataset => {
 			metrics.forEach(metric => {
-			const val = row.datasets?.[dataset]?.[metric.key] ?? '-';
-			const rank = scoresByDataset[dataset]?.[metric.key]?.[index] ?? -1;
-			const styledValue = applyStyle(val, rank);
-			const cellClass = `${dataset}-details`;
-
-			datasetCells += `<td class="${cellClass}">${styledValue}</td>`;
+				const val = row.datasets?.[dataset]?.[metric.key] ?? '-';
+				const rank = scoresByDataset[dataset]?.[metric.key]?.[index] ?? -1;
+				const styledValue = applyStyle(val, rank);
+				datasetCells += `<td class="${dataset}-details">${styledValue}</td>`;
 			});
 		});
 
 		tr.innerHTML = `
-			<td>${nameCell}</td>
-			<td>${row.info.size}</td>
-			<td>${row.info.date}</td>
-			${datasetCells}
-		`;
+      <td>${nameCell}</td>
+      <td>${row.info.size}</td>
+      <td>${row.info.date}</td>
+      ${datasetCells}
+    `;
 		tbody.appendChild(tr);
-		});
-  
-		setTimeout(adjustNameColumnWidth, 0);
-		initializeSorting();
-	  })
-	  .catch(error => {
-		console.error('Error loading table data:', error);
-		document.querySelector('#freshstack-table tbody').innerHTML = `
-		  <tr>
-			<td colspan="100%">
-			  Error loading data: ${error.message}<br>
-			  Please ensure you're accessing this page through a web server (http://localhost:8000) and not directly from the file system.
-			</td>
-		  </tr>
-		`;
-	  });
-}  
-  
+	});
+
+	setTimeout(adjustNameColumnWidth, 0);
+	initializeSorting();
+}
+
 function setupEventListeners() {
 	document.querySelector('.reset-cell').addEventListener('click', function () {
 		resetTable();
 	});
-	
-	var headers = document.querySelectorAll('#freshstack-table thead tr:last-child th.sortable');
+
+	document.querySelectorAll('.type-filter').forEach(cb => {
+		cb.addEventListener('change', applyTypeFilter);
+	});
+
+	const headers = document.querySelectorAll('#freshstack-table thead tr:last-child th.sortable');
 	headers.forEach(function (header) {
 		header.addEventListener('click', function () {
-		sortTable(this);
+			sortTable(this);
 		});
 	});
 
@@ -120,147 +118,132 @@ function setupEventListeners() {
 	});
 
 	document.getElementById('download-json').addEventListener('click', function () {
-			exportTableToJSON();
+		exportTableToJSON();
 	});
-	}
-	  
+}
+
+function applyTypeFilter() {
+	const checkedTypes = Array.from(document.querySelectorAll('.type-filter:checked')).map(cb => cb.value);
+	const filteredData = fullLeaderboardData.filter(row => checkedTypes.includes(row.info.type));
+	renderTableData(filteredData);
+}
+
 function toggleDetails(section) {
-	var sections = ['average', 'langchain', 'yolo', 'godot', 'laravel', 'angular'];
+	const sections = ['average', 'langchain', 'yolo', 'godot', 'laravel', 'angular'];
 	sections.forEach(function (sec) {
-		var detailCells = document.querySelectorAll('.' + sec + '-details');
-		var headerCell = document.querySelector('.' + sec + '-details-cell');
+		const detailCells = document.querySelectorAll('.' + sec + '-details');
+		const headerCell = document.querySelector('.' + sec + '-details-cell');
 		if (sec === section) {
-		detailCells.forEach(cell => cell.classList.toggle('hidden'));
-		headerCell.setAttribute(
-			'colspan',
-			headerCell.getAttribute('colspan') === '1' ? '3' : '3'
-			);
+			detailCells.forEach(cell => cell.classList.toggle('hidden'));
+			headerCell.setAttribute('colspan', headerCell.getAttribute('colspan') === '1' ? '3' : '3');
 		} else {
-		detailCells.forEach(cell => cell.classList.add('hidden'));
-		headerCell.setAttribute('colspan', '3');
+			detailCells.forEach(cell => cell.classList.add('hidden'));
+			headerCell.setAttribute('colspan', '3');
 		}
 	});
-	
+
 	setTimeout(adjustNameColumnWidth, 0);
 }
-	  
+
 function resetTable() {
-	// 1. Show all detail cells
 	document.querySelectorAll(
 		'.average-details, .langchain-details, .yolo-details, .godot-details, .laravel-details, .angular-details'
-	).forEach(function (cell) {
-		cell.classList.remove('hidden');
+	).forEach(cell => cell.classList.remove('hidden'));
+
+	['average', 'langchain', 'yolo', 'godot', 'laravel', 'angular'].forEach(section => {
+		document.querySelector(`.${section}-details-cell`).setAttribute('colspan', '3');
 	});
 
-	// 2. Make sure all detail header cells span 3 columns
-	document.querySelector('.average-details-cell').setAttribute('colspan', '3');
-	document.querySelector('.langchain-details-cell').setAttribute('colspan', '3');
-	document.querySelector('.yolo-details-cell').setAttribute('colspan', '3');
-	document.querySelector('.godot-details-cell').setAttribute('colspan', '3');
-	document.querySelector('.laravel-details-cell').setAttribute('colspan', '3');
-	document.querySelector('.angular-details-cell').setAttribute('colspan', '3');
-
-	// 3. Find any sortable numeric column to trigger default sort (you can customize this)
 	const headerToSort = document.querySelector('#freshstack-table thead tr:last-child th[data-sort="number"]');
 	if (headerToSort) {
-		sortTable(headerToSort, true, false);  // sort descending by default
+		sortTable(headerToSort, true, false);
 	}
 
-	// 4. Adjust column widths again
 	setTimeout(adjustNameColumnWidth, 0);
 }
-	  
+
 function sortTable(header, forceDescending = false, maintainOrder = false) {
-	var table = document.getElementById('freshstack-table');
-	var tbody = table.querySelector('tbody');
-	var rows = Array.from(tbody.querySelectorAll('tr'));
-	var headers = Array.from(header.parentNode.children);
-	var columnIndex = headers.indexOf(header);
-	var sortType = header.dataset.sort;
-	
-	var isDescending =
+	const table = document.getElementById('freshstack-table');
+	const tbody = table.querySelector('tbody');
+	const rows = Array.from(tbody.querySelectorAll('tr'));
+	const headers = Array.from(header.parentNode.children);
+	const columnIndex = headers.indexOf(header);
+	const sortType = header.dataset.sort;
+
+	const isDescending =
 		forceDescending ||
 		(!header.classList.contains('asc') && !header.classList.contains('desc')) ||
 		header.classList.contains('asc');
-	
+
 	if (!maintainOrder) {
 		rows.sort(function (a, b) {
-		var aValue = getCellValue(a, columnIndex);
-		var bValue = getCellValue(b, columnIndex);
-	
-		if (aValue === '-' && bValue !== '-') return isDescending ? 1 : -1;
-		if (bValue === '-' && aValue !== '-') return isDescending ? -1 : 1;
-	
-		if (sortType === 'number') {
-			return isDescending ? parseFloat(bValue) - parseFloat(aValue) : parseFloat(aValue) - parseFloat(bValue);
-		} else if (sortType === 'date') {
-			return isDescending ? new Date(bValue) - new Date(aValue) : new Date(aValue) - new Date(bValue);
-		} else {
-			return isDescending ? bValue.localeCompare(aValue) : aValue.localeCompare(bValue);
-		}
+			const aValue = getCellValue(a, columnIndex);
+			const bValue = getCellValue(b, columnIndex);
+
+			if (aValue === '-' && bValue !== '-') return isDescending ? 1 : -1;
+			if (bValue === '-' && aValue !== '-') return isDescending ? -1 : 1;
+
+			if (sortType === 'number') {
+				return isDescending ? parseFloat(bValue) - parseFloat(aValue) : parseFloat(aValue) - parseFloat(bValue);
+			} else if (sortType === 'date') {
+				return isDescending ? new Date(bValue) - new Date(aValue) : new Date(aValue) - new Date(bValue);
+			} else {
+				return isDescending ? bValue.localeCompare(aValue) : aValue.localeCompare(bValue);
+			}
 		});
 	}
-	
-	headers.forEach(function (th) {
-		th.classList.remove('asc', 'desc');
-	});
-	
+
+	headers.forEach(th => th.classList.remove('asc', 'desc'));
 	header.classList.add(isDescending ? 'desc' : 'asc');
-	
-	rows.forEach(function (row) {
-		tbody.appendChild(row);
-	});
-	
+
+	rows.forEach(row => tbody.appendChild(row));
 	setTimeout(adjustNameColumnWidth, 0);
 }
-	  
-function getCellValue(row, index) {
-	var cells = Array.from(row.children);
-	var cell = cells[index];
 
-	const datasets = ['average','langchain', 'yolo', 'godot', 'laravel', 'angular'];
+function getCellValue(row, index) {
+	const cells = Array.from(row.children);
+	let cell = cells[index];
+
+	const datasets = ['average', 'langchain', 'yolo', 'godot', 'laravel', 'angular'];
 
 	if (cell.classList.contains('hidden')) {
 		for (const dataset of datasets) {
-		if (cell.classList.contains(`${dataset}-details`)) {
-			cell = cells.find(
-			c => c.classList.contains(`${dataset}-details`) && !c.classList.contains('hidden')
-			);
-			break;
-		}
+			if (cell.classList.contains(`${dataset}-details`)) {
+				cell = cells.find(
+					c => c.classList.contains(`${dataset}-details`) && !c.classList.contains('hidden')
+				);
+				break;
+			}
 		}
 	}
 
 	return cell ? cell.textContent.trim() : '';
 }
-	  
+
 function initializeSorting() {
-	var headerToSort = document.querySelector('#freshstack-table thead tr:last-child th[data-sort="number"]:not(.hidden)');
-	sortTable(headerToSort, true, false);  // sort descending by default
+	const headerToSort = document.querySelector('#freshstack-table thead tr:last-child th[data-sort="number"]:not(.hidden)');
+	sortTable(headerToSort, true, false);
 }
-	  
+
 function adjustNameColumnWidth() {
 	const nameColumn = document.querySelectorAll('#freshstack-table td:first-child, #freshstack-table th:first-child');
 	let maxWidth = 0;
-	
+
 	const span = document.createElement('span');
 	span.style.visibility = 'hidden';
 	span.style.position = 'absolute';
 	span.style.whiteSpace = 'nowrap';
 	document.body.appendChild(span);
-	
+
 	nameColumn.forEach(cell => {
 		span.textContent = cell.textContent;
 		const width = span.offsetWidth;
-		if (width > maxWidth) {
-		maxWidth = width;
-		}
+		if (width > maxWidth) maxWidth = width;
 	});
-	
+
 	document.body.removeChild(span);
-	
+
 	maxWidth += 20;
-	
 	nameColumn.forEach(cell => {
 		cell.style.width = `${maxWidth}px`;
 		cell.style.minWidth = `${maxWidth}px`;
@@ -282,10 +265,8 @@ function prepareScoresForStyling(data, section) {
 			}
 		});
 
-		// Sort by value descending
 		valuesWithIndex.sort((a, b) => b.value - a.value);
 
-		// Assign dense ranks (ties get same rank)
 		const ranks = Array(data.length).fill(-1);
 		let currentRank = 0;
 		for (let i = 0; i < valuesWithIndex.length; i++) {
@@ -303,13 +284,11 @@ function prepareScoresForStyling(data, section) {
 
 function applyStyle(value, rank) {
 	if (value === undefined || value === null || value === '-') return '-';
-	console.log('Applying style to', value, 'with rank', rank);
 	if (rank === 0) return `<b>${value}</b>`;
 	if (rank === 1) return `<span style="text-decoration: underline;">${value}</span>`;
 	return value;
 }
 
-// Export table to CSV
 function exportTableToCSV(filename = 'leaderboard.csv') {
 	const table = document.getElementById('freshstack-table');
 	const datasets = ['average', 'langchain', 'yolo', 'laravel', 'angular', 'godot'];
@@ -317,33 +296,28 @@ function exportTableToCSV(filename = 'leaderboard.csv') {
 
 	const csv = [];
 
-	// Row 1: Top-level headers
 	const headerRow1 = ['Model Name', 'Size', 'Date'];
 	datasets.forEach(dataset => {
-		headerRow1.push(dataset.toUpperCase(), '', ''); // 3 columns per dataset
+		headerRow1.push(dataset.toUpperCase(), '', '');
 	});
 	csv.push(headerRow1.join(','));
 
-	// Row 2: Metric names under each dataset
 	const headerRow2 = ['-', '-', '-'];
 	datasets.forEach(() => {
 		headerRow2.push(...metrics);
 	});
 	csv.push(headerRow2.join(','));
 
-	// Data rows
 	const rows = Array.from(table.querySelectorAll('tbody tr'));
 	rows.forEach(row => {
 		const cells = Array.from(row.querySelectorAll('td'));
 		const rowData = cells.map(cell => {
-			let text = cell.textContent.trim();
-			text = text.replace(/[\n\r]+/g, ' ').replace(/,/g, ';');
+			let text = cell.textContent.trim().replace(/[\n\r]+/g, ' ').replace(/,/g, ';');
 			return `"${text}"`;
 		});
 		csv.push(rowData.join(','));
 	});
 
-	// Export logic
 	const csvContent = csv.join('\n');
 	const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
 	const link = document.createElement('a');
