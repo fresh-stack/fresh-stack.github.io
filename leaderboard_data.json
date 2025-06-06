@@ -359,6 +359,42 @@
                     "recall_50": 0.59
                 }
             }
+        },
+        {
+            "info": {
+                "name": "Oracle: Fusion (BM25, BGE, E5, Voyage) (Nuggets)",
+                "size": "-",
+                "type": "upper_baseline",
+                "date": "2024-11-01",
+                "link": ""
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.519,
+                    "coverage_20": 0.881,
+                    "recall_50": 0.655
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.601,
+                    "coverage_20": 0.876,
+                    "recall_50": 0.825
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.566,
+                    "coverage_20": 0.888,
+                    "recall_50": 0.818
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.544,
+                    "coverage_20": 0.881,
+                    "recall_50": 0.756
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.476,
+                    "coverage_20": 0.815,
+                    "recall_50": 0.719
+                }
+            }
         }
     ]
 }

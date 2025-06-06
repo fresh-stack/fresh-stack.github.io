@@ -192,7 +192,9 @@
           <p>
             We evaluate various retrieval models on Freshstack (October 2024 version). In each type, we consider both closed- and open-source embedding models.
             Our evaluation is conducted under a zero-shot setting to retrieve the relevant document chunks given a query.
-            We report the results on five datasets: <b>LangChain</b>, <b>Yolo v7 & v8</b>, <b>Laravel 10 & 11</b>, <b>Angular 16, 17 & 18</b>, and <b>Godot4</b>.
+            We report the results on five datasets: <b>LangChain</b>, <b>Yolo v7 & v8</b>, <b>Laravel 10 & 11</b>, <b>Angular 16, 17 & 18</b>, and <b>Godot4</b>. 
+            If you wish to add your model results in the leaderboard: please submit a PR including the your model results here: (leaderboard_data.json)[https://github.com/fresh-stack/fresh-stack.github.io/blob/master/leaderboard_data.json].
+            For all models, we choose a maximum sequence length of <b>2048</b> tokens. Queries in Freshstack can be <b>pretty long</b> so make sure to use an embedding model that can handle long queries.
           </p>
         </div>
         <br>
@@ -207,7 +209,7 @@
             <table id="freshstack-table">
               <thead>
                 <tr>
-                  <th colspan="3" class="reset-cell clickable" style="text-align: center;">Reset</th>
+                  <th colspan="3" class="reset-cell" style="text-align: center;">Reset</th>
                   <th colspan="3" style="text-align: center;" class="langchain-details-cell">LangChain</th>
                   <th colspan="3" style="text-align: center;" class="yolo-details-cell">Yolo v7 & v8</th>
                   <th colspan="3" style="text-align: center;" class="laravel-details-cell">Laravel 10 & 11</th>

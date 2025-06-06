@@ -152,11 +152,11 @@ function toggleDetails(section) {
 		detailCells.forEach(cell => cell.classList.toggle('hidden'));
 		headerCell.setAttribute(
 			'colspan',
-			headerCell.getAttribute('colspan') === '1' ? '3' : '1'
+			headerCell.getAttribute('colspan') === '1' ? '3' : '3'
 			);
 		} else {
 		detailCells.forEach(cell => cell.classList.add('hidden'));
-		headerCell.setAttribute('colspan', '1');
+		headerCell.setAttribute('colspan', '3');
 		}
 	});
 	
@@ -170,11 +170,11 @@ function resetTable() {
 		cell.classList.add('hidden');
 	});
 
-	document.querySelector('.langchain-details-cell').setAttribute('colspan', '1');
-	document.querySelector('.yolo-details-cell').setAttribute('colspan', '1');
-	document.querySelector('.godot-details-cell').setAttribute('colspan', '1');
-	document.querySelector('.laravel-details-cell').setAttribute('colspan', '1');
-	document.querySelector('.angular-details-cell').setAttribute('colspan', '1');
+	document.querySelector('.langchain-details-cell').setAttribute('colspan', '3');
+	document.querySelector('.yolo-details-cell').setAttribute('colspan', '3');
+	document.querySelector('.godot-details-cell').setAttribute('colspan', '3');
+	document.querySelector('.laravel-details-cell').setAttribute('colspan', '3');
+	document.querySelector('.angular-details-cell').setAttribute('colspan', '3');
 
 	var headerToSort = document.querySelector('#freshstack-table thead tr:last-child th[data-sort="number"]:not(.hidden)');
 	sortTable(headerToSort, true, false);  // sort descending by default
