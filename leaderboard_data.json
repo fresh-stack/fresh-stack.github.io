@@ -362,7 +362,7 @@
         },
         {
             "info": {
-                "name": "Oracle: Fusion (BM25, BGE, E5, Voyage) (Nuggets)",
+                "name": "Oracle: Fusion (BM25, ...) (Nuggets)",
                 "size": "-",
                 "type": "upper_baseline",
                 "date": "2024-11-01",
@@ -393,6 +393,114 @@
                     "alpha_ndcg_10": 0.476,
                     "coverage_20": 0.815,
                     "recall_50": 0.719
+                }
+            }
+        },
+        {
+            "info": {
+                "name": "Stella 1.5B v5",
+                "size": "1.5B",
+                "type": "open_source",
+                "date": "2025-01-01",
+                "link": "https://huggingface.co/NovaSearch/stella_en_1.5B_v5"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.315,
+                    "coverage_20": 0.66,
+                    "recall_50": 0.388
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.334,
+                    "coverage_20": 0.624,
+                    "recall_50": 0.559
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.37,
+                    "coverage_20": 0.681,
+                    "recall_50": 0.59
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.33,
+                    "coverage_20": 0.63,
+                    "recall_50": 0.414
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.237,
+                    "coverage_20": 0.481,
+                    "recall_50": 0.443
+                }
+            }
+        },
+        {
+            "info": {
+                "name": "Qwen3 0.6B (Emb)",
+                "size": "0.6B",
+                "type": "open_source",
+                "date": "2025-06-05",
+                "link": "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.259,
+                    "coverage_20": 0.588,
+                    "recall_50": 0.369
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.26,
+                    "coverage_20": 0.504,
+                    "recall_50": 0.383
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.288,
+                    "coverage_20": 0.593,
+                    "recall_50": 0.463
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.253,
+                    "coverage_20": 0.535,
+                    "recall_50": 0.356
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.249,
+                    "coverage_20": 0.495,
+                    "recall_50": 0.4
+                }
+            }
+        },
+        {
+            "info": {
+                "name": "CodeRankEmbed",
+                "size": "137M",
+                "type": "open_source",
+                "date": "2024-11-03",
+                "link": "https://huggingface.co/nomic-ai/CodeRankEmbed"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.099,
+                    "coverage_20": 0.271,
+                    "recall_50": 0.128
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.075,
+                    "coverage_20": 0.215,
+                    "recall_50": 0.128
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.108,
+                    "coverage_20": 0.324,
+                    "recall_50": 0.225
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.146,
+                    "coverage_20": 0.363,
+                    "recall_50": 0.167
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.091,
+                    "coverage_20": 0.224,
+                    "recall_50": 0.16
                 }
             }
         }
