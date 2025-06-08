@@ -21,6 +21,13 @@ document.addEventListener('DOMContentLoaded', function () {
 	window.addEventListener('resize', adjustNameColumnWidth);
 });
 
+function isNewModel(dateStr) {
+	const modelDate = new Date(dateStr);
+	const now = new Date();
+	const daysDiff = (now - modelDate) / (1000 * 60 * 60 * 24);
+	return daysDiff <= 30;
+}
+
 function loadTableData() {
 	console.log('Starting to load table data...');
 	fetch('./leaderboard_data.json')
@@ -67,11 +74,17 @@ function renderTableData(dataToRender) {
 
 	dataToRender.forEach((row, index) => {
 		const tr = document.createElement('tr');
-		tr.classList.add(row.info.type); // e.g. 'upper_baseline', 'open_source'
+		tr.classList.add(row.info.type);
+		
+		if (isNewModel(row.info.date)) {
+		  tr.classList.add('new-model-row');
+		}
 
+		const nameText = row.info.name;
+		const badge = isNewModel(row.info.date) ? `<span class="new-model-badge">NEW</span>` : '';
 		const nameCell = row.info.link?.trim()
-			? `<a href="${row.info.link}" target="_blank"><b>${row.info.name}</b></a>`
-			: `<b>${row.info.name}</b>`;
+		  ? `<a href="${row.info.link}" target="_blank"><b>${nameText}</b>${badge}</a>`
+		  : `<b>${nameText}</b>${badge}`;
 
 		let datasetCells = '';
 		datasets.forEach(dataset => {
