@@ -573,6 +573,88 @@
                     "recall_50": 0.162
                 }
             }
+        },
+        {
+            "info": {
+                "name": "Stella-400M v5",
+                "size": "400M",
+                "type": "open_source",
+                "date": "2025-01-01",
+                "link": "https://huggingface.co/NovaSearch/stella_en_400M_v5"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": "-",
+                    "coverage_20": "-",
+                    "recall_50": "-"
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.241,
+                    "coverage_20": 0.538,
+                    "recall_50": 0.447
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.32,
+                    "coverage_20": 0.648,
+                    "recall_50": 0.534
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.288,
+                    "coverage_20": 0.619,
+                    "recall_50": 0.359
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.244,
+                    "coverage_20": 0.476,
+                    "recall_50": 0.412
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.219,
+                    "coverage_20": 0.456,
+                    "recall_50": 0.35
+                }
+            }
+        },
+        {
+            "info": {
+                "name": "Qwen3-4B (Emb)",
+                "size": "4B",
+                "type": "open_source",
+                "date": "2025-06-05",
+                "link": "https://huggingface.co/Qwen/Qwen3-Embedding-4B"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.32,
+                    "coverage_20": 0.675,
+                    "recall_50": 0.415
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.404,
+                    "coverage_20": 0.744,
+                    "recall_50": 0.55
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.402,
+                    "coverage_20": 0.748,
+                    "recall_50": 0.604
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.304,
+                    "coverage_20": 0.618,
+                    "recall_50": 0.442
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.303,
+                    "coverage_20": 0.496,
+                    "recall_50": 0.44
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.347,
+                    "coverage_20": 0.656,
+                    "recall_50": 0.49
+                }
+            }
         }
     ]
 }
