@@ -75,10 +75,6 @@ function renderTableData(dataToRender) {
 	dataToRender.forEach((row, index) => {
 		const tr = document.createElement('tr');
 		tr.classList.add(row.info.type);
-		
-		if (isNewModel(row.info.date)) {
-		  tr.classList.add('new-model-row');
-		}
 
 		const nameText = row.info.name;
 		const badge = isNewModel(row.info.date) ? `<span class="new-model-badge">NEW</span>` : '';

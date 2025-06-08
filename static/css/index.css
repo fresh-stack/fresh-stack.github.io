@@ -353,18 +353,14 @@ th.angular-details-cell {
   box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 }
 
-.new-model-row {
-  background-color: #e8f5e9 !important; /* Light green */
-  border-left: 5px solid #66bb6a;
-}
-
 .new-model-badge {
   display: inline-block;
-  margin-left: 6px;
-  background-color: #66bb6a;
-  color: white;
-  font-size: 0.75rem;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-weight: bold;
+  margin-left: 4px;
+  background-color: #eeeeee;
+  color: #555;
+  font-size: 0.6rem;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-weight: 500;
+  vertical-align: top;
 }
