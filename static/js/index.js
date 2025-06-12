@@ -25,7 +25,7 @@ function isNewModel(dateStr) {
 	const modelDate = new Date(dateStr);
 	const now = new Date();
 	const daysDiff = (now - modelDate) / (1000 * 60 * 60 * 24);
-	return daysDiff <= 30;
+	return daysDiff <= 90;
 }
 
 function loadTableData() {
