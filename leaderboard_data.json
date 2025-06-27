@@ -737,6 +737,88 @@
                     "recall_50": 0.348
                 }
             }
+        },
+        {
+            "info": {
+                "name": "Jina V3 (Emb)",
+                "size": "570M",
+                "type": "open_source",
+                "date": "2024-09-18",
+                "link": "https://huggingface.co/jinaai/jina-embeddings-v3"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.223,
+                    "coverage_20": 0.533,
+                    "recall_50": 0.299
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.188,
+                    "coverage_20": 0.448,
+                    "recall_50": 0.338
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.309,
+                    "coverage_20": 0.654,
+                    "recall_50": 0.489
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.224,
+                    "coverage_20": 0.536,
+                    "recall_50": 0.293
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.19,
+                    "coverage_20": 0.405,
+                    "recall_50": 0.301
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.227,
+                    "coverage_20": 0.515,
+                    "recall_50": 0.344
+                }
+            }
+        },
+        {
+            "info": {
+                "name": "Jina V4 (Emb)",
+                "size": "3.8B",
+                "type": "open_source",
+                "date": "2024-06-24",
+                "link": "https://huggingface.co/jinaai/jina-embeddings-v4"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.277,
+                    "coverage_20": 0.596,
+                    "recall_50": 0.379
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.311,
+                    "coverage_20": 0.692,
+                    "recall_50": 0.524
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.324,
+                    "coverage_20": 0.677,
+                    "recall_50": 0.552
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.279,
+                    "coverage_20": 0.539,
+                    "recall_50": 0.321
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.22,
+                    "coverage_20": 0.416,
+                    "recall_50": 0.351
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.282,
+                    "coverage_20": 0.584,
+                    "recall_50": 0.425
+                }
+            }
         }
     ]
 }
