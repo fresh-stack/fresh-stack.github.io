@@ -784,7 +784,7 @@
                 "name": "Jina V4 (Emb)",
                 "size": "3.8B",
                 "type": "open_source",
-                "date": "2024-06-24",
+                "date": "2025-06-24",
                 "link": "https://huggingface.co/jinaai/jina-embeddings-v4"
             },
             "datasets": {
