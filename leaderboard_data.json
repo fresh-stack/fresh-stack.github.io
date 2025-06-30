@@ -881,9 +881,9 @@
                     "recall_50": 0.412
                 },
                 "laravel": {
-                    "alpha_ndcg_10": "-",
-                    "coverage_20": "-",
-                    "recall_50": "-"
+                    "alpha_ndcg_10": 0.298,
+                    "coverage_20": 0.627,
+                    "recall_50": 0.494
                 },
                 "angular": {
                     "alpha_ndcg_10": 0.271,
@@ -896,9 +896,9 @@
                     "recall_50": 0.316
                 },
                 "average": {
-                    "alpha_ndcg_10": 0.188,
-                    "coverage_20": 0.412,
-                    "recall_50": 0.275
+                    "alpha_ndcg_10": 0.248,
+                    "coverage_20": 0.537,
+                    "recall_50": 0.373
                 }
             }
         }
