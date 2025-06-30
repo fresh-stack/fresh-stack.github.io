@@ -784,7 +784,7 @@
                 "name": "Jina V4 (Emb)",
                 "size": "3.8B",
                 "type": "open_source",
-                "date": "2025-06-24",
+                "date": "2024-06-24",
                 "link": "https://huggingface.co/jinaai/jina-embeddings-v4"
             },
             "datasets": {
@@ -817,6 +817,88 @@
                     "alpha_ndcg_10": 0.282,
                     "coverage_20": 0.584,
                     "recall_50": 0.425
+                }
+            }
+        },
+        {
+            "info": {
+                "name": "OpenAI text-embedding-3-small",
+                "size": "-",
+                "type": "proprietary",
+                "date": "2024-01-25",
+                "link": "https://openai.com/index/new-embedding-models-and-api-updates/"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.213,
+                    "coverage_20": 0.523,
+                    "recall_50": 0.283
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.172,
+                    "coverage_20": 0.423,
+                    "recall_50": 0.303
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.245,
+                    "coverage_20": 0.571,
+                    "recall_50": 0.438
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.214,
+                    "coverage_20": 0.491,
+                    "recall_50": 0.295
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.197,
+                    "coverage_20": 0.392,
+                    "recall_50": 0.33
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.208,
+                    "coverage_20": 0.48,
+                    "recall_50": 0.33
+                }
+            }
+        },
+        {
+            "info": {
+                "name": "OpenAI text-embedding-3-large",
+                "size": "-",
+                "type": "proprietary",
+                "date": "2024-01-25",
+                "link": "https://openai.com/index/new-embedding-models-and-api-updates/"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.207,
+                    "coverage_20": 0.507,
+                    "recall_50": 0.292
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.275,
+                    "coverage_20": 0.585,
+                    "recall_50": 0.412
+                },
+                "laravel": {
+                    "alpha_ndcg_10": "-",
+                    "coverage_20": "-",
+                    "recall_50": "-"
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.271,
+                    "coverage_20": 0.556,
+                    "recall_50": 0.353
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.187,
+                    "coverage_20": 0.409,
+                    "recall_50": 0.316
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.188,
+                    "coverage_20": 0.412,
+                    "recall_50": 0.275
                 }
             }
         }
