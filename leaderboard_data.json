@@ -907,7 +907,7 @@
                 "name": "EmbeddingGemma-300M",
                 "size": "300M",
                 "type": "open_source",
-                "date": "2024-09-04",
+                "date": "2025-09-04",
                 "link": "https://developers.googleblog.com/en/introducing-embeddinggemma/"
             },
             "datasets": {
