@@ -784,7 +784,7 @@
                 "name": "Jina V4 (Emb)",
                 "size": "3.8B",
                 "type": "open_source",
-                "date": "2024-06-24",
+                "date": "2025-06-24",
                 "link": "https://huggingface.co/jinaai/jina-embeddings-v4"
             },
             "datasets": {
@@ -899,6 +899,47 @@
                     "alpha_ndcg_10": 0.248,
                     "coverage_20": 0.537,
                     "recall_50": 0.373
+                }
+            }
+        },
+        {
+            "info": {
+                "name": "EmbeddingGemma-300M",
+                "size": "300M",
+                "type": "open_source",
+                "date": "2024-09-04",
+                "link": "https://developers.googleblog.com/en/introducing-embeddinggemma/"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.198,
+                    "coverage_20": 0.529,
+                    "recall_50": 0.289
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.197,
+                    "coverage_20": 0.498,
+                    "recall_50": 0.296
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.25,
+                    "coverage_20": 0.521,
+                    "recall_50": 0.417
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.249,
+                    "coverage_20": 0.561,
+                    "recall_50": 0.313
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.202,
+                    "coverage_20": 0.431,
+                    "recall_50": 0.367
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.219,
+                    "coverage_20": 0.508,
+                    "recall_50": 0.336
                 }
             }
         }
