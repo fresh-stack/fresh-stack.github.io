@@ -983,6 +983,47 @@
                     "recall_50": 0.33
                 }
             }
+        },
+        {
+            "info": {
+                "name": "Granite-Embedding-English-R2",
+                "size": "149M",
+                "type": "open_source",
+                "date": "2024-07-29",
+                "link": "https://huggingface.co/ibm-granite/granite-embedding-english-r2"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.247,
+                    "coverage_20": 0.557,
+                    "recall_50": 0.337
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.228,
+                    "coverage_20": 0.452,
+                    "recall_50": 0.32
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.237,
+                    "coverage_20": 0.524,
+                    "recall_50": 0.44
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.258,
+                    "coverage_20": 0.564,
+                    "recall_50": 0.314
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.154,
+                    "coverage_20": 0.358,
+                    "recall_50": 0.301
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.225,
+                    "coverage_20": 0.491,
+                    "recall_50": 0.342
+                }
+            }
         }
     ]
 }
