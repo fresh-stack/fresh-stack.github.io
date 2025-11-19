@@ -1065,6 +1065,88 @@
                     "recall_50": 0.352
                 }
             }
+        },
+        {
+            "info": {
+                "name": "Tarka-Embedding-150M-V1",
+                "size": "150M",
+                "type": "open_source",
+                "date": "2025-11-03",
+                "link": "https://huggingface.co/Tarka-AIR/Tarka-Embedding-150M-V1"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.18,
+                    "coverage_20": 0.439,
+                    "recall_50": 0.235
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.165,
+                    "coverage_20": 0.439,
+                    "recall_50": 0.292
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.143,
+                    "coverage_20": 0.37,
+                    "recall_50": 0.273
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.175,
+                    "coverage_20": 0.41,
+                    "recall_50": 0.215
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.203,
+                    "coverage_20": 0.42,
+                    "recall_50": 0.347
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.173,
+                    "coverage_20": 0.416,
+                    "recall_50": 0.272
+                }
+            }
+        },
+        {
+            "info": {
+                "name": "Tarka-Embedding-350M-V1",
+                "size": "350M",
+                "type": "open_source",
+                "date": "2025-11-03",
+                "link": "https://huggingface.co/Tarka-AIR/Tarka-Embedding-350M-V1"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.25,
+                    "coverage_20": 0.548,
+                    "recall_50": 0.298
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.242,
+                    "coverage_20": 0.49,
+                    "recall_50": 0.321
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.271,
+                    "coverage_20": 0.598,
+                    "recall_50": 0.461
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.222,
+                    "coverage_20": 0.493,
+                    "recall_50": 0.312
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.19,
+                    "coverage_20": 0.447,
+                    "recall_50": 0.332
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.235,
+                    "coverage_20": 0.515,
+                    "recall_50": 0.345
+                }
+            }
         }
     ]
 }
