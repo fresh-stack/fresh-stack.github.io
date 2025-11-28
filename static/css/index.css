@@ -365,17 +365,19 @@ th.angular-details-cell {
   vertical-align: top;
 }
 
-.responsive-pdf-container {
+.responsive-pdf-landscape {
   position: relative;
   width: 100%;
-  padding-bottom: 130%;      /* adjust ratio if needed */
+  /* Use a smaller padding-bottom to reflect a wide/horizontal poster ratio.
+     Adjust the value depending on poster dimensions. */
+  padding-bottom: 60%;  /* Try ~ 60% for wide posters; adjust if needed */
   height: 0;
   overflow: hidden;
 }
 
-.responsive-pdf-container object,
-.responsive-pdf-container iframe,
-.responsive-pdf-container embed {
+.responsive-pdf-landscape object,
+.responsive-pdf-landscape iframe,
+.responsive-pdf-landscape embed {
   position: absolute;
   top: 0;
   left: 0;
