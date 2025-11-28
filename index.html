@@ -86,18 +86,6 @@
               </a>
             </span>
 
-              <!-- <div class="column has-text-centered">
-                <div class="publication-links">
-                  <span class="link-block">
-                    <a href="https://arxiv.org/pdf/xxxx.xxxx.pdf" target="_blank"
-                    class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fas fa-file-pdf"></i>
-                    </span>
-                    <span>Paper</span>
-                  </a>
-                </span> -->
-
                 <span class="link-block">
                   <a href="https://github.com/fresh-stack/freshstack" target="_blank"
                   class="external-link button is-normal is-rounded is-dark">
@@ -115,6 +103,22 @@
               <i class="fas fa-database"></i>
             </span>
             <span>Dataset</span>
+          </a>
+        </span>
+
+        <!-- new: official paper / OpenReview (or publication page) -->
+        <span class="link-block">
+          <a href="https://openreview.net/forum?id=54TTgXlS2U" target="_blank" class="external-link button is-normal is-rounded is-dark">
+            <span class="icon"><i class="fas fa-file-pdf"></i></span>
+            <span>OpenReview</span>
+          </a>
+        </span>
+
+        <!-- new: Twitter -->
+        <span class="link-block">
+          <a href="https://x.com/beirmug/status/1913270526111551987" target="_blank" class="external-link button is-normal is-rounded is-dark">
+            <span class="icon"><i class="fab fa-twitter"></i></span>
+            <span>Twitter</span>
           </a>
         </span>
           
@@ -158,6 +162,7 @@
         <div class="content has-text-justified" 
              style="background-color:#fefefe; border:1px solid #e0e0e0; border-radius:6px; padding:20px; font-size:1.1em; color:#212121;">
           <ul style="list-style-type: none; padding-left: 0;">
+            <li>🎉 11/2025: <strong>FreshStack</strong> received the Honourable Mention for the award of <strong><a href="https://www.bcs.org/membership-and-registrations/member-communities/information-retrieval-specialist-group/awards/bcs-search-industry-awards/">Best Search Project in 2025</a></strong> at the BCS Search Solutions event held in London. </li>
             <li>🎯 09/2025: Our roadmap is focused on evaluating new embedding models with extensions to ColBERT-style models soon!</li>
             <li>🎉 09/2025: Our paper <strong>FreshStack</strong> has been <strong>accepted at NeurIPS 2025 (Datasets & Benchmarks Track)</strong>. Camera-ready to come soon!</li>
             <li>📌 09/2025: <strong>FreshStack</strong> has now been officially included in <strong><a href="https://huggingface.co/blog/rteb">RTEB (Retrieval Embedding Benchmark)</a></strong>, a newer version of the popular MTEB benchmark.</li>
@@ -299,18 +304,30 @@
     </div>
     </section>
 
+<!-- Poster Section -->
+<section class="section" id="Poster">
+  <div class="container is-max-desktop content">
+    <h2 class="title is-3">Poster</h2>
+    <div class="responsive-pdf-container">
+      <object data="static/pdfs/freshstack-poster.pptx.pdf" type="application/pdf" width="100%" height="100%">
+        <p>Your browser does not support PDFs. <a href="static/pdfs/freshstack-poster.pptx.pdf" download>Download the poster</a>.</p>
+      </object>
+    </div>
+  </div>
+</section>
+
 <!--BibTex citation -->
 <section class="section" id="BibTeX">
   <div class="container is-max-desktop content">
-    <h2 class="title">BibTeX</h2><pre><code>@misc{thakur2025freshstack,
-      title={FreshStack: Building Realistic Benchmarks for Evaluating Retrieval on Technical Documents}, 
+    <h2 class="title">BibTeX</h2><pre><code>@inproceedings{
+      thakur2025freshstack,
+      title={FreshStack: Building Realistic Benchmarks for Evaluating Retrieval on Technical Documents},
       author={Nandan Thakur and Jimmy Lin and Sam Havens and Michael Carbin and Omar Khattab and Andrew Drozdov},
+      booktitle={The Thirty-ninth Annual Conference on Neural Information Processing Systems Datasets and Benchmarks Track},
       year={2025},
-      eprint={2504.13128},
-      archivePrefix={arXiv},
-      primaryClass={cs.IR},
-      url={https://arxiv.org/abs/2504.13128}, 
-}</code></pre>
+      url={https://openreview.net/forum?id=54TTgXlS2U}
+      }
+</code></pre>
   </div>
 </section>
 <!--End BibTex citation -->
