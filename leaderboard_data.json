@@ -1270,6 +1270,47 @@
                     "recall_50": 0.363
                 }
             }
+        },
+        {
+            "info": {
+                "name": "voyage-4-nano",
+                "size": "340M",
+                "type": "open_source",
+                "date": "2026-01-15",
+                "link": "https://huggingface.co/voyageai/voyage-4-nano"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.299,
+                    "coverage_20": 0.613,
+                    "recall_50": 0.407
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.354,
+                    "coverage_20": 0.642,
+                    "recall_50": 0.499
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.235,
+                    "coverage_20": 0.569,
+                    "recall_50": 0.459
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.278,
+                    "coverage_20": 0.589,
+                    "recall_50": 0.397
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.233,
+                    "coverage_20": 0.501,
+                    "recall_50": 0.425
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.28,
+                    "coverage_20": 0.583,
+                    "recall_50": 0.438
+                }
+            }
         }
     ]
 }
