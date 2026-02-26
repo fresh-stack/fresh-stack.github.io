@@ -1396,7 +1396,7 @@
         },
         {
             "info": {
-                "name": "Perplexity-0.6B",
+                "name": "Perplexity Embed v1 (0.6B)",
                 "size": "600M",
                 "type": "open_source",
                 "date": "2026-02-24",
