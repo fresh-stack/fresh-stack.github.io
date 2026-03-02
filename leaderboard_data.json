@@ -1434,6 +1434,47 @@
                     "recall_50": 0.397
                 }
             }
+        },
+        {
+            "info": {
+                "name": "Perplexity Embed v1 (4B)",
+                "size": "4B",
+                "type": "open_source",
+                "date": "2026-02-24",
+                "link": "https://huggingface.co/perplexity-ai/pplx-embed-v1-4B"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.287,
+                    "coverage_20": 0.634,
+                    "recall_50": 0.406
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.274,
+                    "coverage_20": 0.664,
+                    "recall_50": 0.497
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.3,
+                    "coverage_20": 0.627,
+                    "recall_50": 0.5
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.299,
+                    "coverage_20": 0.624,
+                    "recall_50": 0.38
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.246,
+                    "coverage_20": 0.479,
+                    "recall_50": 0.393
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.281,
+                    "coverage_20": 0.606,
+                    "recall_50": 0.435
+                }
+            }
         }
     ]
 }
