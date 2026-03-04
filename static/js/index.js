@@ -41,7 +41,9 @@ function loadTableData() {
 		.then(data => {
 			console.log('Data loaded successfully:', data);
 			fullLeaderboardData = data.leaderboardData;
-			renderTableData(fullLeaderboardData);
+			const checkedTypes = Array.from(document.querySelectorAll('.type-filter:checked')).map(cb => cb.value);
+			const initialData = fullLeaderboardData.filter(row => checkedTypes.includes(row.info.type));
+			renderTableData(initialData);
 		})
 		.catch(error => {
 			console.error('Error loading table data:', error);
@@ -168,11 +170,14 @@ function resetTable() {
 		sortTable(headerToSort, true, false);
 	}
 
-	// Reset all checkboxes
-	document.querySelectorAll('.type-filter').forEach(cb => cb.checked = true);
+	// Reset checkboxes to default (Oracle unchecked)
+	document.querySelectorAll('.type-filter').forEach(cb => {
+		cb.checked = cb.value !== 'upper_baseline';
+	});
 
-	// Reload full data
-	renderTableData(fullLeaderboardData);
+	// Reload with default filter applied
+	const checkedTypes = Array.from(document.querySelectorAll('.type-filter:checked')).map(cb => cb.value);
+	renderTableData(fullLeaderboardData.filter(row => checkedTypes.includes(row.info.type)));
 
 	setTimeout(adjustNameColumnWidth, 0);
 }
@@ -212,6 +217,7 @@ function sortTable(header, forceDescending = false, maintainOrder = false) {
 	header.classList.add(isDescending ? 'desc' : 'asc');
 
 	rows.forEach(row => tbody.appendChild(row));
+	updateRanks();
 	setTimeout(adjustNameColumnWidth, 0);
 }
 
