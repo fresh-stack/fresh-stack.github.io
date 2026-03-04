@@ -312,18 +312,20 @@ th.angular-details-cell {
   text-align: center;
 }
 
-/* Rank column — just wide enough for 2-digit numbers */
+/* Rank column */
 #freshstack-table td:first-child,
 #freshstack-table th:first-child {
-  width: 28px;
-  min-width: 28px;
-  max-width: 28px;
+  width: 42px;
+  min-width: 42px;
+  max-width: 42px;
   text-align: center;
 }
 
 /* Model name column — left-aligned, allow wrapping */
 #freshstack-table td:nth-child(2),
 #freshstack-table th:nth-child(2) {
+  min-width: 160px;
+  max-width: 200px;
   white-space: normal;
   text-align: left;
 }
