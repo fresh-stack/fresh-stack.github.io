@@ -93,6 +93,7 @@ function renderTableData(dataToRender) {
 		});
 
 		tr.innerHTML = `
+      <td class="rank-cell"></td>
       <td>${nameCell}</td>
       <td>${row.info.size}</td>
       <td>${row.info.date}</td>
@@ -254,8 +255,21 @@ function initializeSorting() {
 	}
 }
 
+function updateRanks() {
+	const tbody = document.querySelector('#freshstack-table tbody');
+	if (!tbody) return;
+
+	const rows = Array.from(tbody.querySelectorAll('tr'));
+	rows.forEach((row, index) => {
+		const cell = row.querySelector('.rank-cell');
+		if (cell) {
+			cell.textContent = index + 1;
+		}
+	});
+}
+
 function adjustNameColumnWidth() {
-	const nameColumn = document.querySelectorAll('#freshstack-table td:first-child, #freshstack-table th:first-child');
+	const nameColumn = document.querySelectorAll('#freshstack-table td:nth-child(2), #freshstack-table th:nth-child(2)');
 	let maxWidth = 0;
 
 	const span = document.createElement('span');
@@ -325,13 +339,13 @@ function exportTableToCSV(filename = 'leaderboard.csv') {
 
 	const csv = [];
 
-	const headerRow1 = ['Model Name', 'Size', 'Date'];
+	const headerRow1 = ['Rank', 'Model Name', 'Size', 'Date'];
 	datasets.forEach(dataset => {
 		headerRow1.push(dataset.toUpperCase(), '', '');
 	});
 	csv.push(headerRow1.join(','));
 
-	const headerRow2 = ['-', '-', '-'];
+	const headerRow2 = ['-', '-', '-', '-'];
 	datasets.forEach(() => {
 		headerRow2.push(...metrics);
 	});
