@@ -162,7 +162,7 @@ function resetTable() {
 		document.querySelector(`.${section}-details-cell`).setAttribute('colspan', '3');
 	});
 
-	const headerToSort = document.querySelector('#freshstack-table thead tr:last-child th[data-sort="number"]');
+	const headerToSort = getDefaultSortHeader();
 	if (headerToSort) {
 		sortTable(headerToSort, true, false);
 	}
@@ -234,9 +234,24 @@ function getCellValue(row, index) {
 	return cell ? cell.textContent.trim() : '';
 }
 
+function getDefaultSortHeader() {
+	const headers = document.querySelectorAll('#freshstack-table thead tr:last-child th.sortable');
+
+	for (const header of headers) {
+		const text = header.textContent.trim();
+		if (header.classList.contains('average-details') && text === 'R@50') {
+			return header;
+		}
+	}
+
+	return document.querySelector('#freshstack-table thead tr:last-child th[data-sort="number"]:not(.hidden)');
+}
+
 function initializeSorting() {
-	const headerToSort = document.querySelector('#freshstack-table thead tr:last-child th[data-sort="number"]:not(.hidden)');
-	sortTable(headerToSort, true, false);
+	const headerToSort = getDefaultSortHeader();
+	if (headerToSort) {
+		sortTable(headerToSort, true, false);
+	}
 }
 
 function adjustNameColumnWidth() {

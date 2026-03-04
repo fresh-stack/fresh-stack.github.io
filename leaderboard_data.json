@@ -1475,6 +1475,47 @@
                     "recall_50": 0.435
                 }
             }
+        },
+        {
+            "info": {
+                "name": "Cohere Embed v4.0",
+                "size": "-",
+                "type": "proprietary",
+                "date": "2025-05-15",
+                "link": "https://cohere.com/blog/embed-4"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.299,
+                    "coverage_20": 0.651,
+                    "recall_50": 0.402
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.317,
+                    "coverage_20": 0.572,
+                    "recall_50": 0.413
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.269,
+                    "coverage_20": 0.536,
+                    "recall_50": 0.455
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.277,
+                    "coverage_20": 0.552,
+                    "recall_50": 0.338
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.218,
+                    "coverage_20": 0.466,
+                    "recall_50": 0.357
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.276,
+                    "coverage_20": 0.555,
+                    "recall_50": 0.393
+                }
+            }
         }
     ]
 }
