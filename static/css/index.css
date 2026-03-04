@@ -312,25 +312,50 @@ th.angular-details-cell {
   text-align: center;
 }
 
-#freshstack-table th:not(:first-child),
-#freshstack-table td:not(:first-child) {
-  width: auto;
-}
-
+/* Rank column */
 #freshstack-table td:first-child,
 #freshstack-table th:first-child {
-  max-width: 140px;      /* a bit wider for names */
-  white-space: normal;   /* allow wrapping */
+  max-width: 40px;
+  min-width: 30px;
+  width: 40px;
+  white-space: nowrap;
+  text-align: center;
+}
+
+/* Model name column */
+#freshstack-table td:nth-child(2),
+#freshstack-table th:nth-child(2) {
+  max-width: 140px;
+  white-space: normal;
   text-align: left;
 }
 
-/* This targets the Date column (3rd column in the table) */
-#freshstack-table th:nth-child(3),
-#freshstack-table td:nth-child(3) {
-  max-width: 120px;    /* Increase this as needed */
+/* Date column (4th column: Rank, Model, Size, Date) */
+#freshstack-table th:nth-child(4),
+#freshstack-table td:nth-child(4) {
+  max-width: 120px;
   min-width: 80px;
-  white-space: nowrap; /* Or set to normal if you want it to wrap */
-  text-align: center;  /* Center or left, as you prefer */
+  white-space: nowrap;
+  text-align: center;
+}
+
+/* All metric columns equal width */
+#freshstack-table td.average-details,
+#freshstack-table th.average-details,
+#freshstack-table td.langchain-details,
+#freshstack-table th.langchain-details,
+#freshstack-table td.yolo-details,
+#freshstack-table th.yolo-details,
+#freshstack-table td.laravel-details,
+#freshstack-table th.laravel-details,
+#freshstack-table td.angular-details,
+#freshstack-table th.angular-details,
+#freshstack-table td.godot-details,
+#freshstack-table th.godot-details {
+  width: 70px;
+  min-width: 70px;
+  max-width: 70px;
+  text-align: center;
 }
 
 #toggleButton {
