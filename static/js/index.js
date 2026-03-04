@@ -275,29 +275,7 @@ function updateRanks() {
 }
 
 function adjustNameColumnWidth() {
-	const nameColumn = document.querySelectorAll('#freshstack-table td:nth-child(2), #freshstack-table th:nth-child(2)');
-	let maxWidth = 0;
-
-	const span = document.createElement('span');
-	span.style.visibility = 'hidden';
-	span.style.position = 'absolute';
-	span.style.whiteSpace = 'nowrap';
-	document.body.appendChild(span);
-
-	nameColumn.forEach(cell => {
-		span.textContent = cell.textContent;
-		const width = span.offsetWidth;
-		if (width > maxWidth) maxWidth = width;
-	});
-
-	document.body.removeChild(span);
-
-	maxWidth += 20;
-	nameColumn.forEach(cell => {
-		cell.style.width = `${maxWidth}px`;
-		cell.style.minWidth = `${maxWidth}px`;
-		cell.style.maxWidth = `${maxWidth}px`;
-	});
+	// Column widths are controlled by CSS; no JS override needed.
 }
 
 function prepareScoresForStyling(data, section) {
