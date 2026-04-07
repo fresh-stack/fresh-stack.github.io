@@ -163,6 +163,15 @@ function getModelAverageMetric(data, matcher, metricKey) {
 	return Number(val);
 }
 
+function normalizeModelName(rawName) {
+	return String(rawName || '').toLowerCase().replace(/^oracle:\s*/i, '').trim();
+}
+
+function isReferenceBaselineModel(rawName) {
+	const name = normalizeModelName(rawName);
+	return name === 'bm25' || name === 'fusion (bm25, bge, e5, voyage)';
+}
+
 function parseSizeToBillions(sizeStr) {
 	if (sizeStr === undefined || sizeStr === null) return null;
 	const raw = String(sizeStr).trim();
@@ -202,14 +211,15 @@ function renderRecallPlots(dataToRender) {
 	}
 
 	const plotConfig = { responsive: true, displayModeBar: true, displaylogo: false };
-	const familyColors = buildFamilyColorMap(dataToRender);
+	const plotData = dataToRender.filter(row => !isReferenceBaselineModel(row.info?.name));
+	const familyColors = buildFamilyColorMap(plotData);
 
 	AVERAGE_METRIC_PLOTS.forEach(({ plotId, metricKey, yTitle, hoverMetric, yMin, yMax }) => {
 		const el = document.getElementById(plotId);
 		if (!el) return;
 
 		const grouped = {};
-		dataToRender.forEach(row => {
+		plotData.forEach(row => {
 			const typeKey = row.info?.type;
 			const x = parseSizeToBillions(row.info?.size);
 			const y = row.datasets?.average?.[metricKey];
@@ -386,14 +396,15 @@ function renderReleaseDatePlots(dataToRender) {
 	}
 
 	const plotConfig = { responsive: true, displayModeBar: true, displaylogo: false };
-	const familyColors = buildFamilyColorMap(dataToRender);
+	const plotData = dataToRender.filter(row => !isReferenceBaselineModel(row.info?.name));
+	const familyColors = buildFamilyColorMap(plotData);
 
 	AVERAGE_METRIC_DATE_PLOTS.forEach(({ plotId, metricKey, yTitle, hoverMetric, yMin, yMax }) => {
 		const el = document.getElementById(plotId);
 		if (!el) return;
 
 		const grouped = {};
-		dataToRender.forEach(row => {
+		plotData.forEach(row => {
 			const typeKey = row.info?.type;
 			const x = parseReleaseDate(row.info?.date);
 			const y = row.datasets?.average?.[metricKey];

@@ -46,7 +46,7 @@
                 "name": "BGE (Gemma-2)",
                 "size": "9B",
                 "type": "open_source",
-                "date": "2024-11-01",
+                "date": "2024-07-30",
                 "link": "https://huggingface.co/BAAI/bge-multilingual-gemma2"
             },
             "datasets": {
@@ -87,7 +87,7 @@
                 "name": "E5 (Mistral-7B)",
                 "size": "7B",
                 "type": "open_source",
-                "date": "2024-11-01",
+                "date": "2024-01-01",
                 "link": "https://huggingface.co/intfloat/e5-mistral-7b-instruct"
             },
             "datasets": {
@@ -128,7 +128,7 @@
                 "name": "Voyage Large 2",
                 "size": "-",
                 "type": "proprietary",
-                "date": "2024-11-01",
+                "date": "2024-05-05",
                 "link": "https://docs.voyageai.com/docs/embeddings"
             },
             "datasets": {
