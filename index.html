@@ -340,6 +340,39 @@
   </div>
 </section>
 
+<section class="section" id="avg-metric-date-plots" style="background-color: #ffffff;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <h3 class="title is-3 has-text-centered">FreshStack Metrics vs. Model Release Date</h3>
+        <div class="content has-text-justified">
+          <p>
+            Each point is a model with a valid <strong>release date</strong> in the leaderboard.
+            The <strong>y</strong>-axis is the <strong>average across the five FreshStack domains</strong> for
+            <strong>α@10</strong> (alpha-nDCG@10), <strong>C@20</strong> (Coverage@20), and <strong>R@50</strong> (Recall@50).
+            Marker colors group related model families.
+          </p>
+        </div>
+        <p id="date-plots-empty" class="has-text-centered is-hidden help is-info" style="margin-bottom: 1rem;"></p>
+        <div class="columns is-multiline is-centered">
+          <div class="column is-full">
+            <p class="is-size-6 has-text-weight-semibold has-text-centered mb-2">Avg. (5 domains) &mdash; α@10 (alpha-nDCG@10)</p>
+            <div id="plot-date-avg-alpha10" class="recall-param-plot" aria-label="Average alpha-nDCG at 10 versus model release date"></div>
+          </div>
+          <div class="column is-full">
+            <p class="is-size-6 has-text-weight-semibold has-text-centered mb-2">Avg. (5 domains) &mdash; C@20 (Coverage@20)</p>
+            <div id="plot-date-avg-c20" class="recall-param-plot" aria-label="Average Coverage at 20 versus model release date"></div>
+          </div>
+          <div class="column is-full">
+            <p class="is-size-6 has-text-weight-semibold has-text-centered mb-2">Avg. (5 domains) &mdash; R@50 (Recall@50)</p>
+            <div id="plot-date-avg-r50" class="recall-param-plot" aria-label="Average Recall at 50 versus model release date"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- Poster Section -->
 <section class="section" id="Poster">
   <div class="container is-max-desktop content">

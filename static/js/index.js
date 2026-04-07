@@ -29,6 +29,32 @@ const AVERAGE_METRIC_PLOTS = [
 		yMax: 0.868
 	}
 ];
+const AVERAGE_METRIC_DATE_PLOTS = [
+	{
+		plotId: 'plot-date-avg-r50',
+		metricKey: 'recall_50',
+		yTitle: 'R@50 (Avg. 5)',
+		hoverMetric: 'Recall@50',
+		yMin: 0.15,
+		yMax: 0.755
+	},
+	{
+		plotId: 'plot-date-avg-alpha10',
+		metricKey: 'alpha_ndcg_10',
+		yTitle: 'α@10 (Avg. 5)',
+		hoverMetric: 'α@10',
+		yMin: 0.1,
+		yMax: 0.541
+	},
+	{
+		plotId: 'plot-date-avg-c20',
+		metricKey: 'coverage_20',
+		yTitle: 'C@20 (Avg. 5)',
+		hoverMetric: 'C@20',
+		yMin: 0.25,
+		yMax: 0.868
+	}
+];
 
 const RECALL_TYPE_ORDER = ['upper_baseline', 'open_source', 'proprietary'];
 const RECALL_TYPE_LABELS = {
@@ -150,6 +176,12 @@ function parseSizeToBillions(sizeStr) {
 	if (unit === 'M') return num / 1000;
 	if (unit === 'K') return num / 1e6;
 	return null;
+}
+
+function parseReleaseDate(dateStr) {
+	if (!dateStr) return null;
+	const d = new Date(dateStr);
+	return Number.isNaN(d.getTime()) ? null : d;
 }
 
 function renderRecallPlots(dataToRender) {
@@ -336,6 +368,195 @@ function resizeRecallPlots() {
 	});
 }
 
+function renderReleaseDatePlots(dataToRender) {
+	if (typeof Plotly === 'undefined') return;
+
+	const emptyMsg = document.getElementById('date-plots-empty');
+	const hasAnyDates = dataToRender.some(row => parseReleaseDate(row.info?.date) !== null);
+
+	if (emptyMsg) {
+		if (!hasAnyDates) {
+			emptyMsg.textContent =
+				'No models in the current filter have a valid release date; adjust filters or refer to the table.';
+			emptyMsg.classList.remove('is-hidden');
+		} else {
+			emptyMsg.textContent = '';
+			emptyMsg.classList.add('is-hidden');
+		}
+	}
+
+	const plotConfig = { responsive: true, displayModeBar: true, displaylogo: false };
+	const familyColors = buildFamilyColorMap(dataToRender);
+
+	AVERAGE_METRIC_DATE_PLOTS.forEach(({ plotId, metricKey, yTitle, hoverMetric, yMin, yMax }) => {
+		const el = document.getElementById(plotId);
+		if (!el) return;
+
+		const grouped = {};
+		dataToRender.forEach(row => {
+			const typeKey = row.info?.type;
+			const x = parseReleaseDate(row.info?.date);
+			const y = row.datasets?.average?.[metricKey];
+			if (x === null || y === undefined || y === null || Number.isNaN(Number(y))) return;
+
+			const family = inferModelFamily(row.info?.name);
+			if (!grouped[family]) {
+				grouped[family] = { x: [], y: [], symbols: [], hovertext: [] };
+			}
+			grouped[family].x.push(x);
+			grouped[family].y.push(Number(y));
+			const modelName = row.info?.name ?? '';
+			const typeLabel = RECALL_TYPE_LABELS[typeKey] || typeKey || '';
+			const dateLabel = row.info?.date || '-';
+			grouped[family].hovertext.push(
+				`<b>${modelName}</b><br>Family: ${family}<br>Type: ${typeLabel}<br>Release date: ${dateLabel}`
+			);
+			grouped[family].symbols.push(TYPE_SYMBOLS[typeKey] || 'circle');
+		});
+
+		const traces = Object.keys(grouped)
+			.sort((a, b) => a.localeCompare(b))
+			.map(family => ({
+				type: 'scatter',
+				mode: 'markers',
+				name: family,
+				x: grouped[family].x,
+				y: grouped[family].y,
+				hovertext: grouped[family].hovertext,
+				marker: {
+					color: familyColors[family] || '#666',
+					symbol: grouped[family].symbols,
+					size: 12,
+					opacity: 0.95,
+					line: { width: 1, color: '#fff' }
+				},
+				hovertemplate:
+					'%{hovertext}<br>' +
+					hoverMetric +
+					': %{y:.3f}<extra></extra>'
+			}));
+
+		const xValues = traces.flatMap(t => t.x || []);
+		const xMin = xValues.length ? new Date(Math.min(...xValues.map(d => d.getTime()))) : null;
+		const xMax = xValues.length ? new Date(Math.max(...xValues.map(d => d.getTime()))) : null;
+		const xMinMonthStart = xMin ? new Date(xMin.getFullYear(), xMin.getMonth(), 1) : null;
+		const baselineData = fullLeaderboardData || dataToRender;
+		const bm25Score = getModelAverageMetric(
+			baselineData,
+			name => name === 'bm25',
+			metricKey
+		);
+		const fusionScore = getModelAverageMetric(
+			baselineData,
+			name => name === 'fusion (bm25, bge, e5, voyage)',
+			metricKey
+		);
+
+		if (xMin !== null && xMax !== null) {
+			if (bm25Score !== null) {
+				traces.push({
+					type: 'scatter',
+					mode: 'lines',
+					name: 'BM25',
+					x: [xMin, xMax],
+					y: [bm25Score, bm25Score],
+					line: { color: 'rgba(97,97,97,0.55)', width: 1.1, dash: 'dash' },
+					hovertemplate: `BM25<br>${hoverMetric}: ${bm25Score.toFixed(3)}<extra></extra>`
+				});
+			}
+			if (fusionScore !== null) {
+				traces.push({
+					type: 'scatter',
+					mode: 'lines',
+					name: 'Fusion',
+					x: [xMin, xMax],
+					y: [fusionScore, fusionScore],
+					line: { color: 'rgba(106,27,154,0.55)', width: 1.1, dash: 'dot' },
+					hovertemplate: `Fusion<br>${hoverMetric}: ${fusionScore.toFixed(3)}<extra></extra>`
+				});
+			}
+		}
+
+		const totalPoints = traces.reduce((acc, t) => acc + (t.x?.length || 0), 0);
+
+		if (totalPoints === 0) {
+			const emptyLayout = {
+				annotations: [
+					{
+						text: hasAnyDates
+							? 'No data for this view.'
+							: 'No models with valid release dates.',
+						xref: 'paper',
+						yref: 'paper',
+						x: 0.5,
+						y: 0.5,
+						showarrow: false,
+						font: { size: 14, color: '#666' }
+					}
+				],
+				xaxis: { visible: false },
+				yaxis: { visible: false },
+				margin: { t: 20, r: 20, b: 20, l: 20 }
+			};
+			if (el.data && el.layout) {
+				Plotly.react(el, [], emptyLayout, plotConfig);
+			} else {
+				Plotly.newPlot(el, [], emptyLayout, plotConfig);
+			}
+			return;
+		}
+
+		const layout = {
+			margin: { t: 28, r: 12, b: 88, l: 56 },
+			xaxis: {
+				title: { text: 'Model Release Date', standoff: 18 },
+				type: 'date',
+				tickmode: 'linear',
+				tick0: xMinMonthStart ? xMinMonthStart.toISOString().slice(0, 10) : undefined,
+				dtick: 'M1',
+				tickformat: '%b %Y',
+				showgrid: true,
+				zeroline: false,
+				tickfont: { size: 11 }
+			},
+			yaxis: {
+				title: { text: yTitle },
+				range: [yMin, yMax],
+				tickformat: '.2f',
+				showgrid: true
+			},
+			legend: {
+				orientation: 'h',
+				yanchor: 'top',
+				y: -0.28,
+				xanchor: 'center',
+				x: 0.5
+			},
+			hovermode: 'closest',
+			dragmode: 'zoom'
+		};
+
+		if (el.data && el.layout) {
+			Plotly.react(el, traces, layout, plotConfig);
+		} else {
+			Plotly.newPlot(el, traces, layout, plotConfig);
+		}
+	});
+}
+
+function resizeReleaseDatePlots() {
+	if (typeof Plotly === 'undefined') return;
+	AVERAGE_METRIC_DATE_PLOTS.forEach(({ plotId }) => {
+		const el = document.getElementById(plotId);
+		if (!el) return;
+		try {
+			Plotly.Plots.resize(el);
+		} catch (_) {
+			/* no plot yet */
+		}
+	});
+}
+
 $(document).ready(function () {
 	var options = {
 		slidesToScroll: 1,
@@ -355,6 +576,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	window.addEventListener('resize', function () {
 		adjustNameColumnWidth();
 		resizeRecallPlots();
+		resizeReleaseDatePlots();
 	});
 });
 
@@ -444,6 +666,7 @@ function renderTableData(dataToRender) {
 	setTimeout(adjustNameColumnWidth, 0);
 	initializeSorting();
 	renderRecallPlots(dataToRender);
+	renderReleaseDatePlots(dataToRender);
 }
 
 function setupEventListeners() {
