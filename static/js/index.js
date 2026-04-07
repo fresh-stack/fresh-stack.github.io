@@ -332,10 +332,12 @@ function renderRecallPlots(dataToRender) {
 		}
 
 		const layout = {
-			margin: { t: 28, r: 12, b: 88, l: 56 },
+			height: 430,
+			margin: { t: 28, r: 12, b: 130, l: 56 },
 			xaxis: {
-				title: { text: 'Model Parameters (Billions)', standoff: 18 },
+				title: { text: 'Model Parameters (Billions)', standoff: 26 },
 				type: 'log',
+				automargin: true,
 				showgrid: true,
 				zeroline: false,
 				tickfont: { size: 11 }
@@ -344,12 +346,13 @@ function renderRecallPlots(dataToRender) {
 				title: { text: yTitle },
 				range: [yMin, yMax],
 				tickformat: '.2f',
+				automargin: true,
 				showgrid: true
 			},
 			legend: {
 				orientation: 'h',
 				yanchor: 'top',
-				y: -0.28,
+				y: -0.36,
 				xanchor: 'center',
 				x: 0.5
 			},
@@ -519,9 +522,9 @@ function renderReleaseDatePlots(dataToRender) {
 
 		const layout = {
 			height: 430,
-			margin: { t: 28, r: 12, b: 132, l: 56 },
+			margin: { t: 28, r: 12, b: 160, l: 56 },
 			xaxis: {
-				title: { text: 'Model Release Date', standoff: 26 },
+				title: { text: 'Model Release Date', standoff: 34 },
 				type: 'date',
 				tickmode: 'linear',
 				tick0: xMinMonthStart ? xMinMonthStart.toISOString().slice(0, 10) : undefined,
@@ -543,7 +546,7 @@ function renderReleaseDatePlots(dataToRender) {
 			legend: {
 				orientation: 'h',
 				yanchor: 'top',
-				y: -0.36,
+				y: -0.44,
 				xanchor: 'center',
 				x: 0.5,
 				entrywidthmode: 'pixels',

@@ -4,8 +4,9 @@ body {
 
 .recall-param-plot {
   width: 100%;
-  height: 380px;
+  height: 420px;
   min-height: 280px;
+  margin-bottom: 20px;
 }
 
 .footer .icon-link {
