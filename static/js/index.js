@@ -9,6 +9,7 @@ const AVERAGE_METRIC_PLOTS = [
 		metricKey: 'recall_50',
 		yTitle: 'R@50 (Avg. 5)',
 		hoverMetric: 'Recall@50',
+		yMin: 0.15,
 		yMax: 0.755
 	},
 	{
@@ -16,6 +17,7 @@ const AVERAGE_METRIC_PLOTS = [
 		metricKey: 'alpha_ndcg_10',
 		yTitle: 'α@10 (Avg. 5)',
 		hoverMetric: 'α@10',
+		yMin: 0.1,
 		yMax: 0.541
 	},
 	{
@@ -23,6 +25,7 @@ const AVERAGE_METRIC_PLOTS = [
 		metricKey: 'coverage_20',
 		yTitle: 'C@20 (Avg. 5)',
 		hoverMetric: 'C@20',
+		yMin: 0.25,
 		yMax: 0.868
 	}
 ];
@@ -41,22 +44,21 @@ const TYPE_SYMBOLS = {
 const PINNED_FAMILY_COLORS = {
 	'Stella': '#1f77b4',
 	'Harrier OSS': '#ff7f0e',
-	'Voyage': '#2ca02c',
+	'Voyage': '#009688',
 	'Jina': '#d62728',
 	'Qwen3': '#9467bd',
-	'Granite': '#8c564b',
+	'IBM Granite': '#8c564b',
 	'Arctic Embed': '#e377c2',
 	'Perplexity Embed': '#17becf',
 	'GTE': '#bcbd22',
 	'BGE': '#7f7f7f',
 	'E5': '#393b79',
 	'OpenAI Embedding': '#637939',
-	'Nomic Embed': '#8c6d31',
+	'Nomic Embed': '#6a1b9a',
 	'Cohere Embed': '#843c39',
-	'EmbeddingGemma': '#3182bd',
-	'Tarka': '#31a354',
+	'EmbeddingGemma': '#e91e63',
+	'Tarka': '#43a047',
 	'Jasper': '#756bb1',
-	'CodeRankEmbed': '#636363',
 	'Fusion': '#e6550d',
 	'BM25': '#969696',
 	'Other': '#9e9e9e'
@@ -75,19 +77,19 @@ function inferModelFamily(rawName) {
 		{ key: 'voyage', label: 'Voyage' },
 		{ key: 'jina', label: 'Jina' },
 		{ key: 'qwen3', label: 'Qwen3' },
-		{ key: 'granite', label: 'Granite' },
+		{ key: 'granite', label: 'IBM Granite' },
 		{ key: 'arctic embed', label: 'Arctic Embed' },
 		{ key: 'perplexity embed', label: 'Perplexity Embed' },
 		{ key: 'gte', label: 'GTE' },
 		{ key: 'bge', label: 'BGE' },
 		{ key: 'e5', label: 'E5' },
 		{ key: 'openai text-embedding', label: 'OpenAI Embedding' },
+		{ key: 'jasper', label: 'Stella' },
+		{ key: 'coderankembed', label: 'Nomic Embed' },
 		{ key: 'nomic embed', label: 'Nomic Embed' },
 		{ key: 'cohere embed', label: 'Cohere Embed' },
 		{ key: 'embeddinggemma', label: 'EmbeddingGemma' },
 		{ key: 'tarka', label: 'Tarka' },
-		{ key: 'jasper', label: 'Jasper' },
-		{ key: 'coderankembed', label: 'CodeRankEmbed' },
 		{ key: 'fusion', label: 'Fusion' },
 		{ key: 'bm25', label: 'BM25' }
 	];
@@ -128,13 +130,6 @@ function formatParameterSize(sizeInBillions) {
 	return `${sizeInBillions.toFixed(3)}B`;
 }
 
-function getModelAverageMetric(data, matcher, metricKey) {
-	const row = (data || []).find(item => matcher(String(item?.info?.name || '').toLowerCase()));
-	const val = row?.datasets?.average?.[metricKey];
-	if (val === undefined || val === null || Number.isNaN(Number(val))) return null;
-	return Number(val);
-}
-
 function parseSizeToBillions(sizeStr) {
 	if (sizeStr === undefined || sizeStr === null) return null;
 	const raw = String(sizeStr).trim();
@@ -170,7 +165,7 @@ function renderRecallPlots(dataToRender) {
 	const plotConfig = { responsive: true, displayModeBar: true, displaylogo: false };
 	const familyColors = buildFamilyColorMap(dataToRender);
 
-	AVERAGE_METRIC_PLOTS.forEach(({ plotId, metricKey, yTitle, hoverMetric, yMax }) => {
+	AVERAGE_METRIC_PLOTS.forEach(({ plotId, metricKey, yTitle, hoverMetric, yMin, yMax }) => {
 		const el = document.getElementById(plotId);
 		if (!el) return;
 
@@ -198,79 +193,25 @@ function renderRecallPlots(dataToRender) {
 
 		const traces = Object.keys(grouped)
 			.sort((a, b) => a.localeCompare(b))
-			.map(family => {
-				const points = grouped[family].x.map((x, i) => ({
-					x,
-					y: grouped[family].y[i],
-					hovertext: grouped[family].hovertext[i],
-					symbol: grouped[family].symbols[i]
-				})).sort((a, b) => a.x - b.x);
-
-				return {
-					type: 'scatter',
-					mode: 'lines+markers',
-					name: family,
-					x: points.map(p => p.x),
-					y: points.map(p => p.y),
-					hovertext: points.map(p => p.hovertext),
-					marker: {
-						color: familyColors[family] || '#666',
-						symbol: points.map(p => p.symbol),
-						size: 12,
-						opacity: 0.95,
-						line: { width: 1, color: '#fff' }
-					},
-					line: {
-						color: familyColors[family] || '#666',
-						width: 1.5,
-						dash: 'dash'
-					},
-					hovertemplate:
-						'%{hovertext}<br>' +
-						hoverMetric +
-						': %{y:.3f}<extra></extra>'
-				};
-			});
-
-		const xValues = traces.flatMap(t => t.x || []);
-		const xMin = xValues.length ? Math.min(...xValues) : null;
-		const xMax = xValues.length ? Math.max(...xValues) : null;
-		const baselineData = fullLeaderboardData || dataToRender;
-		const bm25Score = getModelAverageMetric(
-			baselineData,
-			name => name === 'bm25' || name.startsWith('oracle: bm25'),
-			metricKey
-		);
-		const fusionScore = getModelAverageMetric(
-			baselineData,
-			name => name.startsWith('fusion (bm25, bge, e5, voyage)') || name.startsWith('oracle: fusion (bm25'),
-			metricKey
-		);
-
-		if (xMin !== null && xMax !== null) {
-			if (bm25Score !== null) {
-				traces.push({
-					type: 'scatter',
-					mode: 'lines',
-					name: 'BM25 baseline',
-					x: [xMin, xMax],
-					y: [bm25Score, bm25Score],
-					line: { color: '#616161', width: 2, dash: 'dash' },
-					hovertemplate: `BM25 baseline<br>${hoverMetric}: ${bm25Score.toFixed(3)}<extra></extra>`
-				});
-			}
-			if (fusionScore !== null) {
-				traces.push({
-					type: 'scatter',
-					mode: 'lines',
-					name: 'Fusion baseline',
-					x: [xMin, xMax],
-					y: [fusionScore, fusionScore],
-					line: { color: '#000000', width: 2, dash: 'dot' },
-					hovertemplate: `Fusion baseline<br>${hoverMetric}: ${fusionScore.toFixed(3)}<extra></extra>`
-				});
-			}
-		}
+			.map(family => ({
+				type: 'scatter',
+				mode: 'markers',
+				name: family,
+				x: grouped[family].x,
+				y: grouped[family].y,
+				hovertext: grouped[family].hovertext,
+				marker: {
+					color: familyColors[family] || '#666',
+					symbol: grouped[family].symbols,
+					size: 12,
+					opacity: 0.95,
+					line: { width: 1, color: '#fff' }
+				},
+				hovertemplate:
+					'%{hovertext}<br>' +
+					hoverMetric +
+					': %{y:.3f}<extra></extra>'
+			}));
 
 		const totalPoints = traces.reduce((acc, t) => acc + (t.x?.length || 0), 0);
 
@@ -312,17 +253,16 @@ function renderRecallPlots(dataToRender) {
 			},
 			yaxis: {
 				title: { text: yTitle },
-				range: [0, yMax],
+				range: [yMin, yMax],
 				tickformat: '.2f',
 				showgrid: true
 			},
 			legend: {
 				orientation: 'h',
 				yanchor: 'top',
-				y: -0.34,
+				y: -0.28,
 				xanchor: 'center',
-				x: 0.5,
-				title: { text: 'Model family' }
+				x: 0.5
 			},
 			hovermode: 'closest',
 			dragmode: 'zoom'
