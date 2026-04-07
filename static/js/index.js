@@ -545,7 +545,10 @@ function renderReleaseDatePlots(dataToRender) {
 				yanchor: 'top',
 				y: -0.36,
 				xanchor: 'center',
-				x: 0.5
+				x: 0.5,
+				entrywidthmode: 'pixels',
+				entrywidth: 155,
+				itemsizing: 'constant'
 			},
 			hovermode: 'closest',
 			dragmode: 'zoom'
