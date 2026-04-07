@@ -251,11 +251,11 @@ function renderRecallPlots(dataToRender) {
 				traces.push({
 					type: 'scatter',
 					mode: 'lines',
-					name: 'Fusion (BM25, BGE, E5, Voyage)',
+					name: 'Fusion',
 					x: [xMin, xMax],
 					y: [fusionScore, fusionScore],
 					line: { color: 'rgba(106,27,154,0.55)', width: 1.1, dash: 'dot' },
-					hovertemplate: `Fusion (BM25, BGE, E5, Voyage)<br>${hoverMetric}: ${fusionScore.toFixed(3)}<extra></extra>`
+					hovertemplate: `Fusion<br>${hoverMetric}: ${fusionScore.toFixed(3)}<extra></extra>`
 				});
 			}
 		}
