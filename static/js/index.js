@@ -125,6 +125,15 @@ function formatParameterSize(sizeInBillions) {
 	return `${sizeInBillions.toFixed(3)}B`;
 }
 
+function getModelAverageMetric(data, modelName, metricKey) {
+	const row = (data || []).find(
+		item => String(item?.info?.name || '').toLowerCase() === modelName.toLowerCase()
+	);
+	const val = row?.datasets?.average?.[metricKey];
+	if (val === undefined || val === null || Number.isNaN(Number(val))) return null;
+	return Number(val);
+}
+
 function parseSizeToBillions(sizeStr) {
 	if (sizeStr === undefined || sizeStr === null) return null;
 	const raw = String(sizeStr).trim();
@@ -173,16 +182,17 @@ function renderRecallPlots(dataToRender) {
 
 			const family = inferModelFamily(row.info?.name);
 			if (!grouped[family]) {
-				grouped[family] = { x: [], y: [], text: [], symbols: [], customdata: [] };
+				grouped[family] = { x: [], y: [], symbols: [], hovertext: [] };
 			}
 			grouped[family].x.push(x);
 			grouped[family].y.push(Number(y));
-			grouped[family].text.push(row.info?.name ?? '');
+			const modelName = row.info?.name ?? '';
+			const typeLabel = RECALL_TYPE_LABELS[typeKey] || typeKey || '';
+			const paramLabel = formatParameterSize(x);
+			grouped[family].hovertext.push(
+				`<b>${modelName}</b><br>Family: ${family}<br>Type: ${typeLabel}<br>Parameters: ${paramLabel}`
+			);
 			grouped[family].symbols.push(TYPE_SYMBOLS[typeKey] || 'circle');
-			grouped[family].customdata.push([
-				RECALL_TYPE_LABELS[typeKey] || typeKey || '',
-				formatParameterSize(x)
-			]);
 		});
 
 		const traces = Object.keys(grouped)
@@ -193,20 +203,55 @@ function renderRecallPlots(dataToRender) {
 				name: family,
 				x: grouped[family].x,
 				y: grouped[family].y,
-				text: grouped[family].text,
-				customdata: grouped[family].customdata,
+				hovertext: grouped[family].hovertext,
 				marker: {
 					color: familyColors[family] || '#666',
 					symbol: grouped[family].symbols,
 					size: 12,
+					opacity: 0.95,
 					line: { width: 1, color: '#fff' }
 				},
 				hovertemplate:
-					'<b>%{text}</b><br>Family: ' + family +
-					'<br>Type: %{customdata[0]}<br>Parameters: %{customdata[1]}<br>' +
+					'%{hovertext}<br>' +
 					hoverMetric +
 					': %{y:.3f}<extra></extra>'
 			}));
+
+		const xValues = traces.flatMap(t => t.x || []);
+		const xMin = xValues.length ? Math.min(...xValues) : null;
+		const xMax = xValues.length ? Math.max(...xValues) : null;
+		const baselineData = fullLeaderboardData || dataToRender;
+		const bm25Score = getModelAverageMetric(baselineData, 'BM25', metricKey);
+		const fusionScore = getModelAverageMetric(
+			baselineData,
+			'Fusion (BM25, BGE, E5, Voyage)',
+			metricKey
+		);
+
+		if (xMin !== null && xMax !== null) {
+			if (bm25Score !== null) {
+				traces.push({
+					type: 'scatter',
+					mode: 'lines',
+					name: 'BM25 baseline',
+					x: [xMin, xMax],
+					y: [bm25Score, bm25Score],
+					line: { color: '#616161', width: 2, dash: 'dash' },
+					hovertemplate: `BM25 baseline<br>${hoverMetric}: ${bm25Score.toFixed(3)}<extra></extra>`
+				});
+			}
+			if (fusionScore !== null) {
+				traces.push({
+					type: 'scatter',
+					mode: 'lines',
+					name: 'Fusion baseline',
+					x: [xMin, xMax],
+					y: [fusionScore, fusionScore],
+					line: { color: '#000000', width: 2, dash: 'dot' },
+					hovertemplate: `Fusion baseline<br>${hoverMetric}: ${fusionScore.toFixed(3)}<extra></extra>`
+				});
+			}
+		}
 
 		const totalPoints = traces.reduce((acc, t) => acc + (t.x?.length || 0), 0);
 
