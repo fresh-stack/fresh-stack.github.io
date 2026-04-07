@@ -111,30 +111,29 @@ function renderRecallPlots(dataToRender) {
 		const totalPoints = traces.reduce((acc, t) => acc + (t.x?.length || 0), 0);
 
 		if (totalPoints === 0) {
-			Plotly.purge(el);
-			Plotly.newPlot(
-				el,
-				[],
-				{
-					annotations: [
-						{
-							text: hasAnyParams
-								? 'No data for this view.'
-								: 'No models with numeric parameter counts.',
-							xref: 'paper',
-							yref: 'paper',
-							x: 0.5,
-							y: 0.5,
-							showarrow: false,
-							font: { size: 14, color: '#666' }
-						}
-					],
-					xaxis: { visible: false },
-					yaxis: { visible: false },
-					margin: { t: 20, r: 20, b: 20, l: 20 }
-				},
-				plotConfig
-			);
+			const emptyLayout = {
+				annotations: [
+					{
+						text: hasAnyParams
+							? 'No data for this view.'
+							: 'No models with numeric parameter counts.',
+						xref: 'paper',
+						yref: 'paper',
+						x: 0.5,
+						y: 0.5,
+						showarrow: false,
+						font: { size: 14, color: '#666' }
+					}
+				],
+				xaxis: { visible: false },
+				yaxis: { visible: false },
+				margin: { t: 20, r: 20, b: 20, l: 20 }
+			};
+			if (el.data && el.layout) {
+				Plotly.react(el, [], emptyLayout, plotConfig);
+			} else {
+				Plotly.newPlot(el, [], emptyLayout, plotConfig);
+			}
 			return;
 		}
 
@@ -163,8 +162,11 @@ function renderRecallPlots(dataToRender) {
 			dragmode: 'zoom'
 		};
 
-		Plotly.purge(el);
-		Plotly.newPlot(el, traces, layout, plotConfig);
+		if (el.data && el.layout) {
+			Plotly.react(el, traces, layout, plotConfig);
+		} else {
+			Plotly.newPlot(el, traces, layout, plotConfig);
+		}
 	});
 }
 
