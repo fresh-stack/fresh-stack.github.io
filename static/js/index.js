@@ -7,20 +7,23 @@ const AVERAGE_METRIC_PLOTS = [
 	{
 		plotId: 'plot-avg-r50',
 		metricKey: 'recall_50',
-		yTitle: 'Recall@50 (avg.)',
-		hoverMetric: 'Recall@50'
+		yTitle: 'R@50 (Avg. 5)',
+		hoverMetric: 'Recall@50',
+		yMax: 0.755
 	},
 	{
 		plotId: 'plot-avg-alpha10',
 		metricKey: 'alpha_ndcg_10',
-		yTitle: 'α@10 (avg., alpha-nDCG@10)',
-		hoverMetric: 'α@10'
+		yTitle: 'α@10 (Avg. 5)',
+		hoverMetric: 'α@10',
+		yMax: 0.541
 	},
 	{
 		plotId: 'plot-avg-c20',
 		metricKey: 'coverage_20',
-		yTitle: 'C@20 (avg., Coverage@20)',
-		hoverMetric: 'C@20'
+		yTitle: 'C@20 (Avg. 5)',
+		hoverMetric: 'C@20',
+		yMax: 0.868
 	}
 ];
 
@@ -125,10 +128,8 @@ function formatParameterSize(sizeInBillions) {
 	return `${sizeInBillions.toFixed(3)}B`;
 }
 
-function getModelAverageMetric(data, modelName, metricKey) {
-	const row = (data || []).find(
-		item => String(item?.info?.name || '').toLowerCase() === modelName.toLowerCase()
-	);
+function getModelAverageMetric(data, matcher, metricKey) {
+	const row = (data || []).find(item => matcher(String(item?.info?.name || '').toLowerCase()));
 	const val = row?.datasets?.average?.[metricKey];
 	if (val === undefined || val === null || Number.isNaN(Number(val))) return null;
 	return Number(val);
@@ -169,7 +170,7 @@ function renderRecallPlots(dataToRender) {
 	const plotConfig = { responsive: true, displayModeBar: true, displaylogo: false };
 	const familyColors = buildFamilyColorMap(dataToRender);
 
-	AVERAGE_METRIC_PLOTS.forEach(({ plotId, metricKey, yTitle, hoverMetric }) => {
+	AVERAGE_METRIC_PLOTS.forEach(({ plotId, metricKey, yTitle, hoverMetric, yMax }) => {
 		const el = document.getElementById(plotId);
 		if (!el) return;
 
@@ -197,34 +198,52 @@ function renderRecallPlots(dataToRender) {
 
 		const traces = Object.keys(grouped)
 			.sort((a, b) => a.localeCompare(b))
-			.map(family => ({
-				type: 'scatter',
-				mode: 'markers',
-				name: family,
-				x: grouped[family].x,
-				y: grouped[family].y,
-				hovertext: grouped[family].hovertext,
-				marker: {
-					color: familyColors[family] || '#666',
-					symbol: grouped[family].symbols,
-					size: 12,
-					opacity: 0.95,
-					line: { width: 1, color: '#fff' }
-				},
-				hovertemplate:
-					'%{hovertext}<br>' +
-					hoverMetric +
-					': %{y:.3f}<extra></extra>'
-			}));
+			.map(family => {
+				const points = grouped[family].x.map((x, i) => ({
+					x,
+					y: grouped[family].y[i],
+					hovertext: grouped[family].hovertext[i],
+					symbol: grouped[family].symbols[i]
+				})).sort((a, b) => a.x - b.x);
+
+				return {
+					type: 'scatter',
+					mode: 'lines+markers',
+					name: family,
+					x: points.map(p => p.x),
+					y: points.map(p => p.y),
+					hovertext: points.map(p => p.hovertext),
+					marker: {
+						color: familyColors[family] || '#666',
+						symbol: points.map(p => p.symbol),
+						size: 12,
+						opacity: 0.95,
+						line: { width: 1, color: '#fff' }
+					},
+					line: {
+						color: familyColors[family] || '#666',
+						width: 1.5,
+						dash: 'dash'
+					},
+					hovertemplate:
+						'%{hovertext}<br>' +
+						hoverMetric +
+						': %{y:.3f}<extra></extra>'
+				};
+			});
 
 		const xValues = traces.flatMap(t => t.x || []);
 		const xMin = xValues.length ? Math.min(...xValues) : null;
 		const xMax = xValues.length ? Math.max(...xValues) : null;
 		const baselineData = fullLeaderboardData || dataToRender;
-		const bm25Score = getModelAverageMetric(baselineData, 'BM25', metricKey);
+		const bm25Score = getModelAverageMetric(
+			baselineData,
+			name => name === 'bm25' || name.startsWith('oracle: bm25'),
+			metricKey
+		);
 		const fusionScore = getModelAverageMetric(
 			baselineData,
-			'Fusion (BM25, BGE, E5, Voyage)',
+			name => name.startsWith('fusion (bm25, bge, e5, voyage)') || name.startsWith('oracle: fusion (bm25'),
 			metricKey
 		);
 
@@ -283,23 +302,24 @@ function renderRecallPlots(dataToRender) {
 		}
 
 		const layout = {
-			margin: { t: 28, r: 12, b: 52, l: 56 },
+			margin: { t: 28, r: 12, b: 88, l: 56 },
 			xaxis: {
-				title: { text: 'Parameters (billions)' },
+				title: { text: 'Model Parameters (Billions)', standoff: 18 },
 				type: 'log',
 				showgrid: true,
-				zeroline: false
+				zeroline: false,
+				tickfont: { size: 11 }
 			},
 			yaxis: {
 				title: { text: yTitle },
-				range: [0, 1],
+				range: [0, yMax],
 				tickformat: '.2f',
 				showgrid: true
 			},
 			legend: {
 				orientation: 'h',
 				yanchor: 'top',
-				y: -0.22,
+				y: -0.34,
 				xanchor: 'center',
 				x: 0.5,
 				title: { text: 'Model family' }
