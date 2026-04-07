@@ -507,14 +507,17 @@ function renderReleaseDatePlots(dataToRender) {
 		}
 
 		const layout = {
-			margin: { t: 28, r: 12, b: 88, l: 56 },
+			height: 430,
+			margin: { t: 28, r: 12, b: 132, l: 56 },
 			xaxis: {
-				title: { text: 'Model Release Date', standoff: 18 },
+				title: { text: 'Model Release Date', standoff: 26 },
 				type: 'date',
 				tickmode: 'linear',
 				tick0: xMinMonthStart ? xMinMonthStart.toISOString().slice(0, 10) : undefined,
 				dtick: 'M1',
 				tickformat: '%b %Y',
+				tickangle: -45,
+				automargin: true,
 				showgrid: true,
 				zeroline: false,
 				tickfont: { size: 11 }
@@ -523,12 +526,13 @@ function renderReleaseDatePlots(dataToRender) {
 				title: { text: yTitle },
 				range: [yMin, yMax],
 				tickformat: '.2f',
+				automargin: true,
 				showgrid: true
 			},
 			legend: {
 				orientation: 'h',
 				yanchor: 'top',
-				y: -0.28,
+				y: -0.36,
 				xanchor: 'center',
 				x: 0.5
 			},
