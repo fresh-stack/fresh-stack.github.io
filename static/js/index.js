@@ -30,11 +30,100 @@ const RECALL_TYPE_LABELS = {
 	open_source: 'Open source',
 	proprietary: 'Proprietary'
 };
-const RECALL_TYPE_COLORS = {
-	upper_baseline: '#e65100',
-	open_source: '#5c6bc0',
-	proprietary: '#00897b'
+const TYPE_SYMBOLS = {
+	upper_baseline: 'star',
+	open_source: 'circle',
+	proprietary: 'diamond'
 };
+const PINNED_FAMILY_COLORS = {
+	'Stella': '#1f77b4',
+	'Harrier OSS': '#ff7f0e',
+	'Voyage': '#2ca02c',
+	'Jina': '#d62728',
+	'Qwen3': '#9467bd',
+	'Granite': '#8c564b',
+	'Arctic Embed': '#e377c2',
+	'Perplexity Embed': '#17becf',
+	'GTE': '#bcbd22',
+	'BGE': '#7f7f7f',
+	'E5': '#393b79',
+	'OpenAI Embedding': '#637939',
+	'Nomic Embed': '#8c6d31',
+	'Cohere Embed': '#843c39',
+	'EmbeddingGemma': '#3182bd',
+	'Tarka': '#31a354',
+	'Jasper': '#756bb1',
+	'CodeRankEmbed': '#636363',
+	'Fusion': '#e6550d',
+	'BM25': '#969696',
+	'Other': '#9e9e9e'
+};
+const FAMILY_COLOR_PALETTE = [
+	'#3949ab', '#00897b', '#e53935', '#8e24aa', '#f4511e', '#1e88e5',
+	'#43a047', '#6d4c41', '#00acc1', '#7cb342', '#5e35b1', '#c2185b',
+	'#ff8f00', '#546e7a', '#2e7d32', '#ad1457', '#039be5', '#ef6c00'
+];
+
+function inferModelFamily(rawName) {
+	const name = String(rawName || '').toLowerCase().replace(/^oracle:\s*/i, '');
+	const familyRules = [
+		{ key: 'stella', label: 'Stella' },
+		{ key: 'harrier', label: 'Harrier OSS' },
+		{ key: 'voyage', label: 'Voyage' },
+		{ key: 'jina', label: 'Jina' },
+		{ key: 'qwen3', label: 'Qwen3' },
+		{ key: 'granite', label: 'Granite' },
+		{ key: 'arctic embed', label: 'Arctic Embed' },
+		{ key: 'perplexity embed', label: 'Perplexity Embed' },
+		{ key: 'gte', label: 'GTE' },
+		{ key: 'bge', label: 'BGE' },
+		{ key: 'e5', label: 'E5' },
+		{ key: 'openai text-embedding', label: 'OpenAI Embedding' },
+		{ key: 'nomic embed', label: 'Nomic Embed' },
+		{ key: 'cohere embed', label: 'Cohere Embed' },
+		{ key: 'embeddinggemma', label: 'EmbeddingGemma' },
+		{ key: 'tarka', label: 'Tarka' },
+		{ key: 'jasper', label: 'Jasper' },
+		{ key: 'coderankembed', label: 'CodeRankEmbed' },
+		{ key: 'fusion', label: 'Fusion' },
+		{ key: 'bm25', label: 'BM25' }
+	];
+
+	for (const rule of familyRules) {
+		if (name.includes(rule.key)) return rule.label;
+	}
+	return 'Other';
+}
+
+function buildFamilyColorMap(dataToRender) {
+	const families = Array.from(
+		new Set(
+			dataToRender
+				.map(row => inferModelFamily(row.info?.name))
+				.filter(Boolean)
+		)
+	).sort((a, b) => a.localeCompare(b));
+
+	const colorMap = {};
+	let fallbackIndex = 0;
+	families.forEach((family, idx) => {
+		if (PINNED_FAMILY_COLORS[family]) {
+			colorMap[family] = PINNED_FAMILY_COLORS[family];
+		} else {
+			colorMap[family] = FAMILY_COLOR_PALETTE[fallbackIndex % FAMILY_COLOR_PALETTE.length];
+			fallbackIndex += 1;
+		}
+	});
+	return colorMap;
+}
+
+function formatParameterSize(sizeInBillions) {
+	if (sizeInBillions === undefined || sizeInBillions === null || Number.isNaN(sizeInBillions)) return '-';
+	if (sizeInBillions < 1) {
+		return `${(sizeInBillions * 1000).toFixed(0)}M`;
+	}
+	return `${sizeInBillions.toFixed(3)}B`;
+}
 
 function parseSizeToBillions(sizeStr) {
 	if (sizeStr === undefined || sizeStr === null) return null;
@@ -69,44 +158,55 @@ function renderRecallPlots(dataToRender) {
 	}
 
 	const plotConfig = { responsive: true, displayModeBar: true, displaylogo: false };
+	const familyColors = buildFamilyColorMap(dataToRender);
 
 	AVERAGE_METRIC_PLOTS.forEach(({ plotId, metricKey, yTitle, hoverMetric }) => {
 		const el = document.getElementById(plotId);
 		if (!el) return;
 
-		const traces = [];
-		RECALL_TYPE_ORDER.forEach(typeKey => {
-			const xs = [];
-			const ys = [];
-			const labels = [];
-			dataToRender.forEach(row => {
-				if (row.info?.type !== typeKey) return;
-				const x = parseSizeToBillions(row.info?.size);
-				if (x === null) return;
-				const y = row.datasets?.average?.[metricKey];
-				if (y === undefined || y === null || Number.isNaN(Number(y))) return;
-				xs.push(x);
-				ys.push(Number(y));
-				labels.push(row.info?.name ?? '');
-			});
-			traces.push({
+		const grouped = {};
+		dataToRender.forEach(row => {
+			const typeKey = row.info?.type;
+			const x = parseSizeToBillions(row.info?.size);
+			const y = row.datasets?.average?.[metricKey];
+			if (x === null || y === undefined || y === null || Number.isNaN(Number(y))) return;
+
+			const family = inferModelFamily(row.info?.name);
+			if (!grouped[family]) {
+				grouped[family] = { x: [], y: [], text: [], symbols: [], customdata: [] };
+			}
+			grouped[family].x.push(x);
+			grouped[family].y.push(Number(y));
+			grouped[family].text.push(row.info?.name ?? '');
+			grouped[family].symbols.push(TYPE_SYMBOLS[typeKey] || 'circle');
+			grouped[family].customdata.push([
+				RECALL_TYPE_LABELS[typeKey] || typeKey || '',
+				formatParameterSize(x)
+			]);
+		});
+
+		const traces = Object.keys(grouped)
+			.sort((a, b) => a.localeCompare(b))
+			.map(family => ({
 				type: 'scatter',
 				mode: 'markers',
-				name: RECALL_TYPE_LABELS[typeKey] || typeKey,
-				x: xs,
-				y: ys,
-				text: labels,
+				name: family,
+				x: grouped[family].x,
+				y: grouped[family].y,
+				text: grouped[family].text,
+				customdata: grouped[family].customdata,
 				marker: {
-					color: RECALL_TYPE_COLORS[typeKey] || '#666',
+					color: familyColors[family] || '#666',
+					symbol: grouped[family].symbols,
 					size: 12,
 					line: { width: 1, color: '#fff' }
 				},
 				hovertemplate:
-					'<b>%{text}</b><br>Parameters: %{x:.4f}B<br>' +
+					'<b>%{text}</b><br>Family: ' + family +
+					'<br>Type: %{customdata[0]}<br>Parameters: %{customdata[1]}<br>' +
 					hoverMetric +
 					': %{y:.3f}<extra></extra>'
-			});
-		});
+			}));
 
 		const totalPoints = traces.reduce((acc, t) => acc + (t.x?.length || 0), 0);
 
@@ -156,7 +256,8 @@ function renderRecallPlots(dataToRender) {
 				yanchor: 'top',
 				y: -0.22,
 				xanchor: 'center',
-				x: 0.5
+				x: 0.5,
+				title: { text: 'Model family' }
 			},
 			hovermode: 'closest',
 			dragmode: 'zoom'
