@@ -2,6 +2,185 @@ window.HELP_IMPROVE_VIDEOJS = false;
 
 let fullLeaderboardData = null;
 
+/** Average (5 domains) metric vs parameters; dataset key is always `average`. */
+const AVERAGE_METRIC_PLOTS = [
+	{
+		plotId: 'plot-avg-r50',
+		metricKey: 'recall_50',
+		yTitle: 'Recall@50 (avg.)',
+		hoverMetric: 'Recall@50'
+	},
+	{
+		plotId: 'plot-avg-alpha10',
+		metricKey: 'alpha_ndcg_10',
+		yTitle: 'α@10 (avg., alpha-nDCG@10)',
+		hoverMetric: 'α@10'
+	},
+	{
+		plotId: 'plot-avg-c20',
+		metricKey: 'coverage_20',
+		yTitle: 'C@20 (avg., Coverage@20)',
+		hoverMetric: 'C@20'
+	}
+];
+
+const RECALL_TYPE_ORDER = ['upper_baseline', 'open_source', 'proprietary'];
+const RECALL_TYPE_LABELS = {
+	upper_baseline: 'Oracle (Stack Overflow nuggets)',
+	open_source: 'Open source',
+	proprietary: 'Proprietary'
+};
+const RECALL_TYPE_COLORS = {
+	upper_baseline: '#e65100',
+	open_source: '#5c6bc0',
+	proprietary: '#00897b'
+};
+
+function parseSizeToBillions(sizeStr) {
+	if (sizeStr === undefined || sizeStr === null) return null;
+	const raw = String(sizeStr).trim();
+	if (raw === '' || raw === '-') return null;
+	const m = raw.match(/^([\d.]+)\s*([BMK])$/i);
+	if (!m) return null;
+	const num = parseFloat(m[1]);
+	if (Number.isNaN(num)) return null;
+	const unit = m[2].toUpperCase();
+	if (unit === 'B') return num;
+	if (unit === 'M') return num / 1000;
+	if (unit === 'K') return num / 1e6;
+	return null;
+}
+
+function renderRecallPlots(dataToRender) {
+	if (typeof Plotly === 'undefined') return;
+
+	const emptyMsg = document.getElementById('recall-plots-empty');
+	const hasAnyParams = dataToRender.some(row => parseSizeToBillions(row.info?.size) !== null);
+
+	if (emptyMsg) {
+		if (!hasAnyParams) {
+			emptyMsg.textContent =
+				'No models in the current filter have a numeric parameter count; adjust filters or refer to the table for models without a reported size.';
+			emptyMsg.classList.remove('is-hidden');
+		} else {
+			emptyMsg.textContent = '';
+			emptyMsg.classList.add('is-hidden');
+		}
+	}
+
+	const plotConfig = { responsive: true, displayModeBar: true, displaylogo: false };
+
+	AVERAGE_METRIC_PLOTS.forEach(({ plotId, metricKey, yTitle, hoverMetric }) => {
+		const el = document.getElementById(plotId);
+		if (!el) return;
+
+		const traces = [];
+		RECALL_TYPE_ORDER.forEach(typeKey => {
+			const xs = [];
+			const ys = [];
+			const labels = [];
+			dataToRender.forEach(row => {
+				if (row.info?.type !== typeKey) return;
+				const x = parseSizeToBillions(row.info?.size);
+				if (x === null) return;
+				const y = row.datasets?.average?.[metricKey];
+				if (y === undefined || y === null || Number.isNaN(Number(y))) return;
+				xs.push(x);
+				ys.push(Number(y));
+				labels.push(row.info?.name ?? '');
+			});
+			traces.push({
+				type: 'scatter',
+				mode: 'markers',
+				name: RECALL_TYPE_LABELS[typeKey] || typeKey,
+				x: xs,
+				y: ys,
+				text: labels,
+				marker: {
+					color: RECALL_TYPE_COLORS[typeKey] || '#666',
+					size: 12,
+					line: { width: 1, color: '#fff' }
+				},
+				hovertemplate:
+					'<b>%{text}</b><br>Parameters: %{x:.4f}B<br>' +
+					hoverMetric +
+					': %{y:.3f}<extra></extra>'
+			});
+		});
+
+		const totalPoints = traces.reduce((acc, t) => acc + (t.x?.length || 0), 0);
+
+		if (totalPoints === 0) {
+			Plotly.purge(el);
+			Plotly.newPlot(
+				el,
+				[],
+				{
+					annotations: [
+						{
+							text: hasAnyParams
+								? 'No data for this view.'
+								: 'No models with numeric parameter counts.',
+							xref: 'paper',
+							yref: 'paper',
+							x: 0.5,
+							y: 0.5,
+							showarrow: false,
+							font: { size: 14, color: '#666' }
+						}
+					],
+					xaxis: { visible: false },
+					yaxis: { visible: false },
+					margin: { t: 20, r: 20, b: 20, l: 20 }
+				},
+				plotConfig
+			);
+			return;
+		}
+
+		const layout = {
+			margin: { t: 28, r: 12, b: 52, l: 56 },
+			xaxis: {
+				title: { text: 'Parameters (billions)' },
+				type: 'log',
+				showgrid: true,
+				zeroline: false
+			},
+			yaxis: {
+				title: { text: yTitle },
+				range: [0, 1],
+				tickformat: '.2f',
+				showgrid: true
+			},
+			legend: {
+				orientation: 'h',
+				yanchor: 'top',
+				y: -0.22,
+				xanchor: 'center',
+				x: 0.5
+			},
+			hovermode: 'closest',
+			dragmode: 'zoom'
+		};
+
+		Plotly.purge(el);
+		Plotly.newPlot(el, traces, layout, plotConfig);
+	});
+}
+
+function resizeRecallPlots() {
+	if (typeof Plotly === 'undefined') return;
+	AVERAGE_METRIC_PLOTS.forEach(({ plotId }) => {
+		const el = document.getElementById(plotId);
+		if (!el) return;
+		try {
+			Plotly.Plots.resize(el);
+		} catch (_) {
+			/* no plot yet */
+		}
+	});
+}
+
 $(document).ready(function () {
 	var options = {
 		slidesToScroll: 1,
@@ -18,7 +197,10 @@ $(document).ready(function () {
 document.addEventListener('DOMContentLoaded', function () {
 	loadTableData();
 	setupEventListeners();
-	window.addEventListener('resize', adjustNameColumnWidth);
+	window.addEventListener('resize', function () {
+		adjustNameColumnWidth();
+		resizeRecallPlots();
+	});
 });
 
 function isNewModel(dateStr) {
@@ -106,6 +288,7 @@ function renderTableData(dataToRender) {
 
 	setTimeout(adjustNameColumnWidth, 0);
 	initializeSorting();
+	renderRecallPlots(dataToRender);
 }
 
 function setupEventListeners() {

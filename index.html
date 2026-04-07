@@ -39,6 +39,7 @@
   <script defer src="static/js/fontawesome.all.min.js"></script>
   <script src="static/js/bulma-carousel.min.js"></script>
   <script src="static/js/bulma-slider.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
   <script src="static/js/index.js"></script>
 </head>
 <body>
@@ -307,10 +308,42 @@
     </div>
     </section>
 
+<section class="section" id="avg-metric-plots" style="background-color: #fafafa;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <h3 class="title is-4 has-text-centered">Average metrics vs. model parameters</h3>
+        <div class="content has-text-justified">
+          <p>
+            Each point is a model with a numeric <strong>Size</strong> in the leaderboard (parameters in billions, parsed from values such as <code>7B</code> or <code>434M</code>).
+            The <strong>y</strong>-axis is the <strong>average across the five FreshStack domains</strong> for <strong>Recall@50</strong>, <strong>α@10</strong> (alpha-nDCG@10), or <strong>C@20</strong> (Coverage@20).
+            Models without a numeric size (shown as &ldquo;&mdash;&rdquo; in the table) are omitted. Use the leaderboard filters above (Open Source, Proprietary, Oracle) to update these charts.
+          </p>
+        </div>
+        <p id="recall-plots-empty" class="has-text-centered is-hidden help is-info" style="margin-bottom: 1rem;"></p>
+        <div class="columns is-multiline is-centered">
+          <div class="column is-full-mobile is-one-third-tablet">
+            <p class="is-size-6 has-text-weight-semibold has-text-centered mb-2">Avg. (5 domains) &mdash; α@10 (alpha-nDCG@10)</p>
+            <div id="plot-avg-alpha10" class="recall-param-plot" aria-label="Average alpha-nDCG at 10 versus parameters"></div>
+          </div>
+          <div class="column is-full-mobile is-one-third-tablet">
+            <p class="is-size-6 has-text-weight-semibold has-text-centered mb-2">Avg. (5 domains) &mdash; C@20 (Coverage@20)</p>
+            <div id="plot-avg-c20" class="recall-param-plot" aria-label="Average Coverage at 20 versus parameters"></div>
+          </div>
+          <div class="column is-full-mobile is-one-third-tablet">
+            <p class="is-size-6 has-text-weight-semibold has-text-centered mb-2">Avg. (5 domains) &mdash; R@50 (Recall@50)</p>
+            <div id="plot-avg-r50" class="recall-param-plot" aria-label="Average Recall at 50 versus parameters"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- Poster Section -->
 <section class="section" id="Poster">
   <div class="container is-max-desktop content">
-    <h2 class="title is-3">Poster</h2>
+    <h2 class="title is-3 has-text-centered">Poster (NeurIPS 2025 Datasets & Benchmarks Track)</h2>
     <div class="poster-embed">
       <object data="static/pdfs/freshstack-poster.pptx.pdf" type="application/pdf">
         <p>Your browser does not support PDFs. <a href="static/pdfs/freshstack-poster.pptx.pdf" download>Download the poster</a>.</p>
@@ -323,7 +356,7 @@
 <!--BibTex citation -->
 <section class="section" id="BibTeX">
   <div class="container is-max-desktop content">
-    <h2 class="title">BibTeX</h2><pre><code>@inproceedings{
+    <h2 class="title is-3 has-text-centered">BibTeX</h2><pre><code>@inproceedings{
       thakur2025freshstack,
       title={FreshStack: Building Realistic Benchmarks for Evaluating Retrieval on Technical Documents},
       author={Nandan Thakur and Jimmy Lin and Sam Havens and Michael Carbin and Omar Khattab and Andrew Drozdov},
