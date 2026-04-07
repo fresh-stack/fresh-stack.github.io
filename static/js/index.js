@@ -130,6 +130,13 @@ function formatParameterSize(sizeInBillions) {
 	return `${sizeInBillions.toFixed(3)}B`;
 }
 
+function getModelAverageMetric(data, matcher, metricKey) {
+	const row = (data || []).find(item => matcher(String(item?.info?.name || '').toLowerCase()));
+	const val = row?.datasets?.average?.[metricKey];
+	if (val === undefined || val === null || Number.isNaN(Number(val))) return null;
+	return Number(val);
+}
+
 function parseSizeToBillions(sizeStr) {
 	if (sizeStr === undefined || sizeStr === null) return null;
 	const raw = String(sizeStr).trim();
@@ -212,6 +219,46 @@ function renderRecallPlots(dataToRender) {
 					hoverMetric +
 					': %{y:.3f}<extra></extra>'
 			}));
+
+		const xValues = traces.flatMap(t => t.x || []);
+		const xMin = xValues.length ? Math.min(...xValues) : null;
+		const xMax = xValues.length ? Math.max(...xValues) : null;
+		const baselineData = fullLeaderboardData || dataToRender;
+		const bm25Score = getModelAverageMetric(
+			baselineData,
+			name => name === 'bm25',
+			metricKey
+		);
+		const fusionScore = getModelAverageMetric(
+			baselineData,
+			name => name === 'fusion (bm25, bge, e5, voyage)',
+			metricKey
+		);
+
+		if (xMin !== null && xMax !== null) {
+			if (bm25Score !== null) {
+				traces.push({
+					type: 'scatter',
+					mode: 'lines',
+					name: 'BM25',
+					x: [xMin, xMax],
+					y: [bm25Score, bm25Score],
+					line: { color: 'rgba(97,97,97,0.55)', width: 1.1, dash: 'dash' },
+					hovertemplate: `BM25<br>${hoverMetric}: ${bm25Score.toFixed(3)}<extra></extra>`
+				});
+			}
+			if (fusionScore !== null) {
+				traces.push({
+					type: 'scatter',
+					mode: 'lines',
+					name: 'Fusion (BM25, BGE, E5, Voyage)',
+					x: [xMin, xMax],
+					y: [fusionScore, fusionScore],
+					line: { color: 'rgba(106,27,154,0.55)', width: 1.1, dash: 'dot' },
+					hovertemplate: `Fusion (BM25, BGE, E5, Voyage)<br>${hoverMetric}: ${fusionScore.toFixed(3)}<extra></extra>`
+				});
+			}
+		}
 
 		const totalPoints = traces.reduce((acc, t) => acc + (t.x?.length || 0), 0);
 
