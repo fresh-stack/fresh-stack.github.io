@@ -151,9 +151,10 @@ function buildFamilyColorMap(dataToRender) {
 function formatParameterSize(sizeInBillions) {
 	if (sizeInBillions === undefined || sizeInBillions === null || Number.isNaN(sizeInBillions)) return '-';
 	if (sizeInBillions < 1) {
-		return `${(sizeInBillions * 1000).toFixed(0)}M`;
+		const inMillions = sizeInBillions * 1000;
+		return `${parseFloat(inMillions.toFixed(2))}M`;
 	}
-	return `${sizeInBillions.toFixed(3)}B`;
+	return `${parseFloat(sizeInBillions.toFixed(3))}B`;
 }
 
 function getModelAverageMetric(data, matcher, metricKey) {
