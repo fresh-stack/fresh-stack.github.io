@@ -1885,6 +1885,88 @@
                     "recall_50": 0.5324
                 }
             }
+        },
+        {
+            "info": {
+                "name": "Gemini Embedding 2",
+                "size": "-",
+                "type": "proprietary",
+                "date": "2026-03-10",
+                "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-embedding-2/"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.2729,
+                    "coverage_20": 0.5762,
+                    "recall_50": 0.3195
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.279,
+                    "coverage_20": 0.5962,
+                    "recall_50": 0.4231
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.4298,
+                    "coverage_20": 0.736,
+                    "recall_50": 0.5428
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.317,
+                    "coverage_20": 0.6431,
+                    "recall_50": 0.4059
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.1992,
+                    "coverage_20": 0.4219,
+                    "recall_50": 0.3814
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.2996,
+                    "coverage_20": 0.5947,
+                    "recall_50": 0.4145
+                }
+            }
+        },
+        {
+            "info": {
+                "name": "voyage-4-large",
+                "size": "-",
+                "type": "proprietary",
+                "date": "2026-01-15",
+                "link": "https://docs.voyageai.com/docs/embeddings"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.3383,
+                    "coverage_20": 0.6808,
+                    "recall_50": 0.4322
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.4399,
+                    "coverage_20": 0.7722,
+                    "recall_50": 0.6008
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.3484,
+                    "coverage_20": 0.714,
+                    "recall_50": 0.5825
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.3461,
+                    "coverage_20": 0.6917,
+                    "recall_50": 0.4885
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.2744,
+                    "coverage_20": 0.5657,
+                    "recall_50": 0.4483
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.3494,
+                    "coverage_20": 0.6849,
+                    "recall_50": 0.5105
+                }
+            }
         }
     ]
 }
