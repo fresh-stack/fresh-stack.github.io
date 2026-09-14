@@ -1967,6 +1967,47 @@
                     "recall_50": 0.51
                 }
             }
+        },
+        {
+            "info": {
+                "name": "pplx-v2-preview",
+                "size": "-",
+                "type": "proprietary",
+                "date": "2026-09-01",
+                "link": "https://huggingface.co/perplexity-ai"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.347,
+                    "coverage_20": 0.699,
+                    "recall_50": 0.457
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.496,
+                    "coverage_20": 0.822,
+                    "recall_50": 0.707
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.441,
+                    "coverage_20": 0.773,
+                    "recall_50": 0.682
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.406,
+                    "coverage_20": 0.73,
+                    "recall_50": 0.554
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.411,
+                    "coverage_20": 0.718,
+                    "recall_50": 0.623
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.42,
+                    "coverage_20": 0.748,
+                    "recall_50": 0.605
+                }
+            }
         }
     ]
 }
