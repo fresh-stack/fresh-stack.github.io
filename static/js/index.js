@@ -85,6 +85,9 @@ const PINNED_FAMILY_COLORS = {
 	'EmbeddingGemma': '#e91e63',
 	'Tarka': '#43a047',
 	'Jasper': '#756bb1',
+	'Nemotron-Embed': '#76b900',
+	'Octen-Embedding': '#00838f',
+	'z-embed': '#c62828',
 	'Fusion': '#e6550d',
 	'BM25': '#969696',
 	'Other': '#9e9e9e'
@@ -98,6 +101,9 @@ const FAMILY_COLOR_PALETTE = [
 function inferModelFamily(rawName) {
 	const name = String(rawName || '').toLowerCase().replace(/^oracle:\s*/i, '');
 	const familyRules = [
+		{ key: 'nemotron', label: 'Nemotron-Embed' },
+		{ key: 'octen', label: 'Octen-Embedding' },
+		{ key: 'zembed', label: 'z-embed' },
 		{ key: 'stella', label: 'Stella' },
 		{ key: 'harrier', label: 'Harrier OSS' },
 		{ key: 'voyage', label: 'Voyage' },
