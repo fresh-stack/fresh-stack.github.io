@@ -112,6 +112,7 @@ function inferModelFamily(rawName) {
 		{ key: 'granite', label: 'IBM Granite' },
 		{ key: 'arctic embed', label: 'Arctic Embed' },
 		{ key: 'perplexity embed', label: 'Perplexity Embed' },
+		{ key: 'pplx', label: 'Perplexity Embed' },
 		{ key: 'gte', label: 'GTE' },
 		{ key: 'bge', label: 'BGE' },
 		{ key: 'e5', label: 'E5' },
