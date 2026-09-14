@@ -1650,34 +1650,34 @@
             },
             "datasets": {
                 "langchain": {
-                    "alpha_ndcg_10": 0.3422,
-                    "coverage_20": 0.6894,
-                    "recall_50": 0.4577
+                    "alpha_ndcg_10": 0.342,
+                    "coverage_20": 0.689,
+                    "recall_50": 0.458
                 },
                 "yolo": {
-                    "alpha_ndcg_10": 0.3278,
-                    "coverage_20": 0.6415,
-                    "recall_50": 0.4888
+                    "alpha_ndcg_10": 0.328,
+                    "coverage_20": 0.641,
+                    "recall_50": 0.489
                 },
                 "laravel": {
-                    "alpha_ndcg_10": 0.3114,
-                    "coverage_20": 0.6389,
-                    "recall_50": 0.5492
+                    "alpha_ndcg_10": 0.311,
+                    "coverage_20": 0.639,
+                    "recall_50": 0.549
                 },
                 "angular": {
-                    "alpha_ndcg_10": 0.2724,
-                    "coverage_20": 0.5939,
-                    "recall_50": 0.3862
+                    "alpha_ndcg_10": 0.272,
+                    "coverage_20": 0.594,
+                    "recall_50": 0.386
                 },
                 "godot": {
-                    "alpha_ndcg_10": 0.2577,
-                    "coverage_20": 0.4813,
-                    "recall_50": 0.4559
+                    "alpha_ndcg_10": 0.258,
+                    "coverage_20": 0.481,
+                    "recall_50": 0.456
                 },
                 "average": {
-                    "alpha_ndcg_10": 0.3023,
+                    "alpha_ndcg_10": 0.302,
                     "coverage_20": 0.609,
-                    "recall_50": 0.4676
+                    "recall_50": 0.468
                 }
             }
         },
@@ -1692,33 +1692,33 @@
             "datasets": {
                 "langchain": {
                     "alpha_ndcg_10": 0.388,
-                    "coverage_20": 0.7238,
-                    "recall_50": 0.5118
+                    "coverage_20": 0.724,
+                    "recall_50": 0.512
                 },
                 "yolo": {
-                    "alpha_ndcg_10": 0.3997,
-                    "coverage_20": 0.7684,
-                    "recall_50": 0.5854
+                    "alpha_ndcg_10": 0.4,
+                    "coverage_20": 0.768,
+                    "recall_50": 0.585
                 },
                 "laravel": {
-                    "alpha_ndcg_10": 0.4257,
-                    "coverage_20": 0.7705,
-                    "recall_50": 0.6648
+                    "alpha_ndcg_10": 0.426,
+                    "coverage_20": 0.77,
+                    "recall_50": 0.665
                 },
                 "angular": {
-                    "alpha_ndcg_10": 0.3507,
+                    "alpha_ndcg_10": 0.351,
                     "coverage_20": 0.673,
-                    "recall_50": 0.5139
+                    "recall_50": 0.514
                 },
                 "godot": {
-                    "alpha_ndcg_10": 0.3259,
-                    "coverage_20": 0.6343,
-                    "recall_50": 0.5764
+                    "alpha_ndcg_10": 0.326,
+                    "coverage_20": 0.634,
+                    "recall_50": 0.576
                 },
                 "average": {
                     "alpha_ndcg_10": 0.378,
                     "coverage_20": 0.714,
-                    "recall_50": 0.5705
+                    "recall_50": 0.571
                 }
             }
         },
@@ -1732,34 +1732,34 @@
             },
             "datasets": {
                 "langchain": {
-                    "alpha_ndcg_10": 0.2981,
-                    "coverage_20": 0.6556,
-                    "recall_50": 0.4205
+                    "alpha_ndcg_10": 0.298,
+                    "coverage_20": 0.656,
+                    "recall_50": 0.42
                 },
                 "yolo": {
-                    "alpha_ndcg_10": 0.4131,
-                    "coverage_20": 0.7056,
-                    "recall_50": 0.5991
+                    "alpha_ndcg_10": 0.413,
+                    "coverage_20": 0.706,
+                    "recall_50": 0.599
                 },
                 "laravel": {
-                    "alpha_ndcg_10": 0.4055,
-                    "coverage_20": 0.7445,
-                    "recall_50": 0.6346
+                    "alpha_ndcg_10": 0.406,
+                    "coverage_20": 0.745,
+                    "recall_50": 0.635
                 },
                 "angular": {
-                    "alpha_ndcg_10": 0.5091,
-                    "coverage_20": 0.8607,
-                    "recall_50": 0.7235
+                    "alpha_ndcg_10": 0.509,
+                    "coverage_20": 0.861,
+                    "recall_50": 0.724
                 },
                 "godot": {
-                    "alpha_ndcg_10": 0.4082,
-                    "coverage_20": 0.7399,
-                    "recall_50": 0.6687
+                    "alpha_ndcg_10": 0.408,
+                    "coverage_20": 0.74,
+                    "recall_50": 0.669
                 },
                 "average": {
-                    "alpha_ndcg_10": 0.4068,
-                    "coverage_20": 0.7413,
-                    "recall_50": 0.6093
+                    "alpha_ndcg_10": 0.407,
+                    "coverage_20": 0.741,
+                    "recall_50": 0.609
                 }
             }
         },
@@ -1773,34 +1773,34 @@
             },
             "datasets": {
                 "langchain": {
-                    "alpha_ndcg_10": 0.2921,
-                    "coverage_20": 0.6593,
-                    "recall_50": 0.3961
+                    "alpha_ndcg_10": 0.292,
+                    "coverage_20": 0.659,
+                    "recall_50": 0.396
                 },
                 "yolo": {
-                    "alpha_ndcg_10": 0.3719,
+                    "alpha_ndcg_10": 0.372,
                     "coverage_20": 0.769,
-                    "recall_50": 0.6076
+                    "recall_50": 0.608
                 },
                 "laravel": {
-                    "alpha_ndcg_10": 0.4122,
-                    "coverage_20": 0.7405,
-                    "recall_50": 0.6428
+                    "alpha_ndcg_10": 0.412,
+                    "coverage_20": 0.741,
+                    "recall_50": 0.643
                 },
                 "angular": {
-                    "alpha_ndcg_10": 0.4601,
-                    "coverage_20": 0.8159,
-                    "recall_50": 0.6537
+                    "alpha_ndcg_10": 0.46,
+                    "coverage_20": 0.816,
+                    "recall_50": 0.654
                 },
                 "godot": {
-                    "alpha_ndcg_10": 0.3382,
-                    "coverage_20": 0.6365,
+                    "alpha_ndcg_10": 0.338,
+                    "coverage_20": 0.636,
                     "recall_50": 0.576
                 },
                 "average": {
-                    "alpha_ndcg_10": 0.3749,
-                    "coverage_20": 0.7242,
-                    "recall_50": 0.5752
+                    "alpha_ndcg_10": 0.375,
+                    "coverage_20": 0.724,
+                    "recall_50": 0.575
                 }
             }
         },
@@ -1815,33 +1815,33 @@
             "datasets": {
                 "langchain": {
                     "alpha_ndcg_10": 0.314,
-                    "coverage_20": 0.6532,
-                    "recall_50": 0.4536
+                    "coverage_20": 0.653,
+                    "recall_50": 0.454
                 },
                 "yolo": {
-                    "alpha_ndcg_10": 0.3139,
-                    "coverage_20": 0.5994,
-                    "recall_50": 0.4623
+                    "alpha_ndcg_10": 0.314,
+                    "coverage_20": 0.599,
+                    "recall_50": 0.462
                 },
                 "laravel": {
-                    "alpha_ndcg_10": 0.3617,
-                    "coverage_20": 0.6688,
-                    "recall_50": 0.5337
+                    "alpha_ndcg_10": 0.362,
+                    "coverage_20": 0.669,
+                    "recall_50": 0.534
                 },
                 "angular": {
-                    "alpha_ndcg_10": 0.3499,
-                    "coverage_20": 0.6553,
-                    "recall_50": 0.4671
+                    "alpha_ndcg_10": 0.35,
+                    "coverage_20": 0.655,
+                    "recall_50": 0.467
                 },
                 "godot": {
-                    "alpha_ndcg_10": 0.2847,
-                    "coverage_20": 0.5712,
-                    "recall_50": 0.4603
+                    "alpha_ndcg_10": 0.285,
+                    "coverage_20": 0.571,
+                    "recall_50": 0.46
                 },
                 "average": {
-                    "alpha_ndcg_10": 0.3248,
-                    "coverage_20": 0.6296,
-                    "recall_50": 0.4754
+                    "alpha_ndcg_10": 0.325,
+                    "coverage_20": 0.63,
+                    "recall_50": 0.475
                 }
             }
         },
@@ -1855,34 +1855,34 @@
             },
             "datasets": {
                 "langchain": {
-                    "alpha_ndcg_10": 0.3342,
-                    "coverage_20": 0.6586,
-                    "recall_50": 0.4187
+                    "alpha_ndcg_10": 0.334,
+                    "coverage_20": 0.659,
+                    "recall_50": 0.419
                 },
                 "yolo": {
-                    "alpha_ndcg_10": 0.4047,
-                    "coverage_20": 0.7158,
-                    "recall_50": 0.5601
+                    "alpha_ndcg_10": 0.405,
+                    "coverage_20": 0.716,
+                    "recall_50": 0.56
                 },
                 "laravel": {
-                    "alpha_ndcg_10": 0.4263,
-                    "coverage_20": 0.7565,
-                    "recall_50": 0.6412
+                    "alpha_ndcg_10": 0.426,
+                    "coverage_20": 0.756,
+                    "recall_50": 0.641
                 },
                 "angular": {
-                    "alpha_ndcg_10": 0.3518,
-                    "coverage_20": 0.6146,
-                    "recall_50": 0.4841
+                    "alpha_ndcg_10": 0.352,
+                    "coverage_20": 0.615,
+                    "recall_50": 0.484
                 },
                 "godot": {
-                    "alpha_ndcg_10": 0.3766,
-                    "coverage_20": 0.6811,
+                    "alpha_ndcg_10": 0.377,
+                    "coverage_20": 0.681,
                     "recall_50": 0.558
                 },
                 "average": {
-                    "alpha_ndcg_10": 0.3787,
-                    "coverage_20": 0.6853,
-                    "recall_50": 0.5324
+                    "alpha_ndcg_10": 0.379,
+                    "coverage_20": 0.685,
+                    "recall_50": 0.532
                 }
             }
         },
@@ -1896,34 +1896,34 @@
             },
             "datasets": {
                 "langchain": {
-                    "alpha_ndcg_10": 0.2729,
-                    "coverage_20": 0.5762,
-                    "recall_50": 0.3195
+                    "alpha_ndcg_10": 0.273,
+                    "coverage_20": 0.576,
+                    "recall_50": 0.32
                 },
                 "yolo": {
                     "alpha_ndcg_10": 0.279,
-                    "coverage_20": 0.5962,
-                    "recall_50": 0.4231
+                    "coverage_20": 0.596,
+                    "recall_50": 0.423
                 },
                 "laravel": {
-                    "alpha_ndcg_10": 0.4298,
+                    "alpha_ndcg_10": 0.43,
                     "coverage_20": 0.736,
-                    "recall_50": 0.5428
+                    "recall_50": 0.543
                 },
                 "angular": {
                     "alpha_ndcg_10": 0.317,
-                    "coverage_20": 0.6431,
-                    "recall_50": 0.4059
+                    "coverage_20": 0.643,
+                    "recall_50": 0.406
                 },
                 "godot": {
-                    "alpha_ndcg_10": 0.1992,
-                    "coverage_20": 0.4219,
-                    "recall_50": 0.3814
+                    "alpha_ndcg_10": 0.199,
+                    "coverage_20": 0.422,
+                    "recall_50": 0.381
                 },
                 "average": {
-                    "alpha_ndcg_10": 0.2996,
-                    "coverage_20": 0.5947,
-                    "recall_50": 0.4145
+                    "alpha_ndcg_10": 0.3,
+                    "coverage_20": 0.595,
+                    "recall_50": 0.414
                 }
             }
         },
@@ -1933,38 +1933,38 @@
                 "size": "-",
                 "type": "proprietary",
                 "date": "2026-01-15",
-                "link": "https://docs.voyageai.com/docs/embeddings"
+                "link": "https://blog.voyageai.com/2026/01/15/voyage-4/"
             },
             "datasets": {
                 "langchain": {
-                    "alpha_ndcg_10": 0.3383,
-                    "coverage_20": 0.6808,
-                    "recall_50": 0.4322
+                    "alpha_ndcg_10": 0.338,
+                    "coverage_20": 0.681,
+                    "recall_50": 0.432
                 },
                 "yolo": {
-                    "alpha_ndcg_10": 0.4399,
-                    "coverage_20": 0.7722,
-                    "recall_50": 0.6008
+                    "alpha_ndcg_10": 0.44,
+                    "coverage_20": 0.772,
+                    "recall_50": 0.601
                 },
                 "laravel": {
-                    "alpha_ndcg_10": 0.3484,
+                    "alpha_ndcg_10": 0.348,
                     "coverage_20": 0.714,
-                    "recall_50": 0.5825
+                    "recall_50": 0.583
                 },
                 "angular": {
-                    "alpha_ndcg_10": 0.3461,
-                    "coverage_20": 0.6917,
-                    "recall_50": 0.4885
+                    "alpha_ndcg_10": 0.346,
+                    "coverage_20": 0.692,
+                    "recall_50": 0.488
                 },
                 "godot": {
-                    "alpha_ndcg_10": 0.2744,
-                    "coverage_20": 0.5657,
-                    "recall_50": 0.4483
+                    "alpha_ndcg_10": 0.274,
+                    "coverage_20": 0.566,
+                    "recall_50": 0.448
                 },
                 "average": {
-                    "alpha_ndcg_10": 0.3494,
-                    "coverage_20": 0.6849,
-                    "recall_50": 0.5105
+                    "alpha_ndcg_10": 0.349,
+                    "coverage_20": 0.685,
+                    "recall_50": 0.51
                 }
             }
         }
