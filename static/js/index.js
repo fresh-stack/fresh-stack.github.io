@@ -617,7 +617,7 @@ function isNewModel(dateStr) {
 
 function loadTableData() {
 	console.log('Starting to load table data...');
-	fetch('./leaderboard_data.json')
+	fetch('./leaderboard_data.json', { cache: 'no-cache' })
 		.then(response => {
 			console.log('Response status:', response.status);
 			if (!response.ok) {
