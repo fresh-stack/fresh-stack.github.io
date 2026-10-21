@@ -90,6 +90,7 @@ const PINNED_FAMILY_COLORS = {
 	'Jasper': '#756bb1',
 	'Nemotron-Embed': '#76b900',
 	'Octen-Embedding': '#f2b705',
+	'LightOn': '#00bfa5',
 	'z-embed': '#263238',
 	'Fusion': '#e6550d',
 	'BM25': '#969696',
@@ -106,6 +107,9 @@ function inferModelFamily(rawName) {
 	const familyRules = [
 		{ key: 'nemotron', label: 'Nemotron-Embed' },
 		{ key: 'octen', label: 'Octen-Embedding' },
+		{ key: 'denseon', label: 'LightOn' },
+		{ key: 'slideon', label: 'LightOn' },
+		{ key: 'lateon', label: 'LightOn' },
 		{ key: 'zembed', label: 'z-embed' },
 		{ key: 'stella', label: 'Stella' },
 		{ key: 'harrier', label: 'Harrier OSS' },
@@ -860,7 +864,8 @@ const RETRIEVER_LABELS = {
 	dense: 'Dense',
 	lexical: 'Lexical',
 	hybrid: 'Hybrid',
-	late_interaction: 'Late-In.'
+	late_interaction: 'Late-In.',
+	sparse: 'Sparse'
 };
 
 function getRetrieverLabel(row) {

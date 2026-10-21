@@ -436,6 +436,7 @@ th.angular-details-cell {
 .type-chip[data-retriever="lexical"] { --chip-color: #e8590c; }
 .type-chip[data-retriever="hybrid"] { --chip-color: #0c8599; }
 .type-chip[data-retriever="late_interaction"] { --chip-color: var(--type-late); }
+.type-chip[data-retriever="sparse"] { --chip-color: #2b8a3e; }
 
 .lb-filter-groups {
   display: flex;
@@ -672,6 +673,7 @@ th.angular-details-cell {
 .retriever-tag.retriever-lexical { background: #fff0e6; color: #c2410c; }
 .retriever-tag.retriever-hybrid { background: #e3f6f9; color: #0c7285; }
 .retriever-tag.retriever-late_interaction { background: #efe9ff; color: #6741d9; }
+.retriever-tag.retriever-sparse { background: #e6f6ea; color: #2b8a3e; }
 
 .rank-badge,
 .rank-num {
