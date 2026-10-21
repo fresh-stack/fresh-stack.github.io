@@ -2008,6 +2008,129 @@
                     "recall_50": 0.605
                 }
             }
+        },
+        {
+            "info": {
+                "name": "EmbeddingGemma-2",
+                "size": "270M",
+                "type": "open_source",
+                "date": "2026-10-06",
+                "link": "https://huggingface.co/google/embeddinggemma-2"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.257,
+                    "coverage_20": 0.573,
+                    "recall_50": 0.318
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.271,
+                    "coverage_20": 0.62,
+                    "recall_50": 0.411
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.251,
+                    "coverage_20": 0.558,
+                    "recall_50": 0.398
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.216,
+                    "coverage_20": 0.539,
+                    "recall_50": 0.289
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.199,
+                    "coverage_20": 0.383,
+                    "recall_50": 0.329
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.239,
+                    "coverage_20": 0.535,
+                    "recall_50": 0.349
+                }
+            }
+        },
+        {
+            "info": {
+                "name": "Cohere Embed v5.0 (Fast)",
+                "size": "-",
+                "type": "proprietary",
+                "date": "2026-09-30",
+                "link": "https://docs.cohere.com/changelog/embed-v5"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.348,
+                    "coverage_20": 0.676,
+                    "recall_50": 0.433
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.398,
+                    "coverage_20": 0.76,
+                    "recall_50": 0.61
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.446,
+                    "coverage_20": 0.756,
+                    "recall_50": 0.656
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.385,
+                    "coverage_20": 0.689,
+                    "recall_50": 0.467
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.289,
+                    "coverage_20": 0.577,
+                    "recall_50": 0.497
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.373,
+                    "coverage_20": 0.692,
+                    "recall_50": 0.533
+                }
+            }
+        },
+        {
+            "info": {
+                "name": "Cohere Embed v5.0 (Pro)",
+                "size": "-",
+                "type": "proprietary",
+                "date": "2026-09-30",
+                "link": "https://docs.cohere.com/changelog/embed-v5"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.376,
+                    "coverage_20": 0.706,
+                    "recall_50": 0.487
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.502,
+                    "coverage_20": 0.802,
+                    "recall_50": 0.658
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.433,
+                    "coverage_20": 0.776,
+                    "recall_50": 0.66
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.417,
+                    "coverage_20": 0.73,
+                    "recall_50": 0.52
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.348,
+                    "coverage_20": 0.622,
+                    "recall_50": 0.534
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.415,
+                    "coverage_20": 0.727,
+                    "recall_50": 0.572
+                }
+            }
         }
     ]
 }
