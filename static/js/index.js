@@ -85,11 +85,12 @@ const PINNED_FAMILY_COLORS = {
 	'Nomic Embed': '#6a1b9a',
 	'Cohere Embed': '#843c39',
 	'EmbeddingGemma': '#e91e63',
+	'Gemini Embedding': '#4285f4',
 	'Tarka': '#43a047',
 	'Jasper': '#756bb1',
 	'Nemotron-Embed': '#76b900',
-	'Octen-Embedding': '#00838f',
-	'z-embed': '#c62828',
+	'Octen-Embedding': '#f2b705',
+	'z-embed': '#263238',
 	'Fusion': '#e6550d',
 	'BM25': '#969696',
 	'Other': '#9e9e9e'
@@ -124,6 +125,7 @@ function inferModelFamily(rawName) {
 		{ key: 'nomic embed', label: 'Nomic Embed' },
 		{ key: 'cohere embed', label: 'Cohere Embed' },
 		{ key: 'embeddinggemma', label: 'EmbeddingGemma' },
+		{ key: 'gemini embedding', label: 'Gemini Embedding' },
 		{ key: 'tarka', label: 'Tarka' },
 		{ key: 'fusion', label: 'Fusion' },
 		{ key: 'bm25', label: 'BM25' }
@@ -135,11 +137,17 @@ function inferModelFamily(rawName) {
 	return 'Other';
 }
 
+/** Model family from leaderboard_data.json (`info.family`), falling back to name-based inference. */
+function getModelFamily(row) {
+	const family = String(row?.info?.family || '').trim();
+	return family || inferModelFamily(row?.info?.name);
+}
+
 function buildFamilyColorMap(dataToRender) {
 	const families = Array.from(
 		new Set(
 			dataToRender
-				.map(row => inferModelFamily(row.info?.name))
+				.map(row => getModelFamily(row))
 				.filter(Boolean)
 		)
 	).sort((a, b) => a.localeCompare(b));
@@ -223,6 +231,7 @@ function renderRecallPlots(dataToRender) {
 	const plotConfig = { responsive: true, displayModeBar: true, displaylogo: false };
 	const plotData = dataToRender.filter(row => !isReferenceBaselineModel(row.info?.name));
 	const familyColors = buildFamilyColorMap(plotData);
+	renderOmittedSizeNote(plotData);
 
 	AVERAGE_METRIC_PLOTS.forEach(({ plotId, metricKey, yTitle, hoverMetric, yMin, yMax }) => {
 		const el = document.getElementById(plotId);
@@ -235,9 +244,9 @@ function renderRecallPlots(dataToRender) {
 			const y = row.datasets?.average?.[metricKey];
 			if (x === null || y === undefined || y === null || Number.isNaN(Number(y))) return;
 
-			const family = inferModelFamily(row.info?.name);
+			const family = getModelFamily(row);
 			if (!grouped[family]) {
-				grouped[family] = { x: [], y: [], symbols: [], hovertext: [] };
+				grouped[family] = { x: [], y: [], symbols: [], hovertext: [], labels: [], isNew: [] };
 			}
 			grouped[family].x.push(x);
 			grouped[family].y.push(Number(y));
@@ -245,9 +254,12 @@ function renderRecallPlots(dataToRender) {
 			const typeLabel = RECALL_TYPE_LABELS[typeKey] || typeKey || '';
 			const paramLabel = formatParameterSize(x);
 			grouped[family].hovertext.push(
-				`<b>${modelName}</b><br>Family: ${family}<br>Type: ${typeLabel}<br>Parameters: ${paramLabel}`
+				`<b>${modelName}</b>${isNewModel(row.info?.date) ? ' 🆕' : ''}<br>Family: ${family}<br>Type: ${typeLabel}<br>Parameters: ${paramLabel}`
 			);
 			grouped[family].symbols.push(TYPE_SYMBOLS[typeKey] || 'circle');
+			const isNew = isNewModel(row.info?.date);
+			grouped[family].isNew.push(isNew);
+			grouped[family].labels.push(isNew ? modelName : '');
 		});
 
 		const traces = Object.keys(grouped)
@@ -262,9 +274,12 @@ function renderRecallPlots(dataToRender) {
 				marker: {
 					color: familyColors[family] || '#666',
 					symbol: grouped[family].symbols,
-					size: 12,
+					size: grouped[family].isNew.map(n => (n ? 14 : 12)),
 					opacity: 0.95,
-					line: { width: 1, color: '#fff' }
+					line: {
+						width: grouped[family].isNew.map(n => (n ? 2.5 : 1)),
+						color: grouped[family].isNew.map(n => (n ? '#1c2340' : '#fff'))
+					}
 				},
 				hovertemplate:
 					'%{hovertext}<br>' +
@@ -312,7 +327,7 @@ function renderRecallPlots(dataToRender) {
 			}
 		}
 
-		const totalPoints = traces.reduce((acc, t) => acc + (t.x?.length || 0), 0);
+		const totalPoints = traces.reduce((acc, t) => acc + (t.mode === 'lines' ? 0 : (t.x?.length || 0)), 0);
 
 		if (totalPoints === 0) {
 			const emptyLayout = {
@@ -345,8 +360,10 @@ function renderRecallPlots(dataToRender) {
 			height: 430,
 			margin: { t: 28, r: 12, b: 130, l: 56 },
 			xaxis: {
-				title: { text: 'Model Parameters (Billions)', standoff: 26 },
+				title: { text: 'Model Parameters (log scale)', standoff: 26 },
 				type: 'log',
+				tickvals: [0.025, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50],
+				ticktext: ['25M', '50M', '100M', '200M', '500M', '1B', '2B', '5B', '10B', '20B', '50B'],
 				automargin: true,
 				showgrid: true,
 				zeroline: false,
@@ -367,7 +384,8 @@ function renderRecallPlots(dataToRender) {
 				x: 0.5
 			},
 			hovermode: 'closest',
-			dragmode: 'zoom'
+			dragmode: 'zoom',
+			annotations: buildNewModelAnnotations(grouped, yMin, yMax, 430 - 28 - 130, x => Math.log10(x))
 		};
 
 		if (el.data && el.layout) {
@@ -376,6 +394,65 @@ function renderRecallPlots(dataToRender) {
 			Plotly.newPlot(el, traces, layout, plotConfig);
 		}
 	});
+}
+
+/**
+ * Labels for recently released models, drawn as annotations to the left of each point and
+ * stacked vertically so neighbouring labels never overlap.
+ */
+function buildNewModelAnnotations(grouped, yMin, yMax, plotHeightPx, toAxisX) {
+	const points = [];
+	Object.values(grouped).forEach(g => {
+		g.isNew.forEach((isNew, i) => {
+			if (isNew) points.push({ x: g.x[i], y: g.y[i], label: g.labels[i] });
+		});
+	});
+	points.sort((a, b) => b.y - a.y);
+
+	const pxPerUnit = plotHeightPx / (yMax - yMin);
+	const minGapPx = 20;
+	let lastLabelPx = -Infinity;
+	return points.map(pt => {
+		const pointPx = (yMax - pt.y) * pxPerUnit;
+		const labelPx = Math.max(pointPx - 14, lastLabelPx + minGapPx);
+		lastLabelPx = labelPx;
+		return {
+			x: toAxisX(pt.x),
+			y: pt.y,
+			xref: 'x',
+			yref: 'y',
+			text: pt.label,
+			showarrow: true,
+			arrowhead: 0,
+			arrowwidth: 1,
+			arrowcolor: '#8a90a8',
+			ax: -48,
+			ay: labelPx - pointPx,
+			xanchor: 'right',
+			font: { size: 11, color: '#1c2340' },
+			bgcolor: 'rgba(255,255,255,0.92)',
+			bordercolor: '#d5dcfb',
+			borderwidth: 1,
+			borderpad: 2
+		};
+	});
+}
+
+/** Lists models that cannot be placed on the parameter axis because their size is undisclosed. */
+function renderOmittedSizeNote(plotData) {
+	const el = document.getElementById('recall-plots-omitted');
+	if (!el) return;
+	const omitted = plotData
+		.filter(row => parseSizeToBillions(row.info?.size) === null)
+		.sort((a, b) => (parseReleaseDate(b.info?.date) || 0) - (parseReleaseDate(a.info?.date) || 0));
+	if (!omitted.length) {
+		el.innerHTML = '';
+		el.classList.add('is-hidden');
+		return;
+	}
+	const names = omitted.map(row => `<span class="plot-omitted-chip">${escapeHtml(row.info.name)}</span>`).join('');
+	el.innerHTML = `<span class="plot-omitted-label">Not shown (undisclosed size, see release-date plot):</span>${names}`;
+	el.classList.remove('is-hidden');
 }
 
 function resizeRecallPlots() {
@@ -423,9 +500,9 @@ function renderReleaseDatePlots(dataToRender) {
 			const y = row.datasets?.average?.[metricKey];
 			if (x === null || y === undefined || y === null || Number.isNaN(Number(y))) return;
 
-			const family = inferModelFamily(row.info?.name);
+			const family = getModelFamily(row);
 			if (!grouped[family]) {
-				grouped[family] = { x: [], y: [], symbols: [], hovertext: [] };
+				grouped[family] = { x: [], y: [], symbols: [], hovertext: [], labels: [], isNew: [] };
 			}
 			grouped[family].x.push(x);
 			grouped[family].y.push(Number(y));
@@ -433,9 +510,12 @@ function renderReleaseDatePlots(dataToRender) {
 			const typeLabel = RECALL_TYPE_LABELS[typeKey] || typeKey || '';
 			const dateLabel = row.info?.date || '-';
 			grouped[family].hovertext.push(
-				`<b>${modelName}</b><br>Family: ${family}<br>Type: ${typeLabel}<br>Release date: ${dateLabel}`
+				`<b>${modelName}</b>${isNewModel(row.info?.date) ? ' 🆕' : ''}<br>Family: ${family}<br>Type: ${typeLabel}<br>Release date: ${dateLabel}`
 			);
 			grouped[family].symbols.push(TYPE_SYMBOLS[typeKey] || 'circle');
+			const isNew = isNewModel(row.info?.date);
+			grouped[family].isNew.push(isNew);
+			grouped[family].labels.push(isNew ? modelName : '');
 		});
 
 		const traces = Object.keys(grouped)
@@ -450,9 +530,12 @@ function renderReleaseDatePlots(dataToRender) {
 				marker: {
 					color: familyColors[family] || '#666',
 					symbol: grouped[family].symbols,
-					size: 12,
+					size: grouped[family].isNew.map(n => (n ? 14 : 12)),
 					opacity: 0.95,
-					line: { width: 1, color: '#fff' }
+					line: {
+						width: grouped[family].isNew.map(n => (n ? 2.5 : 1)),
+						color: grouped[family].isNew.map(n => (n ? '#1c2340' : '#fff'))
+					}
 				},
 				hovertemplate:
 					'%{hovertext}<br>' +
@@ -501,7 +584,7 @@ function renderReleaseDatePlots(dataToRender) {
 			}
 		}
 
-		const totalPoints = traces.reduce((acc, t) => acc + (t.x?.length || 0), 0);
+		const totalPoints = traces.reduce((acc, t) => acc + (t.mode === 'lines' ? 0 : (t.x?.length || 0)), 0);
 
 		if (totalPoints === 0) {
 			const emptyLayout = {
@@ -564,7 +647,8 @@ function renderReleaseDatePlots(dataToRender) {
 				itemsizing: 'constant'
 			},
 			hovermode: 'closest',
-			dragmode: 'zoom'
+			dragmode: 'zoom',
+			annotations: buildNewModelAnnotations(grouped, yMin, yMax, 430 - 28 - 160, x => x.toISOString().slice(0, 10))
 		};
 
 		if (el.data && el.layout) {

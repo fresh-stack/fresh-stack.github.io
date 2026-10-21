@@ -1587,3 +1587,33 @@ body {
     font-size: 0.78rem;
   }
 }
+
+/* Models omitted from the parameter plot (undisclosed size) */
+.plot-omitted {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--lb-border);
+  font-size: 0.9rem;
+  color: #5a6180;
+}
+
+.plot-omitted.is-hidden {
+  display: none;
+}
+
+.plot-omitted-label {
+  font-weight: 600;
+  margin-right: 0.2rem;
+}
+
+.plot-omitted-chip {
+  background: #f1f3f9;
+  border: 1px solid var(--lb-border);
+  border-radius: 999px;
+  padding: 0.1rem 0.6rem;
+  color: #2b3252;
+}
