@@ -2235,6 +2235,49 @@
                     "recall_50": 0.572
                 }
             }
+        },
+        {
+            "info": {
+                "name": "DenseOn",
+                "size": "149M",
+                "type": "open_source",
+                "retriever": "dense",
+                "family": "LightOn",
+                "date": "2026-03-13",
+                "link": "https://huggingface.co/lightonai/DenseOn"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.209,
+                    "coverage_20": 0.529,
+                    "recall_50": 0.274
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.206,
+                    "coverage_20": 0.397,
+                    "recall_50": 0.318
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.21,
+                    "coverage_20": 0.473,
+                    "recall_50": 0.394
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.205,
+                    "coverage_20": 0.492,
+                    "recall_50": 0.271
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.143,
+                    "coverage_20": 0.384,
+                    "recall_50": 0.295
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.195,
+                    "coverage_20": 0.455,
+                    "recall_50": 0.31
+                }
+            }
         }
     ]
 }
