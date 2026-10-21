@@ -2321,6 +2321,49 @@
                     "recall_50": 0.284
                 }
             }
+        },
+        {
+            "info": {
+                "name": "LateOn",
+                "size": "149M",
+                "type": "open_source",
+                "retriever": "late_interaction",
+                "family": "LightOn",
+                "date": "2026-03-13",
+                "link": "https://huggingface.co/lightonai/LateOn"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.231,
+                    "coverage_20": 0.533,
+                    "recall_50": 0.28
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.209,
+                    "coverage_20": 0.477,
+                    "recall_50": 0.402
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.342,
+                    "coverage_20": 0.666,
+                    "recall_50": 0.489
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.26,
+                    "coverage_20": 0.533,
+                    "recall_50": 0.306
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.183,
+                    "coverage_20": 0.378,
+                    "recall_50": 0.297
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.245,
+                    "coverage_20": 0.517,
+                    "recall_50": 0.355
+                }
+            }
         }
     ]
 }
