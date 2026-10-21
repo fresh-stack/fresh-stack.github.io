@@ -5,6 +5,7 @@
                 "name": "BM25",
                 "size": "-",
                 "type": "open_source",
+                "retriever": "lexical",
                 "date": "2024-11-01",
                 "link": "https://github.com/castorini/pyserini"
             },
@@ -46,6 +47,7 @@
                 "name": "BGE (Gemma-2)",
                 "size": "9B",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2024-07-30",
                 "link": "https://huggingface.co/BAAI/bge-multilingual-gemma2"
             },
@@ -87,6 +89,7 @@
                 "name": "E5 (Mistral-7B)",
                 "size": "7B",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2024-01-01",
                 "link": "https://huggingface.co/intfloat/e5-mistral-7b-instruct"
             },
@@ -128,6 +131,7 @@
                 "name": "Voyage Large 2",
                 "size": "-",
                 "type": "proprietary",
+                "retriever": "dense",
                 "date": "2024-05-05",
                 "link": "https://docs.voyageai.com/docs/embeddings"
             },
@@ -169,6 +173,7 @@
                 "name": "Fusion (BM25, BGE, E5, Voyage)",
                 "size": "-",
                 "type": "proprietary",
+                "retriever": "hybrid",
                 "date": "2024-11-01",
                 "link": ""
             },
@@ -210,6 +215,7 @@
                 "name": "GTE (large) v1.5",
                 "size": "434M",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2024-01-09",
                 "link": "https://huggingface.co/Alibaba-NLP/gte-large-en-v1.5"
             },
@@ -251,6 +257,7 @@
                 "name": "Oracle: BM25 (Nuggets)",
                 "size": "-",
                 "type": "upper_baseline",
+                "retriever": "lexical",
                 "date": "2024-11-01",
                 "link": "https://github.com/castorini/pyserini"
             },
@@ -292,6 +299,7 @@
                 "name": "Oracle: BGE (Gemma-2) (Nuggets)",
                 "size": "9B",
                 "type": "upper_baseline",
+                "retriever": "dense",
                 "date": "2024-11-01",
                 "link": "https://huggingface.co/BAAI/bge-multilingual-gemma2"
             },
@@ -333,6 +341,7 @@
                 "name": "Oracle: E5 (Mistral-7B) (Nuggets)",
                 "size": "7B",
                 "type": "upper_baseline",
+                "retriever": "dense",
                 "date": "2024-11-01",
                 "link": "https://huggingface.co/intfloat/e5-mistral-7b-instruct"
             },
@@ -374,6 +383,7 @@
                 "name": "Oracle: Voyage Large 2 (Nuggets)",
                 "size": "-",
                 "type": "upper_baseline",
+                "retriever": "dense",
                 "date": "2024-11-01",
                 "link": "https://docs.voyageai.com/docs/embeddings"
             },
@@ -415,6 +425,7 @@
                 "name": "Oracle: Fusion (BM25, ...) (Nuggets)",
                 "size": "-",
                 "type": "upper_baseline",
+                "retriever": "hybrid",
                 "date": "2024-11-01",
                 "link": ""
             },
@@ -456,6 +467,7 @@
                 "name": "Stella-1.5B v5",
                 "size": "1.5B",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2025-01-01",
                 "link": "https://huggingface.co/NovaSearch/stella_en_1.5B_v5"
             },
@@ -497,6 +509,7 @@
                 "name": "Qwen3-0.6B (Emb)",
                 "size": "596M",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2025-06-05",
                 "link": "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B"
             },
@@ -538,6 +551,7 @@
                 "name": "CodeRankEmbed",
                 "size": "137M",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2024-11-03",
                 "link": "https://huggingface.co/nomic-ai/CodeRankEmbed"
             },
@@ -579,6 +593,7 @@
                 "name": "Stella-400M v5",
                 "size": "400M",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2025-01-01",
                 "link": "https://huggingface.co/NovaSearch/stella_en_400M_v5"
             },
@@ -620,6 +635,7 @@
                 "name": "Qwen3-4B (Emb)",
                 "size": "4B",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2025-06-05",
                 "link": "https://huggingface.co/Qwen/Qwen3-Embedding-4B"
             },
@@ -661,6 +677,7 @@
                 "name": "Qwen3-8B (Emb)",
                 "size": "8B",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2025-06-05",
                 "link": "https://huggingface.co/Qwen/Qwen3-Embedding-8B"
             },
@@ -702,6 +719,7 @@
                 "name": "Nomic Embed (Code)",
                 "size": "7B",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2025-03-24",
                 "link": "https://huggingface.co/nomic-ai/nomic-embed-code"
             },
@@ -743,6 +761,7 @@
                 "name": "Jina V3 (Emb)",
                 "size": "570M",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2024-09-18",
                 "link": "https://huggingface.co/jinaai/jina-embeddings-v3"
             },
@@ -784,6 +803,7 @@
                 "name": "Jina V4 (Emb)",
                 "size": "3.8B",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2025-06-24",
                 "link": "https://huggingface.co/jinaai/jina-embeddings-v4"
             },
@@ -825,6 +845,7 @@
                 "name": "OpenAI text-embedding-3-small",
                 "size": "-",
                 "type": "proprietary",
+                "retriever": "dense",
                 "date": "2024-01-25",
                 "link": "https://openai.com/index/new-embedding-models-and-api-updates/"
             },
@@ -866,6 +887,7 @@
                 "name": "OpenAI text-embedding-3-large",
                 "size": "-",
                 "type": "proprietary",
+                "retriever": "dense",
                 "date": "2024-01-25",
                 "link": "https://openai.com/index/new-embedding-models-and-api-updates/"
             },
@@ -907,6 +929,7 @@
                 "name": "EmbeddingGemma-300M",
                 "size": "300M",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2025-09-04",
                 "link": "https://developers.googleblog.com/en/introducing-embeddinggemma/"
             },
@@ -948,6 +971,7 @@
                 "name": "GTE (ModernBERT-base)",
                 "size": "149M",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2025-01-22",
                 "link": "https://huggingface.co/Alibaba-NLP/gte-modernbert-base"
             },
@@ -989,6 +1013,7 @@
                 "name": "Granite-Embedding-English-R2",
                 "size": "149M",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2024-07-29",
                 "link": "https://huggingface.co/ibm-granite/granite-embedding-english-r2"
             },
@@ -1030,6 +1055,7 @@
                 "name": "Granite-Embedding-English-R2 (Small)",
                 "size": "47M",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2024-07-29",
                 "link": "https://huggingface.co/ibm-granite/granite-embedding-small-english-r2"
             },
@@ -1071,6 +1097,7 @@
                 "name": "Tarka-Embedding-150M-V1",
                 "size": "150M",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2025-11-03",
                 "link": "https://huggingface.co/Tarka-AIR/Tarka-Embedding-150M-V1"
             },
@@ -1112,6 +1139,7 @@
                 "name": "Tarka-Embedding-350M-V1",
                 "size": "350M",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2025-11-03",
                 "link": "https://huggingface.co/Tarka-AIR/Tarka-Embedding-350M-V1"
             },
@@ -1153,6 +1181,7 @@
                 "name": "Jasper-Token-Compression-600M",
                 "size": "600M",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2025-11-14",
                 "link": "https://huggingface.co/infgrad/Jasper-Token-Compression-600M"
             },
@@ -1194,6 +1223,7 @@
                 "name": "Arctic Embed M (v2.0)",
                 "size": "109M",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2024-12-04",
                 "link": "https://huggingface.co/Snowflake/snowflake-arctic-embed-m-v2.0"
             },
@@ -1235,6 +1265,7 @@
                 "name": "Arctic Embed L (v2.0)",
                 "size": "568M",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2024-12-04",
                 "link": "https://huggingface.co/Snowflake/snowflake-arctic-embed-l-v2.0"
             },
@@ -1276,6 +1307,7 @@
                 "name": "voyage-4-nano",
                 "size": "340M",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2026-01-15",
                 "link": "https://huggingface.co/voyageai/voyage-4-nano"
             },
@@ -1317,6 +1349,7 @@
                 "name": "Jina V5 (Text Small)",
                 "size": "677M",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2026-02-18",
                 "link": "https://huggingface.co/jinaai/jina-embeddings-v5-text-small"
             },
@@ -1358,6 +1391,7 @@
                 "name": "Jina V5 (Text Nano)",
                 "size": "239M",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2026-02-18",
                 "link": "https://huggingface.co/jinaai/jina-embeddings-v5-text-nano"
             },
@@ -1399,6 +1433,7 @@
                 "name": "Perplexity Embed v1 (0.6B)",
                 "size": "600M",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2026-02-24",
                 "link": "https://huggingface.co/perplexity-ai/pplx-embed-v1-0.6B"
             },
@@ -1440,6 +1475,7 @@
                 "name": "Perplexity Embed v1 (4B)",
                 "size": "4B",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2026-02-24",
                 "link": "https://huggingface.co/perplexity-ai/pplx-embed-v1-4B"
             },
@@ -1481,6 +1517,7 @@
                 "name": "Cohere Embed v4.0",
                 "size": "-",
                 "type": "proprietary",
+                "retriever": "dense",
                 "date": "2025-05-15",
                 "link": "https://cohere.com/blog/embed-4"
             },
@@ -1522,6 +1559,7 @@
                 "name": "harrier-oss-v1-270m",
                 "size": "270M",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2026-03-31",
                 "link": "https://huggingface.co/microsoft/harrier-oss-v1-270m"
             },
@@ -1563,6 +1601,7 @@
                 "name": "harrier-oss-v1-0.6b",
                 "size": "600M",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2026-03-31",
                 "link": "https://huggingface.co/microsoft/harrier-oss-v1-0.6b"
             },
@@ -1604,6 +1643,7 @@
                 "name": "harrier-oss-v1-27b",
                 "size": "27B",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2026-03-31",
                 "link": "https://huggingface.co/microsoft/harrier-oss-v1-27b"
             },
@@ -1645,6 +1685,7 @@
                 "name": "Nemotron-3-Embed-1B",
                 "size": "1B",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2026-07-15",
                 "link": "https://huggingface.co/nvidia/Nemotron-3-Embed-1B-BF16"
             },
@@ -1686,6 +1727,7 @@
                 "name": "Nemotron-3-Embed-8B",
                 "size": "8B",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2026-07-15",
                 "link": "https://huggingface.co/nvidia/Nemotron-3-Embed-8B-BF16"
             },
@@ -1727,6 +1769,7 @@
                 "name": "Octen-Embedding-8B",
                 "size": "8B",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2026-01-12",
                 "link": "https://huggingface.co/Octen/Octen-Embedding-8B"
             },
@@ -1768,6 +1811,7 @@
                 "name": "Octen-Embedding-4B",
                 "size": "4B",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2026-01-12",
                 "link": "https://huggingface.co/Octen/Octen-Embedding-4B"
             },
@@ -1809,6 +1853,7 @@
                 "name": "Octen-Embedding-0.6B",
                 "size": "600M",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2026-01-12",
                 "link": "https://huggingface.co/Octen/Octen-Embedding-0.6B"
             },
@@ -1850,6 +1895,7 @@
                 "name": "zembed-1",
                 "size": "8B",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2026-03-02",
                 "link": "https://huggingface.co/zeroentropy/zembed-1-embedding"
             },
@@ -1891,6 +1937,7 @@
                 "name": "Gemini Embedding 2",
                 "size": "-",
                 "type": "proprietary",
+                "retriever": "dense",
                 "date": "2026-03-10",
                 "link": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-embedding-2/"
             },
@@ -1932,6 +1979,7 @@
                 "name": "voyage-4-large",
                 "size": "-",
                 "type": "proprietary",
+                "retriever": "dense",
                 "date": "2026-01-15",
                 "link": "https://blog.voyageai.com/2026/01/15/voyage-4/"
             },
@@ -1973,6 +2021,7 @@
                 "name": "pplx-v2-preview",
                 "size": "-",
                 "type": "proprietary",
+                "retriever": "late_interaction",
                 "date": "2026-09-01",
                 "link": "https://huggingface.co/perplexity-ai"
             },
@@ -2014,6 +2063,7 @@
                 "name": "EmbeddingGemma-2",
                 "size": "270M",
                 "type": "open_source",
+                "retriever": "dense",
                 "date": "2026-10-06",
                 "link": "https://huggingface.co/google/embeddinggemma-2"
             },
@@ -2055,6 +2105,7 @@
                 "name": "Cohere Embed v5.0 (Fast)",
                 "size": "-",
                 "type": "proprietary",
+                "retriever": "dense",
                 "date": "2026-09-30",
                 "link": "https://docs.cohere.com/changelog/embed-v5"
             },
@@ -2096,6 +2147,7 @@
                 "name": "Cohere Embed v5.0 (Pro)",
                 "size": "-",
                 "type": "proprietary",
+                "retriever": "dense",
                 "date": "2026-09-30",
                 "link": "https://docs.cohere.com/changelog/embed-v5"
             },

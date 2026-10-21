@@ -56,16 +56,18 @@ const AVERAGE_METRIC_DATE_PLOTS = [
 	}
 ];
 
-const RECALL_TYPE_ORDER = ['upper_baseline', 'open_source', 'proprietary'];
+const RECALL_TYPE_ORDER = ['upper_baseline', 'open_source', 'proprietary', 'late_interaction'];
 const RECALL_TYPE_LABELS = {
 	upper_baseline: 'Oracle (Stack Overflow nuggets)',
 	open_source: 'Open source',
-	proprietary: 'Proprietary'
+	proprietary: 'Proprietary',
+	late_interaction: 'Late interaction'
 };
 const TYPE_SYMBOLS = {
 	upper_baseline: 'star',
 	open_source: 'circle',
-	proprietary: 'diamond'
+	proprietary: 'diamond',
+	late_interaction: 'square'
 };
 const PINNED_FAMILY_COLORS = {
 	'Stella': '#1f77b4',
@@ -380,7 +382,7 @@ function resizeRecallPlots() {
 	if (typeof Plotly === 'undefined') return;
 	AVERAGE_METRIC_PLOTS.forEach(({ plotId }) => {
 		const el = document.getElementById(plotId);
-		if (!el) return;
+		if (!el || el.offsetParent === null) return;
 		try {
 			Plotly.Plots.resize(el);
 		} catch (_) {
@@ -577,7 +579,7 @@ function resizeReleaseDatePlots() {
 	if (typeof Plotly === 'undefined') return;
 	AVERAGE_METRIC_DATE_PLOTS.forEach(({ plotId }) => {
 		const el = document.getElementById(plotId);
-		if (!el) return;
+		if (!el || el.offsetParent === null) return;
 		try {
 			Plotly.Plots.resize(el);
 		} catch (_) {
@@ -599,11 +601,29 @@ $(document).ready(function () {
 	bulmaSlider.attach();
 });
 
+const LB_DATASETS = ['average', 'langchain', 'yolo', 'laravel', 'angular', 'godot'];
+const LB_METRICS = [
+	{ key: 'alpha_ndcg_10', label: 'α@10' },
+	{ key: 'coverage_20', label: 'C@20' },
+	{ key: 'recall_50', label: 'R@50' }
+];
+const LB_DEFAULT_SORT_KEY = 'average.recall_50';
+const LB_DEFAULT_PAGE_SIZE = 20;
+
+const lbState = {
+	rows: [],
+	styleRanks: new Map(),
+	sortKey: LB_DEFAULT_SORT_KEY,
+	sortDir: 'desc',
+	page: 1,
+	pageSize: LB_DEFAULT_PAGE_SIZE
+};
+
 document.addEventListener('DOMContentLoaded', function () {
 	loadTableData();
 	setupEventListeners();
+	setupPageInteractions();
 	window.addEventListener('resize', function () {
-		adjustNameColumnWidth();
 		resizeRecallPlots();
 		resizeReleaseDatePlots();
 	});
@@ -617,27 +637,22 @@ function isNewModel(dateStr) {
 }
 
 function loadTableData() {
-	console.log('Starting to load table data...');
 	fetch('./leaderboard_data.json', { cache: 'no-cache' })
 		.then(response => {
-			console.log('Response status:', response.status);
 			if (!response.ok) {
 				throw new Error(`HTTP error! status: ${response.status}`);
 			}
 			return response.json();
 		})
 		.then(data => {
-			console.log('Data loaded successfully:', data);
 			fullLeaderboardData = data.leaderboardData;
-			const checkedTypes = Array.from(document.querySelectorAll('.type-filter:checked')).map(cb => cb.value);
-			const initialData = fullLeaderboardData.filter(row => checkedTypes.includes(row.info.type));
-			renderTableData(initialData);
+			applyTypeFilter();
 		})
 		.catch(error => {
 			console.error('Error loading table data:', error);
 			document.querySelector('#freshstack-table tbody').innerHTML = `
         <tr>
-          <td colspan="100%">
+          <td colspan="23" class="lb-error">
             Error loading data: ${error.message}<br>
             Please ensure you're accessing this page through a web server (http://localhost:8000) and not directly from the file system.
           </td>
@@ -646,70 +661,38 @@ function loadTableData() {
 		});
 }
 
-function renderTableData(dataToRender) {
-	const tbody = document.querySelector('#freshstack-table tbody');
-	tbody.innerHTML = '';
-
-	const datasets = ['average', 'langchain', 'yolo', 'laravel', 'angular', 'godot'];
-	const metrics = [
-		{ key: 'alpha_ndcg_10', label: 'α@10' },
-		{ key: 'coverage_20', label: 'C@20' },
-		{ key: 'recall_50', label: 'R@50' }
-	];
-
-	const scoresByDataset = {};
-	datasets.forEach(dataset => {
-		scoresByDataset[dataset] = prepareScoresForStyling(dataToRender, dataset);
-	});
-
-	dataToRender.forEach((row, index) => {
-		const tr = document.createElement('tr');
-		tr.classList.add(row.info.type);
-
-		const nameText = row.info.name;
-		const badge = isNewModel(row.info.date) ? `<span class="new-model-badge">NEW</span>` : '';
-		const nameCell = row.info.link?.trim()
-		  ? `<a href="${row.info.link}" target="_blank"><b>${nameText}</b>${badge}</a>`
-		  : `<b>${nameText}</b>${badge}`;
-
-		let datasetCells = '';
-		datasets.forEach(dataset => {
-			metrics.forEach(metric => {
-				const val = row.datasets?.[dataset]?.[metric.key] ?? '-';
-				const rank = scoresByDataset[dataset]?.[metric.key]?.[index] ?? -1;
-				const styledValue = applyStyle(val, rank);
-				datasetCells += `<td class="${dataset}-details">${styledValue}</td>`;
-			});
-		});
-
-		tr.innerHTML = `
-      <td class="rank-cell"></td>
-      <td>${nameCell}</td>
-      <td>${row.info.size}</td>
-      <td>${row.info.date}</td>
-      ${datasetCells}
-    `;
-		tbody.appendChild(tr);
-	});
-
-	setTimeout(adjustNameColumnWidth, 0);
-	initializeSorting();
-	renderRecallPlots(dataToRender);
-	renderReleaseDatePlots(dataToRender);
-}
-
 function setupEventListeners() {
-	document.querySelector('.reset-cell').addEventListener('click', resetTable);
+	document.getElementById('reset-table').addEventListener('click', resetTable);
 
-	document.querySelectorAll('.type-filter').forEach(cb => {
+	document.querySelectorAll('.type-filter, .retriever-filter').forEach(cb => {
 		cb.addEventListener('change', applyTypeFilter);
 	});
 
-	const headers = document.querySelectorAll('#freshstack-table thead tr:last-child th.sortable');
-	headers.forEach(header => {
+	document.querySelectorAll('#freshstack-table thead th.sortable').forEach(header => {
 		header.addEventListener('click', function () {
-			sortTable(this);
+			const key = this.dataset.key;
+			if (lbState.sortKey === key) {
+				lbState.sortDir = lbState.sortDir === 'desc' ? 'asc' : 'desc';
+			} else {
+				lbState.sortKey = key;
+				lbState.sortDir = key === 'name' ? 'asc' : 'desc';
+			}
+			lbState.page = 1;
+			sortRows();
+			renderTablePage();
 		});
+	});
+
+	document.getElementById('lb-pagination').addEventListener('click', event => {
+		const btn = event.target.closest('[data-page]');
+		if (!btn || btn.disabled) return;
+		goToPage(parseInt(btn.dataset.page, 10));
+	});
+
+	document.getElementById('lb-page-size').addEventListener('change', function () {
+		lbState.pageSize = this.value === 'all' ? Infinity : parseInt(this.value, 10);
+		lbState.page = 1;
+		renderTablePage();
 	});
 
 	document.getElementById('download-csv').addEventListener('click', () => {
@@ -721,218 +704,309 @@ function setupEventListeners() {
 	});
 }
 
+function getCheckedTypes() {
+	return Array.from(document.querySelectorAll('.type-filter:checked')).map(cb => cb.value);
+}
+
+function getCheckedRetrievers() {
+	return Array.from(document.querySelectorAll('.retriever-filter:checked')).map(cb => cb.value);
+}
+
+/** Chip counts reflect the selection in the *other* filter group. */
+function updateFilterChips() {
+	const data = fullLeaderboardData || [];
+	const checkedTypes = getCheckedTypes();
+	const checkedRetrievers = getCheckedRetrievers();
+	document.querySelectorAll('.type-chip').forEach(chip => {
+		const input = chip.querySelector('input');
+		const isRetriever = input.classList.contains('retriever-filter');
+		const count = data.filter(row => isRetriever
+			? row.info.retriever === input.value && checkedTypes.includes(row.info.type)
+			: row.info.type === input.value && checkedRetrievers.includes(row.info.retriever)
+		).length;
+		chip.classList.toggle('is-active', input.checked);
+		let countEl = chip.querySelector('.chip-count');
+		if (!countEl) {
+			countEl = document.createElement('span');
+			countEl.className = 'chip-count';
+			chip.appendChild(countEl);
+		}
+		countEl.textContent = count;
+	});
+}
+
 function applyTypeFilter() {
 	if (!fullLeaderboardData) return;
 
-	const checkedTypes = Array.from(document.querySelectorAll('.type-filter:checked')).map(cb => cb.value);
-	const filteredData = fullLeaderboardData.filter(row => checkedTypes.includes(row.info.type));
-	renderTableData(filteredData);
-}
+	const checkedTypes = getCheckedTypes();
+	const checkedRetrievers = getCheckedRetrievers();
+	const filteredData = fullLeaderboardData.filter(row =>
+		checkedTypes.includes(row.info.type) && checkedRetrievers.includes(row.info.retriever)
+	);
 
-function toggleDetails(section) {
-	const sections = ['average', 'langchain', 'yolo', 'godot', 'laravel', 'angular'];
-	sections.forEach(sec => {
-		const detailCells = document.querySelectorAll('.' + sec + '-details');
-		const headerCell = document.querySelector('.' + sec + '-details-cell');
-		if (sec === section) {
-			detailCells.forEach(cell => cell.classList.toggle('hidden'));
-			headerCell.setAttribute('colspan', headerCell.getAttribute('colspan') === '1' ? '3' : '3');
-		} else {
-			detailCells.forEach(cell => cell.classList.add('hidden'));
-			headerCell.setAttribute('colspan', '3');
-		}
-	});
-
-	setTimeout(adjustNameColumnWidth, 0);
+	lbState.rows = filteredData.slice();
+	lbState.styleRanks = computeStyleRanks(filteredData);
+	lbState.page = 1;
+	sortRows();
+	updateFilterChips();
+	renderStats();
+	renderTablePage();
+	renderRecallPlots(filteredData);
+	renderReleaseDatePlots(filteredData);
 }
 
 function resetTable() {
-	document.querySelectorAll(
-		'.average-details, .langchain-details, .yolo-details, .godot-details, .laravel-details, .angular-details'
-	).forEach(cell => cell.classList.remove('hidden'));
+	document.querySelectorAll('.type-filter, .retriever-filter').forEach(cb => {
+		cb.checked = cb.defaultChecked;
+	});
+	lbState.sortKey = LB_DEFAULT_SORT_KEY;
+	lbState.sortDir = 'desc';
+	lbState.pageSize = LB_DEFAULT_PAGE_SIZE;
+	document.getElementById('lb-page-size').value = String(LB_DEFAULT_PAGE_SIZE);
+	applyTypeFilter();
+}
 
-	['average', 'langchain', 'yolo', 'godot', 'laravel', 'angular'].forEach(section => {
-		document.querySelector(`.${section}-details-cell`).setAttribute('colspan', '3');
+function getMetricValue(row, dataset, metric) {
+	const val = row.datasets?.[dataset]?.[metric];
+	if (val === undefined || val === null || val === '-' || Number.isNaN(Number(val))) return null;
+	return Number(val);
+}
+
+const RETRIEVER_LABELS = {
+	dense: 'Dense',
+	lexical: 'Lexical',
+	hybrid: 'Hybrid',
+	late_interaction: 'Late-In.'
+};
+
+function getRetrieverLabel(row) {
+	const key = row.info?.retriever;
+	return RETRIEVER_LABELS[key] || '-';
+}
+
+function getSortValue(row, key) {
+	if (key === 'name') return String(row.info?.name || '');
+	if (key === 'retriever') return row.info?.retriever ? getRetrieverLabel(row) : null;
+	if (key === 'size') return parseSizeToBillions(row.info?.size);
+	if (key === 'date') {
+		const d = parseReleaseDate(row.info?.date);
+		return d ? d.getTime() : null;
+	}
+	const [dataset, metric] = key.split('.');
+	return getMetricValue(row, dataset, metric);
+}
+
+function sortRows() {
+	const { sortKey, sortDir } = lbState;
+	const dir = sortDir === 'desc' ? -1 : 1;
+
+	lbState.rows.sort((a, b) => {
+		const va = getSortValue(a, sortKey);
+		const vb = getSortValue(b, sortKey);
+		// Missing values always go last, regardless of direction.
+		if (va === null && vb !== null) return 1;
+		if (vb === null && va !== null) return -1;
+		let cmp = 0;
+		if (va !== null && vb !== null) {
+			cmp = typeof va === 'string' ? va.localeCompare(vb) : va - vb;
+		}
+		if (cmp === 0) return String(a.info.name).localeCompare(String(b.info.name));
+		return cmp * dir;
 	});
 
-	const headerToSort = getDefaultSortHeader();
-	if (headerToSort) {
-		sortTable(headerToSort, true, false);
-	}
-
-	// Reset checkboxes to default (Oracle unchecked)
-	document.querySelectorAll('.type-filter').forEach(cb => {
-		cb.checked = cb.value !== 'upper_baseline';
+	document.querySelectorAll('#freshstack-table thead th.sortable').forEach(th => {
+		th.classList.remove('asc', 'desc', 'is-sorted');
+		if (th.dataset.key === sortKey) th.classList.add(sortDir, 'is-sorted');
 	});
-
-	// Reload with default filter applied
-	const checkedTypes = Array.from(document.querySelectorAll('.type-filter:checked')).map(cb => cb.value);
-	renderTableData(fullLeaderboardData.filter(row => checkedTypes.includes(row.info.type)));
-
-	setTimeout(adjustNameColumnWidth, 0);
 }
 
-function sortTable(header, forceDescending = false, maintainOrder = false) {
-	const table = document.getElementById('freshstack-table');
-	const tbody = table.querySelector('tbody');
-	const rows = Array.from(tbody.querySelectorAll('tr'));
-	const headers = Array.from(header.parentNode.children);
-	const columnIndex = headers.indexOf(header);
-	const sortType = header.dataset.sort;
-
-	const isDescending =
-		forceDescending ||
-		(!header.classList.contains('asc') && !header.classList.contains('desc')) ||
-		header.classList.contains('asc');
-
-	if (!maintainOrder) {
-		rows.sort((a, b) => {
-			const aValue = getCellValue(a, columnIndex);
-			const bValue = getCellValue(b, columnIndex);
-
-			if (aValue === '-' && bValue !== '-') return isDescending ? 1 : -1;
-			if (bValue === '-' && aValue !== '-') return isDescending ? -1 : 1;
-
-			if (sortType === 'number') {
-				return isDescending ? parseFloat(bValue) - parseFloat(aValue) : parseFloat(aValue) - parseFloat(bValue);
-			} else if (sortType === 'date') {
-				return isDescending ? new Date(bValue) - new Date(aValue) : new Date(aValue) - new Date(bValue);
-			} else {
-				return isDescending ? bValue.localeCompare(aValue) : aValue.localeCompare(bValue);
-			}
-		});
-	}
-
-	headers.forEach(th => th.classList.remove('asc', 'desc'));
-	header.classList.add(isDescending ? 'desc' : 'asc');
-
-	rows.forEach(row => tbody.appendChild(row));
-	updateRanks();
-	setTimeout(adjustNameColumnWidth, 0);
+function getPageCount() {
+	if (!Number.isFinite(lbState.pageSize)) return 1;
+	return Math.max(1, Math.ceil(lbState.rows.length / lbState.pageSize));
 }
 
-function getCellValue(row, index) {
-	const cells = Array.from(row.children);
-	let cell = cells[index];
-
-	const datasets = ['average', 'langchain', 'yolo', 'godot', 'laravel', 'angular'];
-
-	if (cell.classList.contains('hidden')) {
-		for (const dataset of datasets) {
-			if (cell.classList.contains(`${dataset}-details`)) {
-				cell = cells.find(
-					c => c.classList.contains(`${dataset}-details`) && !c.classList.contains('hidden')
-				);
-				break;
-			}
-		}
-	}
-
-	return cell ? cell.textContent.trim() : '';
-}
-
-function getDefaultSortHeader() {
-	const headers = document.querySelectorAll('#freshstack-table thead tr:last-child th.sortable');
-
-	for (const header of headers) {
-		const text = header.textContent.trim();
-		if (header.classList.contains('average-details') && text === 'R@50') {
-			return header;
-		}
-	}
-
-	return document.querySelector('#freshstack-table thead tr:last-child th[data-sort="number"]:not(.hidden)');
-}
-
-function initializeSorting() {
-	const headerToSort = getDefaultSortHeader();
-	if (headerToSort) {
-		sortTable(headerToSort, true, false);
+function goToPage(page) {
+	const pageCount = getPageCount();
+	const next = Math.min(Math.max(1, page), pageCount);
+	if (next === lbState.page) return;
+	lbState.page = next;
+	renderTablePage();
+	const card = document.querySelector('.leaderboard-card');
+	if (card && card.getBoundingClientRect().top < 0) {
+		card.scrollIntoView({ behavior: 'smooth', block: 'start' });
 	}
 }
 
-function updateRanks() {
+function formatScore(value) {
+	return value === null ? '-' : value.toFixed(3);
+}
+
+function escapeHtml(str) {
+	return String(str).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+}
+
+function renderRankCell(rank) {
+	if (rank <= 3) return `<span class="rank-badge rank-${rank}">${rank}</span>`;
+	return `<span class="rank-num">${rank}</span>`;
+}
+
+function renderTablePage() {
 	const tbody = document.querySelector('#freshstack-table tbody');
-	if (!tbody) return;
+	const total = lbState.rows.length;
+	const pageCount = getPageCount();
+	if (lbState.page > pageCount) lbState.page = pageCount;
 
-	const rows = Array.from(tbody.querySelectorAll('tr'));
-	rows.forEach((row, index) => {
-		const cell = row.querySelector('.rank-cell');
-		if (cell) {
-			cell.textContent = index + 1;
-		}
-	});
+	const start = Number.isFinite(lbState.pageSize) ? (lbState.page - 1) * lbState.pageSize : 0;
+	const end = Number.isFinite(lbState.pageSize) ? Math.min(start + lbState.pageSize, total) : total;
+	const pageRows = lbState.rows.slice(start, end);
+
+	if (total === 0) {
+		tbody.innerHTML = `<tr><td colspan="23" class="lb-empty">No models match the selected filters.</td></tr>`;
+	} else {
+		tbody.innerHTML = pageRows.map((row, i) => renderRow(row, start + i + 1)).join('');
+	}
+
+	renderPagination(pageCount);
+	const info = document.getElementById('lb-page-info');
+	info.textContent = total === 0
+		? 'No models'
+		: `Showing ${start + 1}–${end} of ${total} model${total === 1 ? '' : 's'}`;
 }
 
-function adjustNameColumnWidth() {
-	// Column widths are controlled by CSS; no JS override needed.
-}
+function renderRow(row, rank) {
+	const name = escapeHtml(row.info.name);
+	const badge = isNewModel(row.info.date) ? `<span class="new-model-badge">NEW</span>` : '';
+	const link = row.info.link?.trim();
+	const nameCell = link
+		? `<a href="${escapeHtml(link)}" target="_blank" rel="noopener">${name}</a>${badge}`
+		: `<span>${name}</span>${badge}`;
+	const ranks = lbState.styleRanks.get(row) || {};
 
-function prepareScoresForStyling(data, section) {
-	const scores = {};
-	const fields = ['alpha_ndcg_10', 'coverage_20', 'recall_50'];
-
-	fields.forEach(field => {
-		const valuesWithIndex = [];
-
-		data.forEach((row, idx) => {
-			const val = row.datasets?.[section]?.[field];
-			if (val !== undefined && val !== null && val !== '-') {
-				valuesWithIndex.push({ index: idx, value: parseFloat(val) });
-			}
+	let datasetCells = '';
+	LB_DATASETS.forEach(dataset => {
+		LB_METRICS.forEach(metric => {
+			const value = getMetricValue(row, dataset, metric.key);
+			const rankInCol = ranks[`${dataset}.${metric.key}`];
+			const classes = [`${dataset}-details`, 'score-cell'];
+			if (value !== null && rankInCol === 0) classes.push('is-best');
+			if (value !== null && rankInCol === 1) classes.push('is-second');
+			if (`${dataset}.${metric.key}` === lbState.sortKey) classes.push('is-sorted-col');
+			datasetCells += `<td class="${classes.join(' ')}">${formatScore(value)}</td>`;
 		});
-
-		valuesWithIndex.sort((a, b) => b.value - a.value);
-
-		const ranks = Array(data.length).fill(-1);
-		let currentRank = 0;
-		for (let i = 0; i < valuesWithIndex.length; i++) {
-			if (i > 0 && valuesWithIndex[i].value !== valuesWithIndex[i - 1].value) {
-				currentRank = i;
-			}
-			ranks[valuesWithIndex[i].index] = currentRank;
-		}
-
-		scores[field] = ranks;
 	});
 
-	return scores;
+	return `<tr class="${escapeHtml(row.info.type)}">
+      <td class="rank-cell">${renderRankCell(rank)}</td>
+      <td class="name-cell">${nameCell}</td>
+      <td class="meta-cell retriever-cell"><span class="retriever-tag retriever-${escapeHtml(row.info.retriever || 'unknown')}"${row.info.retriever === 'late_interaction' ? ' title="Late-interaction (LI)"' : ''}>${escapeHtml(getRetrieverLabel(row))}</span></td>
+      <td class="meta-cell">${escapeHtml(row.info.size ?? '-')}</td>
+      <td class="meta-cell">${escapeHtml(row.info.date ?? '-')}</td>
+      ${datasetCells}
+    </tr>`;
 }
 
-function applyStyle(value, rank) {
-	if (value === undefined || value === null || value === '-') return '-';
-	if (rank === 0) return `<b>${value}</b>`;
-	if (rank === 1) return `<span style="text-decoration: underline;">${value}</span>`;
-	return value;
+function renderPagination(pageCount) {
+	const nav = document.getElementById('lb-pagination');
+	if (pageCount <= 1) {
+		nav.innerHTML = '';
+		return;
+	}
+
+	const current = lbState.page;
+	const pages = [];
+	for (let p = 1; p <= pageCount; p++) {
+		if (p === 1 || p === pageCount || Math.abs(p - current) <= 1) {
+			pages.push(p);
+		} else if (pages[pages.length - 1] !== '…') {
+			pages.push('…');
+		}
+	}
+
+	const pageButtons = pages.map(p => p === '…'
+		? `<span class="lb-page-ellipsis">…</span>`
+		: `<button type="button" class="lb-page-btn${p === current ? ' is-current' : ''}" data-page="${p}"${p === current ? ' aria-current="page"' : ''}>${p}</button>`
+	).join('');
+
+	nav.innerHTML = `
+    <button type="button" class="lb-page-btn lb-page-nav" data-page="${current - 1}" ${current === 1 ? 'disabled' : ''} aria-label="Previous page">‹ Prev</button>
+    ${pageButtons}
+    <button type="button" class="lb-page-btn lb-page-nav" data-page="${current + 1}" ${current === pageCount ? 'disabled' : ''} aria-label="Next page">Next ›</button>
+  `;
+}
+
+function renderStats() {
+	const el = document.getElementById('lb-stats');
+	if (!el || !fullLeaderboardData) return;
+	const retrievers = fullLeaderboardData.filter(row => row.info.type !== 'upper_baseline');
+	const best = retrievers.reduce((acc, row) => {
+		const v = getMetricValue(row, 'average', 'recall_50');
+		return v !== null && (acc === null || v > acc.value) ? { row, value: v } : acc;
+	}, null);
+	const latest = retrievers.reduce((acc, row) => {
+		const d = parseReleaseDate(row.info.date);
+		return d && (!acc || d > acc.date) ? { row, date: d } : acc;
+	}, null);
+
+	const items = [
+		`<span class="stat-pill"><b>${retrievers.length}</b> retrievers</span>`,
+		`<span class="stat-pill"><b>5</b> domains</span>`
+	];
+	if (best) {
+		items.push(`<span class="stat-pill">🥇 Top R@50: <b>${escapeHtml(best.row.info.name)}</b> (${best.value.toFixed(3)})</span>`);
+	}
+	if (latest) {
+		items.push(`<span class="stat-pill">🆕 Latest: <b>${escapeHtml(latest.row.info.name)}</b></span>`);
+	}
+	el.innerHTML = items.join('');
+}
+
+/** Per-column rank (0 = best) of each row within `data`, used for bold/underline styling. */
+function computeStyleRanks(data) {
+	const rankMap = new Map(data.map(row => [row, {}]));
+
+	LB_DATASETS.forEach(dataset => {
+		LB_METRICS.forEach(({ key }) => {
+			const colKey = `${dataset}.${key}`;
+			const values = data
+				.map(row => ({ row, value: getMetricValue(row, dataset, key) }))
+				.filter(item => item.value !== null)
+				.sort((a, b) => b.value - a.value);
+
+			let currentRank = 0;
+			values.forEach((item, i) => {
+				if (i > 0 && item.value !== values[i - 1].value) currentRank = i;
+				rankMap.get(item.row)[colKey] = currentRank;
+			});
+		});
+	});
+
+	return rankMap;
 }
 
 function exportTableToCSV(filename = 'leaderboard.csv') {
-	const table = document.getElementById('freshstack-table');
-	const datasets = ['average', 'langchain', 'yolo', 'laravel', 'angular', 'godot'];
-	const metrics = ['α@10', 'C@20', 'R@50'];
-
+	const metricsLabels = LB_METRICS.map(m => m.label);
 	const csv = [];
 
-	const headerRow1 = ['Rank', 'Model Name', 'Size', 'Date'];
-	datasets.forEach(dataset => {
+	const headerRow1 = ['Rank', 'Model Name', 'Type', 'Size', 'Date'];
+	LB_DATASETS.forEach(dataset => {
 		headerRow1.push(dataset.toUpperCase(), '', '');
 	});
 	csv.push(headerRow1.join(','));
 
-	const headerRow2 = ['-', '-', '-', '-'];
-	datasets.forEach(() => {
-		headerRow2.push(...metrics);
+	const headerRow2 = ['-', '-', '-', '-', '-'];
+	LB_DATASETS.forEach(() => {
+		headerRow2.push(...metricsLabels);
 	});
 	csv.push(headerRow2.join(','));
 
-	const rows = Array.from(table.querySelectorAll('tbody tr'));
-	rows.forEach(row => {
-		const cells = Array.from(row.querySelectorAll('td'));
-		const rowData = cells.map(cell => {
-			let text = cell.textContent.trim().replace(/[\n\r]+/g, ' ').replace(/,/g, ';');
-			return `"${text}"`;
+	lbState.rows.forEach((row, index) => {
+		const cells = [index + 1, row.info.name, getRetrieverLabel(row), row.info.size ?? '-', row.info.date ?? '-'];
+		LB_DATASETS.forEach(dataset => {
+			LB_METRICS.forEach(metric => {
+				cells.push(formatScore(getMetricValue(row, dataset, metric.key)));
+			});
 		});
-		csv.push(rowData.join(','));
+		csv.push(cells.map(c => `"${String(c).replace(/[\n\r]+/g, ' ').replace(/,/g, ';')}"`).join(','));
 	});
 
 	const csvContent = csv.join('\n');
@@ -966,4 +1040,46 @@ function exportTableToJSON(filename = 'leaderboard.json') {
 			console.error('Error exporting JSON:', error);
 			alert('Failed to export JSON. See console for details.');
 		});
+}
+
+function setupPageInteractions() {
+	const newsToggle = document.getElementById('news-toggle');
+	const newsList = document.getElementById('news-list');
+	if (newsToggle && newsList) {
+		newsToggle.addEventListener('click', () => {
+			const expanded = newsList.classList.toggle('is-expanded');
+			newsToggle.setAttribute('aria-expanded', String(expanded));
+			newsToggle.querySelector('span').textContent = expanded ? 'Show less' : 'Show older news';
+			newsToggle.classList.toggle('is-expanded', expanded);
+		});
+	}
+
+	document.querySelectorAll('[data-plot-tabs]').forEach(card => {
+		card.querySelectorAll('.plot-tab').forEach(tab => {
+			tab.addEventListener('click', () => {
+				card.querySelectorAll('.plot-tab').forEach(t => t.classList.toggle('is-active', t === tab));
+				card.querySelectorAll('.plot-pane').forEach(pane => {
+					pane.classList.toggle('is-active', pane.id === tab.dataset.target);
+				});
+				const pane = document.getElementById(tab.dataset.target);
+				if (pane && typeof Plotly !== 'undefined' && pane.data) {
+					Plotly.Plots.resize(pane);
+				}
+			});
+		});
+	});
+
+	const copyBtn = document.getElementById('bibtex-copy');
+	const bibtex = document.getElementById('bibtex-text');
+	if (copyBtn && bibtex) {
+		copyBtn.addEventListener('click', () => {
+			const label = copyBtn.querySelector('.bibtex-copy-label');
+			navigator.clipboard.writeText(bibtex.textContent.trim()).then(
+				() => { label.textContent = 'Copied!'; },
+				() => { label.textContent = 'Copy failed'; }
+			).finally(() => {
+				setTimeout(() => { label.textContent = 'Copy'; }, 2000);
+			});
+		});
+	}
 }

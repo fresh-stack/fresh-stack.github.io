@@ -32,7 +32,7 @@
   <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
   <link rel="stylesheet"
   href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  <link rel="stylesheet" href="static/css/index.css">
+  <link rel="stylesheet" href="static/css/index.css?v=20261021m">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
@@ -40,12 +40,30 @@
   <script src="static/js/bulma-carousel.min.js"></script>
   <script src="static/js/bulma-slider.min.js"></script>
   <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
-  <script src="static/js/index.js?v=20260914b"></script>
+  <script src="static/js/index.js?v=20261021f"></script>
 </head>
 <body>
 
+<!-- Top navigation -->
+<nav class="site-nav" aria-label="Page sections">
+  <div class="site-nav-inner">
+    <a href="#top" class="site-nav-brand">
+      <img src="static/images/favicon.ico" alt="" class="site-nav-logo">
+      <span class="freshstack">FreshStack</span>
+    </a>
+    <div class="site-nav-links">
+      <a href="#news">News</a>
+      <a href="#leaderboard">Leaderboard</a>
+      <a href="#abstract">Abstract</a>
+      <a href="#overview">Overview</a>
+      <a href="#avg-metric-plots">Analysis</a>
+      <a href="#Poster">Poster</a>
+      <a href="#BibTeX">Cite</a>
+    </div>
+  </div>
+</nav>
 
-  <section class="hero">
+  <section class="hero site-hero" id="top">
     <div class="hero-body">
       <div class="container is-max-desktop">
         <div class="columns is-centered">
@@ -123,6 +141,16 @@
           </a>
         </span>
           
+          <!-- Leaderboard link -->
+          <span class="link-block">
+            <a href="#leaderboard" class="external-link button is-normal is-rounded is-leaderboard-link">
+            <span class="icon">
+              <i class="fas fa-trophy"></i>
+            </span>
+            <span>Leaderboard</span>
+          </a>
+        </span>
+
           <!-- BibTeX link -->
           <span class="link-block">
             <a href="#BibTeX" class="external-link button is-normal is-rounded is-dark">
@@ -138,284 +166,416 @@
 </div>
 </section>
 
-<!-- Teaser image-->
-<section class="hero teaser">
-  <div class="container is-max-desktop">
-    <div class="hero-body">
-      <div style="background-color: #fff3e0; border: 1px solid #ffcc80; border-radius: 4px; padding: 20px; margin-bottom: 20px;">
-        <p style="margin: 0; font-size: 1.1em;">
-          <strong style="color: #f57c00;">tldr:</strong> <strong>FreshStack is a holistic framework for building realistic & challenging RAG benchmarks from community-asked questions and answers on niche and fast-growing domains.</strong>
-        </p>
-      </div>
+<!-- TL;DR -->
+<section class="tldr-section">
+  <div class="container-wide has-text-centered">
+    <div class="tldr-callout">
+      <span class="tldr-label">TL;DR</span>
+      <span class="tldr-text">FreshStack is a holistic framework for building realistic &amp; challenging RAG benchmarks from community-asked questions and answers on niche and fast-growing domains.</span>
     </div>
   </div>
 </section>
-<!-- End teaser image -->
+<!-- End TL;DR -->
 
 <!-- News Bulletin -->
-<section class="section" id="news" style="background-color:#ffffff;">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">
-          Latest News 
-        </h2>
-        <div class="content has-text-justified" 
-             style="background-color:#fefefe; border:1px solid #e0e0e0; border-radius:6px; padding:20px; font-size:1.1em; color:#212121;">
-          <ul style="list-style-type: none; padding-left: 0;">
-            <li>🎉 09/2026: Our work on analyzing technical drift on LangChain has been <strong>accepted at EMNLP 2026 (Findings Track)</strong>.</li>
-            <li>📊 03/2026: A new preprint on analysing temporal drift in technical documentation in freshstack (LangChain domain): <strong><a href="https://arxiv.org/abs/2603.04532">arxiv.org/abs/2603.04532</a></strong>.</li>
-            <li>📊 03/2026: <strong><a href="https://www.databricks.com/blog/meet-karl-faster-agent-enterprise-knowledge-powered-custom-rl">KARLBench</a></strong>, a recently released benchmark by Databricks has incorporated FreshStack as one of its datasets.</li>
-            <li>🎉 11/2025: <strong>FreshStack</strong> received the Honourable Mention for the award of <strong><a href="https://www.bcs.org/membership-and-registrations/member-communities/information-retrieval-specialist-group/awards/bcs-search-industry-awards/">Best Search Project in 2025</a></strong> at the BCS Search Solutions event held in London. </li>
-            <li>🎯 09/2025: Our roadmap is focused on evaluating new embedding models with extensions to ColBERT-style models soon!</li>
-            <li>🎉 09/2025: Our paper <strong>FreshStack</strong> has been <strong>accepted at NeurIPS 2025 (Datasets & Benchmarks Track)</strong>. Camera-ready to come soon!</li>
-            <li>📌 09/2025: <strong>FreshStack</strong> has now been officially included in <strong><a href="https://huggingface.co/blog/rteb">RTEB (Retrieval Embedding Benchmark)</a></strong>, a newer version of the popular MTEB benchmark.</li>
-          </ul>
-        </div>
-      </div>
+<section class="section page-section" id="news">
+  <div class="container-wide">
+    <div class="section-heading">
+      <span class="section-kicker">Updates</span>
+      <h2 class="section-title">Latest News</h2>
+    </div>
+    <ul class="news-list" id="news-list">
+      <li class="news-item">
+        <span class="news-date">Sep 2026</span>
+        <span class="news-icon">🎉</span>
+        <span class="news-text">Our work on analyzing technical drift on LangChain has been <strong>accepted at EMNLP 2026 (Findings Track)</strong>.</span>
+      </li>
+      <li class="news-item">
+        <span class="news-date">Mar 2026</span>
+        <span class="news-icon">📊</span>
+        <span class="news-text">A new preprint on analysing temporal drift in technical documentation in FreshStack (LangChain domain): <strong><a href="https://arxiv.org/abs/2603.04532" target="_blank" rel="noopener">arxiv.org/abs/2603.04532</a></strong>.</span>
+      </li>
+      <li class="news-item">
+        <span class="news-date">Mar 2026</span>
+        <span class="news-icon">📊</span>
+        <span class="news-text"><strong><a href="https://www.databricks.com/blog/meet-karl-faster-agent-enterprise-knowledge-powered-custom-rl" target="_blank" rel="noopener">KARLBench</a></strong>, a recently released benchmark by Databricks, has incorporated FreshStack as one of its datasets.</span>
+      </li>
+      <li class="news-item">
+        <span class="news-date">Nov 2025</span>
+        <span class="news-icon">🏅</span>
+        <span class="news-text"><strong>FreshStack</strong> received the Honourable Mention for the award of <strong><a href="https://www.bcs.org/membership-and-registrations/member-communities/information-retrieval-specialist-group/awards/bcs-search-industry-awards/" target="_blank" rel="noopener">Best Search Project in 2025</a></strong> at the BCS Search Solutions event held in London.</span>
+      </li>
+      <li class="news-item is-older">
+        <span class="news-date">Sep 2025</span>
+        <span class="news-icon">🎯</span>
+        <span class="news-text">Our roadmap is focused on evaluating new embedding models with extensions to ColBERT-style models soon!</span>
+      </li>
+      <li class="news-item is-older">
+        <span class="news-date">Sep 2025</span>
+        <span class="news-icon">🎉</span>
+        <span class="news-text">Our paper <strong>FreshStack</strong> has been <strong>accepted at NeurIPS 2025 (Datasets &amp; Benchmarks Track)</strong>. Camera-ready to come soon!</span>
+      </li>
+      <li class="news-item is-older">
+        <span class="news-date">Sep 2025</span>
+        <span class="news-icon">📌</span>
+        <span class="news-text"><strong>FreshStack</strong> has now been officially included in <strong><a href="https://huggingface.co/blog/rteb" target="_blank" rel="noopener">RTEB (Retrieval Embedding Benchmark)</a></strong>, a newer version of the popular MTEB benchmark.</span>
+      </li>
+    </ul>
+    <div class="has-text-centered">
+      <button type="button" class="button is-small is-rounded is-light news-toggle" id="news-toggle" aria-expanded="false">
+        <span>Show older news</span>
+        <span class="icon is-small"><i class="fas fa-chevron-down"></i></span>
+      </button>
     </div>
   </div>
 </section>
 <!-- End News Bulletin -->
 
-<!-- Paper abstract -->
-<section class="section hero is-light">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Abstract</h2>
-        <div class="content has-text-justified">
-          <p>
-            We introduce FreshStack, a reusable framework for automatically building information retrieval (IR) evaluation benchmarks from community-asked questions and answers. 
-            FreshStack conducts the following steps: (1) automatic corpus collection from code and technical documentation, (2) nugget generation from community-asked questions and answers, and (3) nugget-level support, retrieving documents using a fusion of retrieval techniques and hybrid architectures. 
-            We use FreshStack to build five datasets on fast-growing, recent, and niche topics to ensure the tasks are sufficiently challenging. 
-            Existing retrieval models, when applied out-of-the-box, significantly underperform oracle approaches on all five topics, denoting plenty of headroom to improve IR quality.
-          </p>
+<!-- Leaderboard -->
+<section class="section leaderboard-section" id="leaderboard">
+  <div class="leaderboard-container-wide">
+    <div class="has-text-centered mb-5">
+      <h2 class="leaderboard-title">🏆 FreshStack Leaderboard</h2>
+      <p class="leaderboard-subtitle">
+        Zero-shot retrieval on five niche technical domains (October 2024 snapshot), ranked by average <b>Recall@50</b>.
+      </p>
+      <div class="leaderboard-stats" id="lb-stats"></div>
+    </div>
+
+    <div class="leaderboard-card">
+      <div class="lb-toolbar">
+        <div class="lb-filter-groups">
+        <div id="type-filters" class="lb-filters" role="group" aria-label="Filter by model type">
+          <span class="lb-filter-label">Model</span>
+          <label class="type-chip" data-type="upper_baseline">
+            <input type="checkbox" class="type-filter" value="upper_baseline">
+            <span class="chip-dot"></span> Oracle (Stack Overflow Nuggets)
+          </label>
+          <label class="type-chip" data-type="open_source">
+            <input type="checkbox" class="type-filter" value="open_source" checked>
+            <span class="chip-dot"></span> Open Source
+          </label>
+          <label class="type-chip" data-type="proprietary">
+            <input type="checkbox" class="type-filter" value="proprietary" checked>
+            <span class="chip-dot"></span> Proprietary
+          </label>
+        </div>
+        <div id="retriever-filters" class="lb-filters" role="group" aria-label="Filter by retriever type">
+          <span class="lb-filter-label">Retriever</span>
+          <label class="type-chip" data-retriever="dense">
+            <input type="checkbox" class="retriever-filter" value="dense" checked>
+            <span class="chip-dot"></span> Dense
+          </label>
+          <label class="type-chip" data-retriever="lexical">
+            <input type="checkbox" class="retriever-filter" value="lexical" checked>
+            <span class="chip-dot"></span> Lexical
+          </label>
+          <label class="type-chip" data-retriever="hybrid">
+            <input type="checkbox" class="retriever-filter" value="hybrid" checked>
+            <span class="chip-dot"></span> Hybrid
+          </label>
+          <label class="type-chip" data-retriever="late_interaction" title="Late-interaction (multi-vector, ColBERT-style)">
+            <input type="checkbox" class="retriever-filter" value="late_interaction" checked>
+            <span class="chip-dot"></span> Late-Int.
+          </label>
+        </div>
+        </div>
+        <div class="lb-actions">
+          <button class="button is-small is-rounded is-light" id="reset-table" title="Reset filters, sorting and pagination">
+            <span class="icon is-small"><i class="fas fa-undo"></i></span><span>Reset</span>
+          </button>
+          <button class="button is-small is-rounded is-light" id="download-csv">
+            <span class="icon is-small"><i class="fas fa-file-csv"></i></span><span>CSV</span>
+          </button>
+          <button class="button is-small is-rounded is-light" id="download-json">
+            <span class="icon is-small"><i class="fas fa-file-code"></i></span><span>JSON</span>
+          </button>
         </div>
       </div>
+
+      <div class="lb-legend">
+        <span class="lb-legend-item"><b class="lb-legend-best">Bold</b> best in column</span>
+        <span class="lb-legend-item"><u class="lb-legend-second">Underlined</u> 2nd best</span>
+        <span class="lb-legend-sep"></span>
+        <span class="lb-legend-item" title="alpha-nDCG@10: retrieval diversity &amp; relevance"><b>α@10</b> alpha-nDCG · diversity &amp; relevance</span>
+        <span class="lb-legend-item" title="Coverage@20: fraction of nuggets supported by retrieved documents"><b>C@20</b> Coverage · nuggets supported</span>
+        <span class="lb-legend-item" title="Recall@50: % of relevant documents retrieved"><b>R@50</b> Recall · relevant docs retrieved</span>
+        <span class="lb-legend-hint"><i class="fas fa-sort"></i> Click headers to sort</span>
+      </div>
+
+      <div class="table-wrapper">
+        <table id="freshstack-table">
+          <thead>
+            <tr class="group-header">
+              <th colspan="5" class="model-group-cell"></th>
+              <th colspan="3" class="average-details-cell">Avg. (5)</th>
+              <th colspan="3" class="langchain-details-cell">LangChain</th>
+              <th colspan="3" class="yolo-details-cell">Yolo v7 &amp; v8</th>
+              <th colspan="3" class="laravel-details-cell">Laravel 10 &amp; 11</th>
+              <th colspan="3" class="angular-details-cell">Angular 16, 17 &amp; 18</th>
+              <th colspan="3" class="godot-details-cell">Godot4</th>
+            </tr>
+            <tr class="metric-header">
+              <th>#</th>
+              <th class="sortable" data-key="name">Retriever</th>
+              <th class="sortable" data-key="retriever" title="Dense, Lexical, Hybrid, or Late-Interaction (LI)">Type</th>
+              <th class="sortable" data-key="size">Size</th>
+              <th class="sortable" data-key="date">Date</th>
+              <th class="average-details sortable" data-key="average.alpha_ndcg_10">α@10</th>
+              <th class="average-details sortable" data-key="average.coverage_20">C@20</th>
+              <th class="average-details sortable" data-key="average.recall_50">R@50</th>
+              <th class="langchain-details sortable" data-key="langchain.alpha_ndcg_10">α@10</th>
+              <th class="langchain-details sortable" data-key="langchain.coverage_20">C@20</th>
+              <th class="langchain-details sortable" data-key="langchain.recall_50">R@50</th>
+              <th class="yolo-details sortable" data-key="yolo.alpha_ndcg_10">α@10</th>
+              <th class="yolo-details sortable" data-key="yolo.coverage_20">C@20</th>
+              <th class="yolo-details sortable" data-key="yolo.recall_50">R@50</th>
+              <th class="laravel-details sortable" data-key="laravel.alpha_ndcg_10">α@10</th>
+              <th class="laravel-details sortable" data-key="laravel.coverage_20">C@20</th>
+              <th class="laravel-details sortable" data-key="laravel.recall_50">R@50</th>
+              <th class="angular-details sortable" data-key="angular.alpha_ndcg_10">α@10</th>
+              <th class="angular-details sortable" data-key="angular.coverage_20">C@20</th>
+              <th class="angular-details sortable" data-key="angular.recall_50">R@50</th>
+              <th class="godot-details sortable" data-key="godot.alpha_ndcg_10">α@10</th>
+              <th class="godot-details sortable" data-key="godot.coverage_20">C@20</th>
+              <th class="godot-details sortable" data-key="godot.recall_50">R@50</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Table body will be populated dynamically -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="lb-footer">
+        <div class="lb-page-info" id="lb-page-info"></div>
+        <nav class="lb-pagination" id="lb-pagination" aria-label="Leaderboard pagination"></nav>
+        <div class="lb-page-size">
+          <label for="lb-page-size">Rows per page</label>
+          <div class="select is-small is-rounded">
+            <select id="lb-page-size">
+              <option value="20" selected>20</option>
+              <option value="50">50</option>
+              <option value="all">All</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lb-info-grid">
+      <div class="lb-info-card">
+        <div class="lb-info-icon">🧪</div>
+        <h3>Evaluation setup</h3>
+        <ul>
+          <li><b>Zero-shot</b> retrieval of relevant document chunks given a query, on FreshStack (<b>October 2024</b> version).</li>
+          <li>Open-source &amp; proprietary <b>single-vector</b> embedding models, plus <b>late-interaction</b> (multi-vector, ColBERT-style) retrievers.</li>
+          <li>Maximum sequence length of <b>2048 tokens</b> for all models for both query and document.</li>
+        </ul>
+      </div>
+      <div class="lb-info-card">
+        <div class="lb-info-icon">📚</div>
+        <h3>Five datasets</h3>
+        <div class="lb-domain-tags">
+          <span>LangChain</span><span>Yolo v7 &amp; v8</span><span>Laravel 10 &amp; 11</span><span>Angular 16, 17 &amp; 18</span><span>Godot4</span>
+        </div>
+        <p class="lb-info-tip">💡 Queries in FreshStack can be <b>pretty long</b>, so use a model that can handle code and long queries.</p>
+      </div>
+      <div class="lb-info-card lb-info-card--cta">
+        <div class="lb-info-icon">🚀</div>
+        <h3>Submit your model</h3>
+        <p>Add your results to <code>leaderboard_data.json</code> and open a pull request.</p>
+        <a class="button is-rounded lb-cta-button" href="https://github.com/fresh-stack/fresh-stack.github.io/blob/master/leaderboard_data.json" target="_blank" rel="noopener">
+          <span class="icon"><i class="fab fa-github"></i></span><span>Open leaderboard_data.json</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Leaderboard -->
+
+<!-- Paper abstract -->
+<section class="section page-section" id="abstract">
+  <div class="container-wide">
+    <div class="section-heading">
+      <span class="section-kicker">Paper</span>
+      <h2 class="section-title">Abstract</h2>
+    </div>
+    <div class="content-card section-text has-text-justified">
+      <p>
+        We introduce FreshStack, a reusable framework for automatically building information retrieval (IR) evaluation benchmarks from community-asked questions and answers.
+        FreshStack conducts the following steps: (1) automatic corpus collection from code and technical documentation, (2) nugget generation from community-asked questions and answers, and (3) nugget-level support, retrieving documents using a fusion of retrieval techniques and hybrid architectures.
+        We use FreshStack to build five datasets on fast-growing, recent, and niche topics to ensure the tasks are sufficiently challenging.
+        Existing retrieval models, when applied out-of-the-box, significantly underperform oracle approaches on all five topics, denoting plenty of headroom to improve IR quality.
+      </p>
     </div>
   </div>
 </section>
 <!-- End paper abstract -->
 
-<!-- Teaser image-->
-<section class="hero teaser">
-  <div class="container is-max-desktop">
-    <div class="hero-body">
-      <video poster="" id="video1" autoplay controls muted loop height="100%">
-        <!-- Your video file here -->
-        <source src="static/videos/teaser.mp4"
-        type="video/mp4">
+<!-- Overview: pipeline steps + video -->
+<section class="section page-section is-tinted" id="overview">
+  <div class="container-wide">
+    <div class="section-heading">
+      <span class="section-kicker">Framework</span>
+      <h2 class="section-title">How FreshStack Works</h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <div class="step-icon"><i class="fas fa-code"></i></div>
+        <h3 class="step-title">Corpus Collection</h3>
+        <p class="step-text">Automatically collect a corpus from code and technical documentation.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <div class="step-icon"><i class="fas fa-lightbulb"></i></div>
+        <h3 class="step-title">Nugget Generation</h3>
+        <p class="step-text">Generate nuggets from community-asked questions and answers.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <div class="step-icon"><i class="fas fa-search"></i></div>
+        <h3 class="step-title">Nugget-level Support</h3>
+        <p class="step-text">Retrieve documents with a fusion of retrieval techniques and hybrid architectures to support each nugget.</p>
+      </div>
+    </div>
+    <div class="video-card">
+      <video poster="" id="video1" autoplay controls muted loop playsinline>
+        <source src="static/videos/teaser.mp4" type="video/mp4">
       </video>
-      <h2 class="subtitle has-text-centered">
-      Video shows a step-by-step procedure followed in FreshStack for constructing evaluation datasets.
-      </h2>
+      <p class="video-caption">Step-by-step procedure followed in FreshStack for constructing evaluation datasets.</p>
+    </div>
+  </div>
+</section>
+<!-- End overview -->
+
+<!-- Metrics vs. parameters -->
+<section class="section page-section" id="avg-metric-plots">
+  <div class="container-wide">
+    <div class="section-heading">
+      <span class="section-kicker">Analysis</span>
+      <h2 class="section-title">Metrics vs. Model Parameters</h2>
+    </div>
+    <div class="content section-text has-text-justified">
+      <p>
+        Each point is a model with <strong>model parameters</strong> in the leaderboard (parameters in millions or billions, parsed from values such as <code>7B</code> or <code>434M</code>).
+        The <strong>y</strong>-axis is the <strong>average across the five FreshStack domains</strong> for <strong>α@10</strong> (alpha-nDCG@10), <strong>C@20</strong> (Coverage@20) and <strong>R@50</strong> (Recall@50).
+        Models without a numeric size (shown as &ldquo;&mdash;&rdquo; in the table) are omitted. Marker colors group related model families.
+      </p>
+    </div>
+    <p id="recall-plots-empty" class="has-text-centered is-hidden help is-info" style="margin-bottom: 1rem;"></p>
+    <div class="plot-card" data-plot-tabs>
+      <div class="plot-card-header">
+        <span class="plot-card-title">Avg. (5 domains) vs. parameters</span>
+        <div class="plot-tabs" role="tablist">
+          <button type="button" class="plot-tab" role="tab" data-target="plot-avg-alpha10">α-nDCG@10</button>
+          <button type="button" class="plot-tab" role="tab" data-target="plot-avg-c20">Coverage@20</button>
+          <button type="button" class="plot-tab is-active" role="tab" data-target="plot-avg-r50">Recall@50</button>
+        </div>
+      </div>
+      <div id="plot-avg-alpha10" class="recall-param-plot plot-pane" aria-label="Average alpha-nDCG at 10 versus parameters"></div>
+      <div id="plot-avg-c20" class="recall-param-plot plot-pane" aria-label="Average Coverage at 20 versus parameters"></div>
+      <div id="plot-avg-r50" class="recall-param-plot plot-pane is-active" aria-label="Average Recall at 50 versus parameters"></div>
     </div>
   </div>
 </section>
 
-<section class="section">
-  <div class="container">
-    <!-------------------------------------------------------------------- LEADERBOARD SECTION -------------------------------------------------------------------->
-    <div class="columns is-centered m-6">
-      <div class="column is-full has-text-centered content">
-        <h2 class="title is-3" id="leaderboard">FreshStack Leaderboard</h2>
-        <div class="content has-text-justified">
-          <p>
-            We evaluate various retrieval models on Freshstack (October 2024 version). In each type, we consider both closed- and open-source embedding models.
-            Our evaluation is conducted under a zero-shot setting to retrieve the relevant document chunks given a query.
-            We report the results on five datasets: <b>LangChain</b>, <b>Yolo v7 & v8</b>, <b>Laravel 10 & 11</b>, <b>Angular 16, 17 & 18</b>, and <b>Godot4</b>. 
-            If you wish to add your model results in the leaderboard: please submit a PR by adding your model results here: <a href="https://github.com/fresh-stack/fresh-stack.github.io/blob/master/leaderboard_data.json">leaderboard_data.json</a>.
-            For all models, we choose a maximum sequence length of <b>2048</b> tokens. Queries in Freshstack can be <b>pretty long</b> so make sure to use an embedding model that can handle code and long queries.
-          </p>
-        </div>
-        <br>
-        <div class="model-labels-container">
-          <div id="type-filters">
-            <label class="leaderboard-label upper_baseline">
-              <input type="checkbox" class="type-filter" value="upper_baseline">
-              Oracle (Stack Overflow Nuggets)
-            </label>
-            <label class="leaderboard-label open_source">
-              <input type="checkbox" class="type-filter" value="open_source" checked>
-              Open Source
-            </label>
-            <label class="leaderboard-label proprietary">
-              <input type="checkbox" class="type-filter" value="proprietary" checked>
-              Proprietary
-            </label>
-          </div>
-        <br>
-        <div class="leaderboard-container">
-          <div class="table-wrapper">
-            <table id="freshstack-table">
-              <thead>
-                <tr>
-                  <th colspan="4" class="reset-cell" style="text-align: center;">Reset</th>
-                  <th colspan="3" style="text-align: center;" class="average-details-cell">Avg. (5)</th>
-                  <th colspan="3" style="text-align: center;" class="langchain-details-cell">LangChain</th>
-                  <th colspan="3" style="text-align: center;" class="yolo-details-cell">Yolo v7 & v8</th>
-                  <th colspan="3" style="text-align: center;" class="laravel-details-cell">Laravel 10 & 11</th>
-                  <th colspan="3" style="text-align: center;" class="angular-details-cell">Angular 16, 17 & 18</th>
-                  <th colspan="3" style="text-align: center;" class="godot-details-cell">Godot4</th>
-                </tr>
-                <tr>
-                  <th>Rank</th>
-                  <th class="sortable clickable" data-sort="string">Retriever</th>
-                  <th class="clickable" data-sort="string">Size</th>
-                  <th class="sortable clickable" data-sort="date">Date</th>
-                  <th class="average-details sortable clickable" data-sort="number">α@10</th>
-                  <th class="average-details sortable clickable" data-sort="number">C@20</th>
-                  <th class="average-details sortable clickable" data-sort="number">R@50</th>
-
-                  <th class="langchain-details sortable clickable" data-sort="number">α@10</th>
-                  <th class="langchain-details sortable clickable" data-sort="number">C@20</th>
-                  <th class="langchain-details sortable clickable" data-sort="number">R@50</th>
-                
-                  <th class="yolo-details sortable clickable" data-sort="number">α@10</th>
-                  <th class="yolo-details sortable clickable" data-sort="number">C@20</th>
-                  <th class="yolo-details sortable clickable" data-sort="number">R@50</th>
-                
-                  <th class="laravel-details sortable clickable" data-sort="number">α@10</th>
-                  <th class="laravel-details sortable clickable" data-sort="number">C@20</th>
-                  <th class="laravel-details sortable clickable" data-sort="number">R@50</th>
-                
-                  <th class="angular-details sortable clickable" data-sort="number">α@10</th>
-                  <th class="angular-details sortable clickable" data-sort="number">C@20</th>
-                  <th class="angular-details sortable clickable" data-sort="number">R@50</th>
-                
-                  <th class="godot-details sortable clickable" data-sort="number">α@10</th>
-                  <th class="godot-details sortable clickable" data-sort="number">C@20</th>
-                  <th class="godot-details sortable clickable" data-sort="number">R@50</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- Table body will be populated dynamically -->
-              </tbody>
-            </table>
-            <p class="test-desc">
-              Results of different retrieval models across datasets on Freshstack. The best-performing model in each category is <b>in bold</b>, and the second best is <u>underlined</u>.<br>
-              <b>α@10</b> (alpha-nDCG@10) measures retrieval diversity & relevance, <b>C@20</b> (Coverage@20) measures fraction of nuggets supported by retrieved documents, <b>R@50</b> (Recall@50) measuring % of relevant documents present in retrieved documents. 
-            </p>
-          </div>
-          <div class="mb-4 has-text-centered">
-            <div class="buttons is-centered">
-              <button class="button is-primary" id="download-csv">📄 Download CSV</button>
-              <button class="button is-link" id="download-json">🧾 Download JSON</button>
-            </div>
-          </div>
-        </div>
-      </div>
+<!-- Metrics vs. release date -->
+<section class="section page-section is-tinted" id="avg-metric-date-plots">
+  <div class="container-wide">
+    <div class="section-heading">
+      <span class="section-kicker">Analysis</span>
+      <h2 class="section-title">Metrics vs. Model Release Date</h2>
     </div>
-    </section>
-
-<section class="section" id="avg-metric-plots" style="background-color: #fafafa;">
-  <div class="container is-max-widescreen">
-    <div class="columns is-centered">
-      <div class="column is-full">
-        <h3 class="title is-3 has-text-centered">FreshStack Metrics vs. Model Parameters</h3>
-        <div class="content has-text-justified">
-          <p>
-            Each point is a model with <strong>model parameters</strong> in the leaderboard (parameters in millions or billions, parsed from values such as <code>7B</code> or <code>434M</code>).
-            The <strong>y</strong>-axis is the <strong>average across the five FreshStack domains</strong> for <strong>α@10</strong> (alpha-nDCG@10), <strong>C@20</strong> (Coverage@20) and <strong>R@50</strong> (Recall@50).
-            Models without a numeric size (shown as &ldquo;&mdash;&rdquo; in the table) are omitted. Marker colors group related model families.
-          </p>
-        </div>
-        <p id="recall-plots-empty" class="has-text-centered is-hidden help is-info" style="margin-bottom: 1rem;"></p>
-        <div class="columns is-multiline is-centered">
-          <div class="column is-full">
-            <p class="is-size-6 has-text-weight-semibold has-text-centered mb-2">Avg. (5 domains) &mdash; α-nDCG@10</p>
-            <div id="plot-avg-alpha10" class="recall-param-plot" aria-label="Average alpha-nDCG at 10 versus parameters"></div>
-          </div>
-          <div class="column is-full">
-            <p class="is-size-6 has-text-weight-semibold has-text-centered mb-2">Avg. (5 domains) &mdash; Coverage@20</p>
-            <div id="plot-avg-c20" class="recall-param-plot" aria-label="Average Coverage at 20 versus parameters"></div>
-          </div>
-          <div class="column is-full">
-            <p class="is-size-6 has-text-weight-semibold has-text-centered mb-2">Avg. (5 domains) &mdash; Recall@50</p>
-            <div id="plot-avg-r50" class="recall-param-plot" aria-label="Average Recall at 50 versus parameters"></div>
-          </div>
-        </div>
-      </div>
+    <div class="content section-text has-text-justified">
+      <p>
+        Each point is a model with a valid <strong>release date</strong> in the leaderboard.
+        The <strong>y</strong>-axis is the <strong>average across the five FreshStack domains</strong> for
+        <strong>α@10</strong> (alpha-nDCG@10), <strong>C@20</strong> (Coverage@20), and <strong>R@50</strong> (Recall@50).
+        Marker colors group related model families.
+      </p>
     </div>
-  </div>
-</section>
-
-<section class="section" id="avg-metric-date-plots" style="background-color: #ffffff;">
-  <div class="container is-max-widescreen">
-    <div class="columns is-centered">
-      <div class="column is-full">
-        <h3 class="title is-3 has-text-centered">FreshStack Metrics vs. Model Release Date</h3>
-        <div class="content has-text-justified">
-          <p>
-            Each point is a model with a valid <strong>release date</strong> in the leaderboard.
-            The <strong>y</strong>-axis is the <strong>average across the five FreshStack domains</strong> for
-            <strong>α@10</strong> (alpha-nDCG@10), <strong>C@20</strong> (Coverage@20), and <strong>R@50</strong> (Recall@50).
-            Marker colors group related model families.
-          </p>
-        </div>
-        <p id="date-plots-empty" class="has-text-centered is-hidden help is-info" style="margin-bottom: 1rem;"></p>
-        <div class="columns is-multiline is-centered">
-          <div class="column is-full">
-            <p class="is-size-6 has-text-weight-semibold has-text-centered mb-2">Avg. (5 domains) &mdash; α-nDCG@10</p>
-            <div id="plot-date-avg-alpha10" class="recall-param-plot" aria-label="Average alpha-nDCG at 10 versus model release date"></div>
-          </div>
-          <div class="column is-full">
-            <p class="is-size-6 has-text-weight-semibold has-text-centered mb-2">Avg. (5 domains) &mdash; Coverage@20</p>
-            <div id="plot-date-avg-c20" class="recall-param-plot" aria-label="Average Coverage at 20 versus model release date"></div>
-          </div>
-          <div class="column is-full">
-            <p class="is-size-6 has-text-weight-semibold has-text-centered mb-2">Avg. (5 domains) &mdash; Recall@50</p>
-            <div id="plot-date-avg-r50" class="recall-param-plot" aria-label="Average Recall at 50 versus model release date"></div>
-          </div>
+    <p id="date-plots-empty" class="has-text-centered is-hidden help is-info" style="margin-bottom: 1rem;"></p>
+    <div class="plot-card" data-plot-tabs>
+      <div class="plot-card-header">
+        <span class="plot-card-title">Avg. (5 domains) vs. release date</span>
+        <div class="plot-tabs" role="tablist">
+          <button type="button" class="plot-tab" role="tab" data-target="plot-date-avg-alpha10">α-nDCG@10</button>
+          <button type="button" class="plot-tab" role="tab" data-target="plot-date-avg-c20">Coverage@20</button>
+          <button type="button" class="plot-tab is-active" role="tab" data-target="plot-date-avg-r50">Recall@50</button>
         </div>
       </div>
+      <div id="plot-date-avg-alpha10" class="recall-param-plot plot-pane" aria-label="Average alpha-nDCG at 10 versus model release date"></div>
+      <div id="plot-date-avg-c20" class="recall-param-plot plot-pane" aria-label="Average Coverage at 20 versus model release date"></div>
+      <div id="plot-date-avg-r50" class="recall-param-plot plot-pane is-active" aria-label="Average Recall at 50 versus model release date"></div>
     </div>
   </div>
 </section>
 
 <!-- Poster Section -->
-<section class="section" id="Poster">
-  <div class="container is-max-desktop content">
-    <h2 class="title is-3 has-text-centered">Poster (NeurIPS 2025 Datasets & Benchmarks Track)</h2>
-    <div class="poster-embed">
-      <object data="static/pdfs/freshstack-poster.pptx.pdf" type="application/pdf">
-        <p>Your browser does not support PDFs. <a href="static/pdfs/freshstack-poster.pptx.pdf" download>Download the poster</a>.</p>
-      </object>
+<section class="section page-section" id="Poster">
+  <div class="container-wide">
+    <div class="section-heading">
+      <span class="section-kicker">NeurIPS 2025 · Datasets &amp; Benchmarks Track</span>
+      <h2 class="section-title">Poster</h2>
+    </div>
+    <div class="poster-card">
+      <div class="poster-embed">
+        <object data="static/pdfs/freshstack-poster.pptx.pdf" type="application/pdf">
+          <p>Your browser does not support PDFs. <a href="static/pdfs/freshstack-poster.pptx.pdf" download>Download the poster</a>.</p>
+        </object>
+      </div>
+      <div class="has-text-centered mt-4">
+        <a class="button is-rounded is-dark" href="static/pdfs/freshstack-poster.pptx.pdf" download>
+          <span class="icon"><i class="fas fa-download"></i></span><span>Download poster (PDF)</span>
+        </a>
+      </div>
     </div>
   </div>
 </section>
 
-
 <!--BibTex citation -->
-<section class="section" id="BibTeX">
-  <div class="container is-max-desktop content">
-    <h2 class="title is-3 has-text-centered">BibTeX</h2><pre><code>@inproceedings{
-      thakur2025freshstack,
-      title={FreshStack: Building Realistic Benchmarks for Evaluating Retrieval on Technical Documents},
-      author={Nandan Thakur and Jimmy Lin and Sam Havens and Michael Carbin and Omar Khattab and Andrew Drozdov},
-      booktitle={The Thirty-ninth Annual Conference on Neural Information Processing Systems Datasets and Benchmarks Track},
-      year={2025},
-      url={https://openreview.net/forum?id=54TTgXlS2U}
-      }
-</code></pre>
+<section class="section page-section is-tinted" id="BibTeX">
+  <div class="container-wide">
+    <div class="section-heading">
+      <span class="section-kicker">Cite us</span>
+      <h2 class="section-title">BibTeX</h2>
+    </div>
+    <div class="bibtex-card">
+      <button type="button" class="bibtex-copy" id="bibtex-copy" aria-label="Copy BibTeX">
+        <span class="icon is-small"><i class="fas fa-copy"></i></span><span class="bibtex-copy-label">Copy</span>
+      </button>
+<pre id="bibtex-text"><code>@inproceedings{thakur2025freshstack,
+  title={FreshStack: Building Realistic Benchmarks for Evaluating Retrieval on Technical Documents},
+  author={Nandan Thakur and Jimmy Lin and Sam Havens and Michael Carbin and Omar Khattab and Andrew Drozdov},
+  booktitle={The Thirty-ninth Annual Conference on Neural Information Processing Systems Datasets and Benchmarks Track},
+  year={2025},
+  url={https://openreview.net/forum?id=54TTgXlS2U}
+}</code></pre>
+    </div>
   </div>
 </section>
 <!--End BibTex citation -->
 
-
-<footer class="footer">
-<div class="container">
-  <div class="columns is-centered">
-    <div class="column is-8">
-      <div class="content">
-        <p>
-          This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
-        </p>
+<footer class="site-footer">
+  <div class="container-wide">
+    <div class="site-footer-inner">
+      <div class="site-footer-brand">
+        <span class="freshstack">FreshStack</span>
+        <span class="site-footer-tagline">Realistic benchmarks for retrieval on technical documents.</span>
+      </div>
+      <div class="site-footer-links">
+        <a href="https://arxiv.org/abs/2504.13128" target="_blank" rel="noopener"><i class="ai ai-arxiv"></i> arXiv</a>
+        <a href="https://github.com/fresh-stack/freshstack" target="_blank" rel="noopener"><i class="fab fa-github"></i> Code</a>
+        <a href="https://huggingface.co/freshstack" target="_blank" rel="noopener"><i class="fas fa-database"></i> Dataset</a>
+        <a href="#leaderboard"><i class="fas fa-trophy"></i> Leaderboard</a>
       </div>
     </div>
+    <p class="site-footer-credit">
+      This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank" rel="noopener">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank" rel="noopener">Nerfies</a> project page.
+    </p>
   </div>
-</div>
 </footer>
 
 </body>
