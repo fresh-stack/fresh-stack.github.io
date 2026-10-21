@@ -1070,6 +1070,7 @@ body {
 
 .site-nav-brand {
   display: inline-flex;
+  flex-shrink: 0;
   align-items: center;
   gap: 0.5rem;
   color: #1c2340;
@@ -1078,8 +1079,10 @@ body {
 }
 
 .site-nav-logo {
-  width: 24px;
-  height: 24px;
+  display: block;
+  height: 36px;
+  width: auto;
+  flex-shrink: 0;
 }
 
 .site-nav-links {
@@ -1514,9 +1517,12 @@ body {
   gap: 0.2rem;
 }
 
-.site-footer-brand .freshstack {
-  color: #fff;
-  font-size: 1.35rem;
+.site-footer-logo {
+  display: block;
+  align-self: flex-start;
+  height: 48px;
+  width: auto;
+  margin-bottom: 0.4rem;
 }
 
 .site-footer-tagline {
@@ -1554,8 +1560,8 @@ body {
 }
 
 @media screen and (max-width: 768px) {
-  .site-nav-brand .freshstack {
-    display: none;
+  .site-nav-logo {
+    height: 30px;
   }
   .tldr-callout {
     flex-direction: column;
