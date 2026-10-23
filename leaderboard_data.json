@@ -2450,6 +2450,49 @@
                     "recall_50": 0.5
                 }
             }
+        },
+        {
+            "info": {
+                "name": "Mixedbread Wholembed V4",
+                "size": "-",
+                "type": "proprietary",
+                "retriever": "late_interaction",
+                "family": "Mixedbread Wholembed",
+                "date": "2026-10-23",
+                "link": "https://www.mixedbread.com"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.434,
+                    "coverage_20": 0.775,
+                    "recall_50": 0.522
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.542,
+                    "coverage_20": 0.839,
+                    "recall_50": 0.795
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.533,
+                    "coverage_20": 0.826,
+                    "recall_50": 0.743
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.497,
+                    "coverage_20": 0.779,
+                    "recall_50": 0.598
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.475,
+                    "coverage_20": 0.761,
+                    "recall_50": 0.652
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.496,
+                    "coverage_20": 0.796,
+                    "recall_50": 0.662
+                }
+            }
         }
     ]
 }
