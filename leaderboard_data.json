@@ -2493,6 +2493,49 @@
                     "recall_50": 0.662
                 }
             }
+        },
+        {
+            "info": {
+                "name": "Nemotron-3.5-Embed-1B",
+                "size": "1B",
+                "type": "open_source",
+                "retriever": "dense",
+                "family": "Nemotron-Embed",
+                "date": "2026-10-20",
+                "link": "https://huggingface.co/nvidia/Nemotron-3.5-Embed-1B-BF16"
+            },
+            "datasets": {
+                "langchain": {
+                    "alpha_ndcg_10": 0.339,
+                    "coverage_20": 0.689,
+                    "recall_50": 0.459
+                },
+                "yolo": {
+                    "alpha_ndcg_10": 0.322,
+                    "coverage_20": 0.65,
+                    "recall_50": 0.486
+                },
+                "laravel": {
+                    "alpha_ndcg_10": 0.31,
+                    "coverage_20": 0.641,
+                    "recall_50": 0.549
+                },
+                "angular": {
+                    "alpha_ndcg_10": 0.267,
+                    "coverage_20": 0.597,
+                    "recall_50": 0.389
+                },
+                "godot": {
+                    "alpha_ndcg_10": 0.262,
+                    "coverage_20": 0.487,
+                    "recall_50": 0.447
+                },
+                "average": {
+                    "alpha_ndcg_10": 0.3,
+                    "coverage_20": 0.613,
+                    "recall_50": 0.466
+                }
+            }
         }
     ]
 }
